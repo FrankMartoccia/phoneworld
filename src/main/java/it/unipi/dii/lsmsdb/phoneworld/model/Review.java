@@ -3,9 +3,9 @@ package it.unipi.dii.lsmsdb.phoneworld.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Calendar;
+import java.util.Date;
 
-@Document(collection = "Reviews")
+@Document
 public class Review {
 
     @Id
@@ -13,13 +13,11 @@ public class Review {
     private String userId;
     private String phoneId;
     private int rating;
-    private Calendar dateOfReview;
+    private Date dateOfReview;
     private String title;
     private String body;
 
-    //Constructor for MongoDB
-    public Review(String id, String userId, String phoneId, int rating, Calendar dateOfReview, String title, String body) {
-        this.id = id;
+    public Review(String userId, String phoneId, int rating, Date dateOfReview, String title, String body) {
         this.userId = userId;
         this.phoneId = phoneId;
         this.rating = rating;
@@ -30,6 +28,10 @@ public class Review {
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUserId() {
@@ -44,7 +46,7 @@ public class Review {
         return rating;
     }
 
-    public Calendar getDateOfReview() {
+    public Date getDateOfReview() {
         return dateOfReview;
     }
 
@@ -60,7 +62,7 @@ public class Review {
         this.rating = rating;
     }
 
-    public void setDateOfReview(Calendar dateOfReview) {
+    public void setDateOfReview(Date dateOfReview) {
         this.dateOfReview = dateOfReview;
     }
 
@@ -70,5 +72,18 @@ public class Review {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+                "id='" + id + '\'' +
+                ", userId='" + userId + '\'' +
+                ", phoneId='" + phoneId + '\'' +
+                ", rating=" + rating +
+                ", dateOfReview=" + dateOfReview +
+                ", title='" + title + '\'' +
+                ", body='" + body + '\'' +
+                '}';
     }
 }

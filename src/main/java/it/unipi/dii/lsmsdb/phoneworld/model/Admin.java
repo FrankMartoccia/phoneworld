@@ -1,11 +1,12 @@
 package it.unipi.dii.lsmsdb.phoneworld.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "users")
+@TypeAlias("admin")
 public class Admin extends GenericUser{
-
-    @Id
-    private String id;
 
     public Admin() {
     }
@@ -14,8 +15,11 @@ public class Admin extends GenericUser{
         super(username, password, salt, sha, admin);
     }
 
-    public void setId(String id) {
-        this.id = id;
+    @Id
+    private String id;
+
+    public String getId() {
+        return id;
     }
 
     @Override

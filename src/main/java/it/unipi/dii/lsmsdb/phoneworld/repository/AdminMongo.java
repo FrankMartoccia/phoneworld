@@ -1,38 +1,36 @@
 package it.unipi.dii.lsmsdb.phoneworld.repository;
 
-import it.unipi.dii.lsmsdb.phoneworld.model.User;
+import it.unipi.dii.lsmsdb.phoneworld.model.Admin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserMongo {
+public class AdminMongo {
 
-    public UserMongo() {
+    public AdminMongo() {
     }
 
     private final static Logger logger = LoggerFactory.getLogger(PhoneMongo.class);
 
     @Autowired
-    private IUserMongo userMongo;
+    private IAdminMongo adminMongo;
 
-    public IUserMongo getUserMongo() {
-        return userMongo;
+    public IAdminMongo getAdminMongo() {
+        return adminMongo;
     }
 
-    public String addUser(User user) {
+    public String addAdmin(Admin admin) {
         String id;
         try {
-            userMongo.save(user);
-            id = user.getId();
+            adminMongo.save(admin);
+            id = admin.getId();
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
             id = "";
         }
         return id;
     }
-
-
 
 }

@@ -1,5 +1,8 @@
 package it.unipi.dii.lsmsdb.phoneworld.model;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "users")
 public abstract class GenericUser {
 
     protected String username;
@@ -42,4 +45,7 @@ public abstract class GenericUser {
     public boolean isAdmin() {
         return admin;
     }
+
+
+
 }

@@ -1,14 +1,41 @@
 package it.unipi.dii.lsmsdb.phoneworld.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Document
+@Document(collection = "users")
+@TypeAlias("user")
 public class User extends GenericUser{
+
+    public User() {
+    }
+
+    //Constructor for Neo4J
+    public User(String username, String id) {
+        super(username);
+    }
+
+    //Constructor for MongoDB
+    public User(String username, String password, String salt, String sha, boolean admin, String gender,
+                String firstName, String lastName, String streetNumber, String streetName, String city,
+                String country, String email, Date dateOfBirth, int age) {
+        super(username, password, salt, sha, admin);
+        this.gender = gender;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.streetNumber = streetNumber;
+        this.streetName = streetName;
+        this.city = city;
+        this.country = country;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+        this.age = age;
+    }
 
     @Id
     private String id;
@@ -25,37 +52,8 @@ public class User extends GenericUser{
     private List<Review> reviews = new ArrayList<>();
     private List<Phone> phones = new ArrayList<>();
 
-    public User() {
-    }
-
-    //Constructor for Neo4J
-    public User(String username, String id) {
-        super(username);
-    }
-
-    //Constructor for MongoDB
-    public User(String username, String password, String salt, String sha, boolean admin, String gender,
-                String firstName, String lastName, String streetNumber, String streetName, String city, String country,
-                String email, Date dateOfBirth, int age) {
-        super(username, password, salt, sha, admin);
-        this.gender = gender;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.streetNumber = streetNumber;
-        this.streetName = streetName;
-        this.city = city;
-        this.country = country;
-        this.email = email;
-        this.dateOfBirth = dateOfBirth;
-        this.age = age;
-    }
-
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getGender() {

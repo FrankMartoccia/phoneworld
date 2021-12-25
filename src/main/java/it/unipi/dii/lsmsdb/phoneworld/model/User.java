@@ -1,6 +1,5 @@
 package it.unipi.dii.lsmsdb.phoneworld.model;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -37,8 +36,6 @@ public class User extends GenericUser{
         this.age = age;
     }
 
-    @Id
-    private String id;
     private String gender;
     private String firstName;
     private String lastName;
@@ -124,6 +121,11 @@ public class User extends GenericUser{
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", salt='" + salt + '\'' +
+                ", sha='" + sha + '\'' +
+                ", admin=" + admin +
                 ", gender='" + gender + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

@@ -1,6 +1,6 @@
 package it.unipi.dii.lsmsdb.phoneworld.repository;
 
-import it.unipi.dii.lsmsdb.phoneworld.model.User;
+import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class UserMongo {
         return userMongo;
     }
 
-    public String addUser(User user) {
+    public String addUser(GenericUser user) {
         String id;
         try {
             userMongo.save(user);

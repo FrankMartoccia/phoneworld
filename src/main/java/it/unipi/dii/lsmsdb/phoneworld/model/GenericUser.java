@@ -1,10 +1,13 @@
 package it.unipi.dii.lsmsdb.phoneworld.model;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "users")
 public abstract class GenericUser {
 
+    @Id
+    protected String id;
     protected String username;
     protected String password;
     protected String salt;
@@ -24,6 +27,10 @@ public abstract class GenericUser {
         this.salt = salt;
         this.sha = sha;
         this.admin = admin;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getUsername() {

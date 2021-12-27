@@ -1,18 +1,27 @@
 package it.unipi.dii.lsmsdb.phoneworld.repository;
 
-import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
-import it.unipi.dii.lsmsdb.phoneworld.model.User;
+import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserMongo {
+
+    public UserMongo() {
+    }
+
+    private final static Logger logger = LoggerFactory.getLogger(PhoneMongo.class);
 
     @Autowired
     private IUserMongo userMongo;
-    private final static Logger logger = LoggerFactory.getLogger(PhoneMongo.class);
 
-    public String createUser(User user) {
+    public IUserMongo getUserMongo() {
+        return userMongo;
+    }
+
+    public String addUser(GenericUser user) {
         String id;
         try {
             userMongo.save(user);
@@ -23,4 +32,7 @@ public class UserMongo {
         }
         return id;
     }
+
+
+
 }

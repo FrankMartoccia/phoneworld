@@ -1,20 +1,27 @@
 package it.unipi.dii.lsmsdb.phoneworld.repository;
 
-import com.mongodb.MongoCommandException;
-import com.mongodb.MongoException;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import org.slf4j.Logger;
-
+@Component
 public class PhoneMongo {
+
+    public PhoneMongo() {
+    }
+
+    private final static Logger logger = LoggerFactory.getLogger(PhoneMongo.class);
 
     @Autowired
     private IPhoneMongo phoneMongo;
-    private final static Logger logger = LoggerFactory.getLogger(PhoneMongo.class);
 
-    public String createPhone(Phone phone) {
+    public IPhoneMongo getPhoneMongo() {
+        return phoneMongo;
+    }
+
+    public String addPhone(Phone phone) {
         String id;
         try {
             phoneMongo.save(phone);

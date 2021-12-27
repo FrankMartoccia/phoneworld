@@ -1,40 +1,29 @@
 package it.unipi.dii.lsmsdb.phoneworld.model;
 
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-@Document(collection = "Users")
+@Document(collection = "users")
+@TypeAlias("user")
 public class User extends GenericUser{
-
-    private String gender;
-    private String firstName;
-    private String lastName;
-    private String streetNumber;
-    private String streetName;
-    private String city;
-    private String country;
-    private String email;
-    private Calendar dateOfBirth;
-    private int age;
-    private List<Review> reviews = new ArrayList<>();
-    private List<Phone> phones = new ArrayList<>();
 
     public User() {
     }
 
     //Constructor for Neo4J
-    public User(String id, String username) {
-        super(id, username);
+    public User(String username, String id) {
+        super(username);
     }
 
     //Constructor for MongoDB
-    public User(String id, String username, String password, String salt, String sha, boolean admin, String gender,
-                String firstName, String lastName, String streetNumber, String streetName, String city, String country,
-                String email, Calendar dateOfBirth, int age, List<Review> reviews) {
-        super(id, username, password, salt, sha, admin);
+    public User(String username, String password, String salt, String sha, boolean admin, String gender,
+                String firstName, String lastName, String streetNumber, String streetName, String city,
+                String country, String email, Date dateOfBirth, int age) {
+        super(username, password, salt, sha, admin);
         this.gender = gender;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -45,7 +34,23 @@ public class User extends GenericUser{
         this.email = email;
         this.dateOfBirth = dateOfBirth;
         this.age = age;
-        this.reviews = reviews;
+    }
+
+    private String gender;
+    private String firstName;
+    private String lastName;
+    private String streetNumber;
+    private String streetName;
+    private String city;
+    private String country;
+    private String email;
+    private Date dateOfBirth;
+    private int age;
+    private List<Review> reviews = new ArrayList<>();
+    private List<Phone> phones = new ArrayList<>();
+
+    public String getId() {
+        return id;
     }
 
     public String getGender() {
@@ -80,7 +85,7 @@ public class User extends GenericUser{
         return email;
     }
 
-    public Calendar getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
@@ -110,5 +115,29 @@ public class User extends GenericUser{
 
     public void addPhone(Phone phone) {
         this.phones.add(phone);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", salt='" + salt + '\'' +
+                ", sha='" + sha + '\'' +
+                ", admin=" + admin +
+                ", gender='" + gender + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", streetNumber='" + streetNumber + '\'' +
+                ", streetName='" + streetName + '\'' +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                ", email='" + email + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", age=" + age +
+                ", reviews=" + reviews +
+                ", phones=" + phones +
+                '}';
     }
 }

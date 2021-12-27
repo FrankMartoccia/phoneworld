@@ -1,7 +1,12 @@
 package it.unipi.dii.lsmsdb.phoneworld.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "users")
 public abstract class GenericUser {
 
+    @Id
     protected String id;
     protected String username;
     protected String password;
@@ -12,13 +17,11 @@ public abstract class GenericUser {
     protected GenericUser() {
     }
 
-    protected GenericUser(String id, String username) {
-        this.id = id;
+    protected GenericUser(String username) {
         this.username = username;
     }
 
-    protected GenericUser(String id, String username, String password, String salt, String sha, boolean admin) {
-        this.id = id;
+    protected GenericUser(String username, String password, String salt, String sha, boolean admin) {
         this.username = username;
         this.password = password;
         this.salt = salt;
@@ -49,4 +52,7 @@ public abstract class GenericUser {
     public boolean isAdmin() {
         return admin;
     }
+
+
+
 }

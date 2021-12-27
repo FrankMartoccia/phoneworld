@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Document
+@Document(collection = "phones")
 public class Phone {
 
     @Id
@@ -66,10 +66,6 @@ public class Phone {
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getBrand() {
@@ -138,6 +134,70 @@ public class Phone {
 
     public List<Review> getReviews() {
         return reviews;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public void setOs(String os) {
+        this.os = os;
+    }
+
+    public void setStorage(String storage) {
+        this.storage = storage;
+    }
+
+    public void setDisplaySize(String displaySize) {
+        this.displaySize = displaySize;
+    }
+
+    public void setDisplayResolution(String displayResolution) {
+        this.displayResolution = displayResolution;
+    }
+
+    public void setCameraPixels(String cameraPixels) {
+        this.cameraPixels = cameraPixels;
+    }
+
+    public void setVideoPixels(String videoPixels) {
+        this.videoPixels = videoPixels;
+    }
+
+    public void setRam(String ram) {
+        this.ram = ram;
+    }
+
+    public void setChipset(String chipset) {
+        this.chipset = chipset;
+    }
+
+    public void setBatterySize(String batterySize) {
+        this.batterySize = batterySize;
+    }
+
+    public void setBatteryType(String batteryType) {
+        this.batteryType = batteryType;
+    }
+
+    public void setSpecifications(String specifications) {
+        this.specifications = specifications;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     public void setReviews(List<Review> reviews) {

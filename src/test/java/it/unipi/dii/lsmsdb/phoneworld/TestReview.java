@@ -47,7 +47,7 @@ public class TestReview {
     public void testFindReviews() {
         List<Review> reviews = reviewMongo.findReviews("iss");
         assertEquals(0, reviews.size());
-        reviews = reviewMongo.findReviews("is");
+        reviews = reviewMongo.findReviews("nice");
         reviews.forEach(System.out::println);
         assertEquals(1, reviews.size());
     }
@@ -61,6 +61,20 @@ public class TestReview {
             System.out.println(review.get());
             assertEquals(review.get().getId(), id);
         }
+    }
+
+    @Test
+    public void testUpdateReview() {
+        Date dateOfReview = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
+        Review newReview = new Review("1", "3", 2, dateOfReview, "Bad phone",
+                "this phone is very bad");
+        List<Review> reviews = reviewMongo.getReviewMongo().findAll();
+        reviews.forEach(System.out::println);
+        reviewMongo.updateReview(id, newReview);
+        reviews = reviewMongo.getReviewMongo().findAll();
+        reviews.forEach(System.out::println);
+        assertEquals(1, reviews.size());
+        assertEquals(reviews.get(0).getTitle(), "Bad phone");
     }
 
 }

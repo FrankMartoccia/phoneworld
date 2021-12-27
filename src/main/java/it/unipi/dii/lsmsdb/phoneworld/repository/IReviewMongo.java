@@ -9,6 +9,10 @@ import java.util.List;
 @Repository
 public interface IReviewMongo extends MongoRepository<Review, String> {
 
+//    @Query(value = "{'title': {$regex : ?0, $options: 'i'}, " +
+//            "'body': {$regex : ?0, $options: 'i'}}")
+//    List<Review> findByTitleMatchesRegexOrBodyMatchesRegex(String word1, String word2);
+
     List<Review> findByTitleContainingOrBodyContaining(String word1, String word2);
 
 }

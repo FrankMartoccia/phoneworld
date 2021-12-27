@@ -7,6 +7,8 @@ import it.unipi.dii.lsmsdb.phoneworld.repository.UserMongo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 
 import javax.swing.*;
 
@@ -54,28 +56,42 @@ public class Application {
 
 // To test on the real database
 
-//	@EventListener(ApplicationReadyEvent.class)
-//	public void afterTheStart() {
-//		Admin admin = new Admin("admin123", "dkasflafm", "ndas732neaj",
-//				"dsaodd", true);
-//		userMongo.addUser(admin);
-//		List<GenericUser> users = userMongo.getUserMongo().findAll();
+	@EventListener(ApplicationReadyEvent.class)
+	public void afterTheStart() {
+//		Date dateOfRelease = new GregorianCalendar(2005, Calendar.FEBRUARY, 11).getTime();
+//		Phone phone = new Phone("brand", "Nokia Lumia 800", "url", "body", "os",
+//				"storage", "display", "resolution", "camera",
+//				"video", "ram", "chipset", "batterySize",
+//				"batteryType", "specs", dateOfRelease);
 //
-//		Date dateOfBirth = new GregorianCalendar(1965, Calendar.FEBRUARY, 11).getTime();
-//		GenericUser user = new User("Frank", "123456", "kdasd", "dasdksamda", false,
-//				"male", "Paul", "Murray", "21", "street",
-//				"Las Vegas", "Nevada", "dnsak@gmail.com", dateOfBirth, 57);
-//		userMongo.addUser(user);
-//		users = userMongo.getUserMongo().findAll();
-//		users.forEach(System.out::println);
-//	}
+//		Date dateOfRelease2 = new GregorianCalendar(2000, Calendar.MAY, 11).getTime();
+//		Phone phone2 = new Phone("brand2", "Apple iPhone 11", "url", "body", "os",
+//				"storage", "display", "resolution", "camera",
+//				"video", "ram", "chipset", "batterySize",
+//				"batteryType", "specs", dateOfRelease2);
+//
+//		Date dateOfRelease3 = new GregorianCalendar(2021, Calendar.MAY, 11).getTime();
+//		Phone phone3 = new Phone("brand3", "Apple iPhone 13 Pro", "url", "body", "os",
+//				"storage", "display", "resolution", "camera",
+//				"video", "ram", "chipset", "batterySize",
+//				"batteryType", "specs", dateOfRelease3);
+//
+//		phoneMongo.addPhone(phone);
+//		phoneMongo.addPhone(phone2);
+//		String id = phoneMongo.getPhoneMongo().findAll().get(0).getId();
+//		List<Phone> phones = phoneMongo.getPhoneMongo().findAll();
+//		phones.forEach(System.out::println);
+//		phoneMongo.updatePhone(id, phone3);
+//		phones = phoneMongo.getPhoneMongo().findAll();
+//		System.out.println("\n");
+//		phones.forEach(System.out::println);
+	}
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> {
 			SpringApplication.run(Application.class, args);
 			Application.getInstance().init();
 		});
-
 	}
 
 }

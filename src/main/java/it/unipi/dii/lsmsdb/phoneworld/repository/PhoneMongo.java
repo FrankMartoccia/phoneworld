@@ -25,16 +25,12 @@ public class PhoneMongo {
         return phoneMongo;
     }
 
-    public String addPhone(Phone phone) {
-        String id;
+    public void addPhone(Phone phone) {
         try {
             phoneMongo.save(phone);
-            id = phone.getId();
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
-            id = "";
         }
-        return id;
     }
 
     public List<Phone> findPhones(String name) {
@@ -43,7 +39,7 @@ public class PhoneMongo {
             if (name.isEmpty()) {
                 phones.addAll(phoneMongo.findAll());
             } else {
-                phones.addAll(phoneMongo.findByNameContaining(name));
+                phones.addAll(phoneMongo.findByNameRegex(name));
             }
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
@@ -59,6 +55,34 @@ public class PhoneMongo {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
         }
         return phone;
+    }
+
+    public void updatePhone(String id, Phone newPhone) {
+        try {
+            Optional<Phone> phone = phoneMongo.findById(id);
+            if (phone.isPresent()) {
+                phone.get().setBrand(newPhone.getBrand());
+                phone.get().setName(newPhone.getName());
+                phone.get().setPicture(newPhone.getPicture());
+                phone.get().setReleaseDate(newPhone.getReleaseDate());
+                phone.get().setBody(newPhone.getBody());
+                phone.get().setOs(newPhone.getOs());
+                phone.get().setStorage(newPhone.getStorage());
+                phone.get().setDisplaySize(newPhone.getDisplaySize());
+                phone.get().setDisplayResolution(newPhone.getDisplayResolution());
+                phone.get().setCameraPixels(newPhone.getCameraPixels());
+                phone.get().setVideoPixels(newPhone.getVideoPixels());
+                phone.get().setRam(newPhone.getRam());
+                phone.get().setChipset(newPhone.getChipset());
+                phone.get().setBatterySize(newPhone.getBatterySize());
+                phone.get().setBatteryType(newPhone.getBatteryType());
+                phone.get().setSpecifications(newPhone.getSpecifications());
+
+                this.addPhone(phone.get());
+            }
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
     }
 
 }

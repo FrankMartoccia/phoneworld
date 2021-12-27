@@ -7,14 +7,13 @@ import it.unipi.dii.lsmsdb.phoneworld.repository.UserMongo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import javax.swing.*;
 
+//@ComponentScan("it.unipi.dii.lsmsdb.*")
+//@EntityScan("it.unipi.dii.lsmsdb.*")
+//@EnableMongoRepositories("it.unipi.dii.lsmsdb.*")
 @SpringBootApplication
-@EntityScan("it.unipi.dii.lsmsdb.*")
-@EnableMongoRepositories("it.unipi.dii.lsmsdb.*")
 public class Application {
 
 	@Autowired

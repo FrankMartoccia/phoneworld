@@ -6,6 +6,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Component
 public class ReviewMongo {
 
@@ -31,6 +35,30 @@ public class ReviewMongo {
             id = "";
         }
         return id;
+    }
+
+    public List<Review> findReviews(String word) {
+        List<Review> reviews = new ArrayList<>();
+        try {
+            if (word.isEmpty()) {
+                reviews.addAll(reviewMongo.findAll());
+            } else {
+                reviews.addAll(reviewMongo.findByTitleContainingOrBodyContaining(word, word));
+            }
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+        return reviews;
+    }
+
+    public Optional<Review> findReviewById(String id) {
+        Optional<Review> review = Optional.empty();
+        try {
+            review = reviewMongo.findById(id);
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+        return review;
     }
 
 }

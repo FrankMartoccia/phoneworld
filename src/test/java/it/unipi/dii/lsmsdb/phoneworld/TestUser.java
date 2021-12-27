@@ -21,7 +21,8 @@ public class TestUser {
 
     @Autowired
     private UserMongo userMongo;
-    private String id;
+    private String id1;
+    private String id2;
 
     @Before
     public void clean() {
@@ -40,7 +41,8 @@ public class TestUser {
                 "street", "Las Vegas", "Nevada", "dnsak@gmail.com",
                 dateOfBirth, 57);
         userMongo.addUser(user);
-        id = userMongo.getUserMongo().findAll().get(0).getId();
+        id1 = userMongo.getUserMongo().findAll().get(0).getId();
+        id2 = userMongo.getUserMongo().findAll().get(1).getId();
     }
 
     @Test
@@ -65,12 +67,32 @@ public class TestUser {
     public void testFindUserById() {
         Optional<GenericUser> users = Optional.ofNullable(userMongo.findUserById("11111", false));
         assertEquals(users, Optional.empty());
-        users = Optional.ofNullable(userMongo.findUserById(id, true));
+        users = Optional.ofNullable(userMongo.findUserById(id1, true));
         if (users.isPresent()) {
             System.out.println(users.get());
-            assertEquals(users.get().getId(), id);
+            assertEquals(users.get().getId(), id1);
         }
     }
 
+    @Test
+    public void testUpdateUser() {
+        Admin newAdmin = new Admin("admin1234", "ciao", "ndas732neaj",
+                "dsaodd", true);
+
+        Date dateOfBirth = new GregorianCalendar(1965, Calendar.FEBRUARY, 11).getTime();
+        User newUser = new User("Franko", "123456789", "kdasddd", "dasdksamda",
+                false, "male", "Paul", "Murray", "21",
+                "street", "Las Vegas", "Nevada", "dnsak@gmail.com",
+                dateOfBirth, 57);
+        List<GenericUser> users = userMongo.getUserMongo().findAll();
+        users.forEach(System.out::println);
+        userMongo.updateUser(id2, newUser,false);
+        userMongo.updateUser(id1, newAdmin, true);
+        users = userMongo.getUserMongo().findAll();
+        users.forEach(System.out::println);
+        assertEquals(2, users.size());
+        assertEquals(users.get(0).getUsername(), "admin1234");
+        assertEquals(users.get(1).getUsername(), "Franko");
+    }
 
 }

@@ -33,7 +33,15 @@ public class TestPhone {
                 "storage", "display", "resolution", "camera",
                 "video", "ram", "chipset", "batterySize",
                 "batteryType", "specs", dateOfRelease);
+
+        Date dateOfRelease2 = new GregorianCalendar(2000, Calendar.MAY, 11).getTime();
+        Phone phone2 = new Phone("brand2", "Apple iPhone 11", "url", "body", "os",
+                "storage", "display", "resolution", "camera",
+                "video", "ram", "chipset", "batterySize",
+                "batteryType", "specs", dateOfRelease2);
+
         phoneMongo.addPhone(phone);
+        phoneMongo.addPhone(phone2);
         id = phoneMongo.getPhoneMongo().findAll().get(0).getId();
     }
 
@@ -42,14 +50,14 @@ public class TestPhone {
         List<Phone> phones = phoneMongo.getPhoneMongo().findAll();
         phones.forEach(System.out::println);
         assertEquals("resolution", phones.get(0).getDisplayResolution());
-        assertEquals(1, phones.size());
+        assertEquals(2, phones.size());
     }
 
     @Test
     public void testFindPhones() {
         List<Phone> phones = phoneMongo.findPhones("iss");
         assertEquals(0, phones.size());
-        phones = phoneMongo.findPhones("Lumia");
+        phones = phoneMongo.findPhones("iPhone");
         phones.forEach(System.out::println);
         assertEquals(1, phones.size());
     }
@@ -64,5 +72,22 @@ public class TestPhone {
             assertEquals(phones.get().getId(), id);
         }
     }
+
+    @Test
+    public void testUpdatePhone() {
+        Date dateOfRelease = new GregorianCalendar(2005, Calendar.FEBRUARY, 11).getTime();
+        Phone phone = new Phone("brand3", "Nokia Lumia 753", "url3", "body3", "os",
+                "storage3", "display", "resolution", "camera",
+                "video", "ram", "chipset", "batterySize",
+                "batteryType", "specs", dateOfRelease);
+        List<Phone> phones = phoneMongo.getPhoneMongo().findAll();
+        phones.forEach(System.out::println);
+        phoneMongo.updatePhone(id, phone);
+        phones = phoneMongo.getPhoneMongo().findAll();
+        phones.forEach(System.out::println);
+        assertEquals(2, phones.size());
+        assertEquals("brand3", phoneMongo.getPhoneMongo().findAll().get(0).getBrand());
+    }
+
 
 }

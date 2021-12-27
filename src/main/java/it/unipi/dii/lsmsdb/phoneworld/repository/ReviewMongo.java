@@ -25,16 +25,12 @@ public class ReviewMongo {
         return reviewMongo;
     }
 
-    public String addReview(Review review) {
-        String id;
+    public void addReview(Review review) {
         try {
             reviewMongo.save(review);
-            id = review.getId();
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
-            id = "";
         }
-        return id;
     }
 
     public List<Review> findReviews(String word) {
@@ -59,6 +55,22 @@ public class ReviewMongo {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
         }
         return review;
+    }
+
+    public void updateReview(String id, Review newReview) {
+        try {
+            Optional<Review> review = reviewMongo.findById(id);
+            if (review.isPresent()) {
+                review.get().setTitle(newReview.getTitle());
+                review.get().setDateOfReview(newReview.getDateOfReview());
+                review.get().setBody(newReview.getBody());
+                review.get().setRating(newReview.getRating());
+
+                this.addReview(review.get());
+            }
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
     }
 
 }

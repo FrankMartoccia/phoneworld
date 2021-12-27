@@ -1,6 +1,8 @@
 package it.unipi.dii.lsmsdb.phoneworld.repository;
 
+import it.unipi.dii.lsmsdb.phoneworld.model.Admin;
 import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
+import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class UserMongo {
@@ -24,16 +27,12 @@ public class UserMongo {
         return userMongo;
     }
 
-    public String addUser(GenericUser user) {
-        String id;
+    public void addUser(GenericUser user) {
         try {
             userMongo.save(user);
-            id = user.getId();
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
-            id = "";
         }
-        return id;
     }
 
     public List<GenericUser> findUsers(String username, boolean admin) {
@@ -60,5 +59,42 @@ public class UserMongo {
         return user;
     }
 
+    public void updateUser(String id, GenericUser newGenericUser, boolean admin) {
+        try {
+            Optional<GenericUser> genericUser = userMongo.findById(id);
+            if (genericUser.isPresent()) {
+                if (admin) {
+                    Admin administrator = (Admin) genericUser.get();
+                    administrator.setUsername(newGenericUser.getUsername());
+                    administrator.setAdmin(newGenericUser.isAdmin());
+                    administrator.setSha(newGenericUser.getSha());
+                    administrator.setSalt(newGenericUser.getSalt());
+                    administrator.setPassword(newGenericUser.getPassword());
+                    this.addUser(administrator);
+                } else {
+                    User user = (User) genericUser.get();
+                    User newUser = (User)newGenericUser;
+                    user.setUsername(newUser.getUsername());
+                    user.setAdmin(newUser.isAdmin());
+                    user.setSha(newUser.getSha());
+                    user.setSalt(newUser.getSalt());
+                    user.setPassword(newUser.getPassword());
+                    user.setAge(newUser.getAge());
+                    user.setCity(newUser.getCity());
+                    user.setCountry(newUser.getCountry());
+                    user.setEmail(newUser.getEmail());
+                    user.setGender(newUser.getGender());
+                    user.setFirstName(newUser.getFirstName());
+                    user.setLastName(newUser.getLastName());
+                    user.setDateOfBirth(newUser.getDateOfBirth());
+                    user.setStreetName(newUser.getStreetName());
+                    user.setStreetNumber(newUser.getStreetNumber());
+                    this.addUser(user);
+                } 
+            } 
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+    }
 
 }

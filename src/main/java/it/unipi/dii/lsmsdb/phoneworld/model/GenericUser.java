@@ -53,6 +53,23 @@ public abstract class GenericUser {
         return admin;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public void setSha(String sha) {
+        this.sha = sha;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
 }

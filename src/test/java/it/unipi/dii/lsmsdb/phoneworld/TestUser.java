@@ -31,12 +31,12 @@ public class TestUser {
     }
 
     private void init() {
-        Admin admin = new Admin("admin123", "dkasflafm", "ndas732neaj",
+        Admin admin = new Admin("admin123", "ndas732neaj",
                 "dsaodd", true);
         userMongo.addUser(admin);
 
         Date dateOfBirth = new GregorianCalendar(1965, Calendar.FEBRUARY, 11).getTime();
-        User user = new User("Frank", "123456", "kdasd", "dasdksamda",
+        User user = new User("Frank", "kdasd", "dasdksamda",
                 false, "male", "Paul", "Murray", "21",
                 "street", "Las Vegas", "Nevada", "dnsak@gmail.com",
                 dateOfBirth, 57);
@@ -76,11 +76,11 @@ public class TestUser {
 
     @Test
     public void testUpdateUser() {
-        Admin newAdmin = new Admin("admin1234", "ciao", "ndas732neaj",
+        Admin newAdmin = new Admin("admin1234", "ndas732neaj",
                 "dsaodd", true);
 
         Date dateOfBirth = new GregorianCalendar(1965, Calendar.FEBRUARY, 11).getTime();
-        User newUser = new User("Franko", "123456789", "kdasddd", "dasdksamda",
+        User newUser = new User("Franko", "kdasddd", "dasdksamda",
                 false, "male", "Paul", "Murray", "21",
                 "street", "Las Vegas", "Nevada", "dnsak@gmail.com",
                 dateOfBirth, 57);
@@ -95,4 +95,23 @@ public class TestUser {
         assertEquals(users.get(1).getUsername(), "Franko");
     }
 
+    @Test
+    public void testDeleteUserById() {
+        List<GenericUser> users = userMongo.getUserMongo().findAll();
+        users.forEach(System.out::println);
+        userMongo.deleteUserById(id1);
+        users = userMongo.getUserMongo().findAll();
+        assertEquals(1,users.size());
+        users.forEach(System.out::println);
+    }
+
+    @Test
+    public void testDeleteUser() {
+        List<GenericUser> users = userMongo.getUserMongo().findAll();
+        users.forEach(System.out::println);
+        userMongo.deleteUser(userMongo.getUserMongo().findAll().get(0));
+        users = userMongo.getUserMongo().findAll();
+        assertEquals(1,users.size());
+        users.forEach(System.out::println);
+    }
 }

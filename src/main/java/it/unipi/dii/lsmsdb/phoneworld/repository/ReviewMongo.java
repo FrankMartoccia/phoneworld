@@ -1,5 +1,6 @@
 package it.unipi.dii.lsmsdb.phoneworld.repository;
 
+import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,6 +69,38 @@ public class ReviewMongo {
 
                 this.addReview(review.get());
             }
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+    }
+
+    public void deleteReviewById(String id) {
+        try {
+            reviewMongo.deleteById(id);
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+    }
+
+    public void deleteReview(Review review) {
+        try {
+            reviewMongo.delete(review);
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+    }
+
+    public void deleteReviewByUserId(String id) {
+        try {
+            reviewMongo.deleteReviewByUserId(id);
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+    }
+
+    public void deleteReviewByPhoneId(String id) {
+        try {
+            reviewMongo.deleteReviewByPhoneId(id);
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
         }

@@ -85,4 +85,19 @@ public class PhoneMongo {
         }
     }
 
+    public void deletePhoneById(String id) {
+        try {
+            phoneMongo.deleteById(id);
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+    }
+
+    public void deletePhone(Phone phone) {
+        try {
+            phoneMongo.delete(phone);
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+    }
 }

@@ -2,6 +2,7 @@ package it.unipi.dii.lsmsdb.phoneworld.model;
 
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.neo4j.core.schema.Node;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Document(collection = "users")
 @TypeAlias("user")
+//@Node
 public class User extends GenericUser{
 
     public User() {
@@ -20,10 +22,10 @@ public class User extends GenericUser{
     }
 
     //Constructor for MongoDB
-    public User(String username, String password, String salt, String sha, boolean admin, String gender,
+    public User(String username, String salt, String sha, boolean admin, String gender,
                 String firstName, String lastName, String streetNumber, String streetName, String city,
                 String country, String email, Date dateOfBirth, int age) {
-        super(username, password, salt, sha, admin);
+        super(username, salt, sha, admin);
         this.gender = gender;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -162,7 +164,6 @@ public class User extends GenericUser{
         return "User{" +
                 "id='" + id + '\'' +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", salt='" + salt + '\'' +
                 ", sha='" + sha + '\'' +
                 ", admin=" + admin +

@@ -2,6 +2,7 @@ package it.unipi.dii.lsmsdb.phoneworld.repository;
 
 import it.unipi.dii.lsmsdb.phoneworld.model.Admin;
 import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
+import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +70,6 @@ public class UserMongo {
                     administrator.setAdmin(newGenericUser.isAdmin());
                     administrator.setSha(newGenericUser.getSha());
                     administrator.setSalt(newGenericUser.getSalt());
-                    administrator.setPassword(newGenericUser.getPassword());
                     this.addUser(administrator);
                 } else {
                     User user = (User) genericUser.get();
@@ -78,7 +78,6 @@ public class UserMongo {
                     user.setAdmin(newUser.isAdmin());
                     user.setSha(newUser.getSha());
                     user.setSalt(newUser.getSalt());
-                    user.setPassword(newUser.getPassword());
                     user.setAge(newUser.getAge());
                     user.setCity(newUser.getCity());
                     user.setCountry(newUser.getCountry());
@@ -92,6 +91,22 @@ public class UserMongo {
                     this.addUser(user);
                 } 
             } 
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+    }
+
+    public void deleteUserById(String id) {
+        try {
+            userMongo.deleteById(id);
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+    }
+
+    public void deleteUser(GenericUser user) {
+        try {
+            userMongo.delete(user);
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
         }

@@ -7,9 +7,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public abstract class GenericUser {
 
     @Id
+    //@org.springframework.data.neo4j.core.schema.Id
     protected String id;
     protected String username;
-    protected String password;
     protected String salt;
     protected String sha;
     protected boolean admin;
@@ -21,9 +21,8 @@ public abstract class GenericUser {
         this.username = username;
     }
 
-    protected GenericUser(String username, String password, String salt, String sha, boolean admin) {
+    protected GenericUser(String username, String salt, String sha, boolean admin) {
         this.username = username;
-        this.password = password;
         this.salt = salt;
         this.sha = sha;
         this.admin = admin;
@@ -35,10 +34,6 @@ public abstract class GenericUser {
 
     public String getUsername() {
         return username;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public String getSalt() {
@@ -55,10 +50,6 @@ public abstract class GenericUser {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public void setSalt(String salt) {

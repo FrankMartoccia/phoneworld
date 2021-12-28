@@ -1,5 +1,6 @@
 package it.unipi.dii.lsmsdb.phoneworld;
 
+import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
 import it.unipi.dii.lsmsdb.phoneworld.repository.ReviewMongo;
 import org.junit.Before;
@@ -75,6 +76,44 @@ public class TestReview {
         reviews.forEach(System.out::println);
         assertEquals(1, reviews.size());
         assertEquals(reviews.get(0).getTitle(), "Bad phone");
+    }
+
+    @Test
+    public void testDeleteReviewById() {
+        List<Review> reviews = reviewMongo.getReviewMongo().findAll();
+        reviews.forEach(System.out::println);
+        reviewMongo.deleteReviewById(id);
+        reviews = reviewMongo.getReviewMongo().findAll();
+        assertEquals(0,reviews.size());
+        reviews.forEach(System.out::println);
+    }
+
+    @Test
+    public void testDeleteReview() {
+        List<Review> reviews = reviewMongo.getReviewMongo().findAll();
+        reviews.forEach(System.out::println);
+        reviewMongo.deleteReview(reviewMongo.getReviewMongo().findAll().get(0));
+        reviews = reviewMongo.getReviewMongo().findAll();
+        assertEquals(0,reviews.size());
+        reviews.forEach(System.out::println);
+    }
+
+    @Test
+    public void testDeleteReviewByUserId() {
+        List<Review> reviews = reviewMongo.getReviewMongo().findAll();
+        reviews.forEach(System.out::println);
+        reviewMongo.deleteReviewByUserId("1");
+        reviews = reviewMongo.getReviewMongo().findAll();
+        assertEquals(0, reviews.size());
+    }
+
+    @Test
+    public void testDeleteReviewByPhoneId() {
+        List<Review> reviews = reviewMongo.getReviewMongo().findAll();
+        reviews.forEach(System.out::println);
+        reviewMongo.deleteReviewByPhoneId("3");
+        reviews = reviewMongo.getReviewMongo().findAll();
+        assertEquals(0, reviews.size());
     }
 
 }

@@ -2,15 +2,18 @@ package it.unipi.dii.lsmsdb.phoneworld.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.neo4j.core.schema.Node;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Document(collection = "phones")
+//@Node
 public class Phone {
 
     @Id
+   // @org.springframework.data.neo4j.core.schema.Id
     private String id;
     private String brand;
     private String name;

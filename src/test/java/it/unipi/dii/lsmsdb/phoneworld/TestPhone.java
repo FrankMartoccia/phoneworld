@@ -89,5 +89,24 @@ public class TestPhone {
         assertEquals("brand3", phoneMongo.getPhoneMongo().findAll().get(0).getBrand());
     }
 
+    @Test
+    public void testDeletePhoneById() {
+        List<Phone> phones = phoneMongo.getPhoneMongo().findAll();
+        phones.forEach(System.out::println);
+        phoneMongo.deletePhoneById(id);
+        phones = phoneMongo.getPhoneMongo().findAll();
+        assertEquals(1,phones.size());
+        phones.forEach(System.out::println);
+    }
+
+    @Test
+    public void testDeletePhone() {
+        List<Phone> phones = phoneMongo.getPhoneMongo().findAll();
+        phones.forEach(System.out::println);
+        phoneMongo.deletePhone(phoneMongo.getPhoneMongo().findAll().get(0));
+        phones = phoneMongo.getPhoneMongo().findAll();
+        assertEquals(1,phones.size());
+        phones.forEach(System.out::println);
+    }
 
 }

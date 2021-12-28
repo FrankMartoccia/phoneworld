@@ -2,7 +2,6 @@ package it.unipi.dii.lsmsdb.phoneworld.repository;
 
 import it.unipi.dii.lsmsdb.phoneworld.model.Admin;
 import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
-import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

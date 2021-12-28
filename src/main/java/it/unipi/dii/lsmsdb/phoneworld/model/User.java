@@ -2,7 +2,6 @@ package it.unipi.dii.lsmsdb.phoneworld.model;
 
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.neo4j.core.schema.Node;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,7 +9,6 @@ import java.util.List;
 
 @Document(collection = "users")
 @TypeAlias("user")
-//@Node
 public class User extends GenericUser{
 
     public User() {
@@ -157,6 +155,26 @@ public class User extends GenericUser{
 
     public void addPhone(Phone phone) {
         this.phones.add(phone);
+    }
+
+    public void deletePhone(String id) {
+        if (!this.phones.isEmpty()) {
+            for (Phone phone: phones) {
+                if (phone.getId().equals(id)) {
+                    this.phones.remove(phone);
+                }
+            }
+        }
+    }
+
+    public void deleteReview(String id) {
+        if (!this.reviews.isEmpty()) {
+            for (Review review: reviews) {
+                if (review.getId().equals(id)) {
+                    this.reviews.remove(review);
+                }
+            }
+        }
     }
 
     @Override

@@ -1,14 +1,14 @@
 package it.unipi.dii.lsmsdb.phoneworld.model;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import java.util.Date;
 
 @Document(collection = "reviews")
 public class Review {
 
-    @Id
+    @org.springframework.data.mongodb.core.mapping.MongoId(FieldType.OBJECT_ID)
     private String id;
     private String userId;
     private String phoneId;

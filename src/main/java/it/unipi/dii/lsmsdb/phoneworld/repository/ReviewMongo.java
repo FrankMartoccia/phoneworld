@@ -1,6 +1,5 @@
 package it.unipi.dii.lsmsdb.phoneworld.repository;
 
-import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class TestPhone {
+public class TestPhoneMongo {
 
     @Autowired
     private PhoneMongo phoneMongo;

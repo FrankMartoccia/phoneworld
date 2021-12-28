@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public abstract class GenericUser {
 
     @Id
-    //@org.springframework.data.neo4j.core.schema.Id
     protected String id;
     protected String username;
     protected String salt;

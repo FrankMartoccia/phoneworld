@@ -1,6 +1,5 @@
 package it.unipi.dii.lsmsdb.phoneworld;
 
-import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
 import it.unipi.dii.lsmsdb.phoneworld.repository.ReviewMongo;
 import org.junit.Before;
@@ -16,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class TestReview {
+public class TestReviewMongo {
 
     @Autowired
     private ReviewMongo reviewMongo;

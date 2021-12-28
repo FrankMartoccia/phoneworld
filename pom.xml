@@ -46,6 +46,19 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.neo4j.test</groupId>
+			<artifactId>neo4j-harness</artifactId>
+			<version>4.4.2</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-nop</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.13.2</version>

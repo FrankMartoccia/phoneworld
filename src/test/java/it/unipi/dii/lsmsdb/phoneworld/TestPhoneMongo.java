@@ -2,6 +2,7 @@ package it.unipi.dii.lsmsdb.phoneworld;
 
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,9 +23,13 @@ public class TestPhoneMongo {
     private String id;
 
     @Before
+    public void start() {
+        init();
+    }
+
+    @After
     public void clean() {
         phoneMongo.getPhoneMongo().deleteAll();
-        init();
     }
 
     private void init() {

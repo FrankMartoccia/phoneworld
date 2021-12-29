@@ -1,12 +1,7 @@
 package it.unipi.dii.lsmsdb.phoneworld.model;
 
-import org.springframework.data.neo4j.core.schema.Id;
-import org.springframework.data.neo4j.core.schema.Node;
-
-@Node
 public class GraphPhone {
 
-    @Id
     private String id;
     private String brand;
     private String name;

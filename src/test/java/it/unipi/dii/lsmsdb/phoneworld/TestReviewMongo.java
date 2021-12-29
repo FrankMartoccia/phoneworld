@@ -2,6 +2,7 @@ package it.unipi.dii.lsmsdb.phoneworld;
 
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
 import it.unipi.dii.lsmsdb.phoneworld.repository.ReviewMongo;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,12 +23,16 @@ public class TestReviewMongo {
     private String id;
 
     @Before
-    public void clean() {
-        reviewMongo.getReviewMongo().deleteAll();
+    public void start() {
         init();
     }
 
-    public void init() {
+    @After
+    public void clean() {
+        reviewMongo.getReviewMongo().deleteAll();
+    }
+
+    private void init() {
         Date dateOfReview = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
         Review review = new Review("1", "3", 5, dateOfReview, "Nice phone",
                 "this phone is very nice");

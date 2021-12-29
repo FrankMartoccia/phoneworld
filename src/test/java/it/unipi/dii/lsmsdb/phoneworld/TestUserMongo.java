@@ -4,6 +4,7 @@ import it.unipi.dii.lsmsdb.phoneworld.model.Admin;
 import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.UserMongo;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,9 +26,13 @@ public class TestUserMongo {
     private String id2;
 
     @Before
+    public void start() {
+        init();
+    }
+
+    @After
     public void clean() {
         userMongo.getUserMongo().deleteAll();
-        init();
     }
 
     private void init() {

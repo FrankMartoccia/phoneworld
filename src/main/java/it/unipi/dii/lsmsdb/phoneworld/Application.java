@@ -1,9 +1,7 @@
 package it.unipi.dii.lsmsdb.phoneworld;
 
 import it.unipi.dii.lsmsdb.phoneworld.model.ModelBean;
-import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
-import it.unipi.dii.lsmsdb.phoneworld.repository.ReviewMongo;
-import it.unipi.dii.lsmsdb.phoneworld.repository.UserMongo;
+import it.unipi.dii.lsmsdb.phoneworld.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,9 +24,13 @@ public class Application {
 
 	@Autowired
 	private ReviewMongo reviewMongo;
+	private final GraphNeo4j graphNeo4j = new GraphNeo4j("bolt://localhost:7687",
+                    "neo4j", "PhoneWorld");
+	private final UserNeo4j userNeo4j = new UserNeo4j(graphNeo4j);
+	private final PhoneNeo4j phoneNeo4j = new PhoneNeo4j(graphNeo4j);
 
-	private static Application singleton = new Application();
-	private ModelBean modelBean = new ModelBean();
+	private static final Application singleton = new Application();
+	private final ModelBean modelBean = new ModelBean();
 
 	public static Application getInstance() {
 		return singleton;
@@ -50,6 +52,22 @@ public class Application {
 		return reviewMongo;
 	}
 
+	public GraphNeo4j getGraphNeo4j() {
+		return graphNeo4j;
+	}
+
+	public UserNeo4j getUserNeo4j() {
+		return userNeo4j;
+	}
+
+	public PhoneNeo4j getPhoneNeo4j() {
+		return phoneNeo4j;
+	}
+
+	public static Application getSingleton() {
+		return singleton;
+	}
+
 	private void init() {
 
 	}
@@ -58,33 +76,7 @@ public class Application {
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void afterTheStart() {
-//		Date dateOfRelease = new GregorianCalendar(2005, Calendar.FEBRUARY, 11).getTime();
-//		Phone phone = new Phone("brand", "Nokia Lumia 800", "url", "body", "os",
-//				"storage", "display", "resolution", "camera",
-//				"video", "ram", "chipset", "batterySize",
-//				"batteryType", "specs", dateOfRelease);
-//
-//		Date dateOfRelease2 = new GregorianCalendar(2000, Calendar.MAY, 11).getTime();
-//		Phone phone2 = new Phone("brand2", "Apple iPhone 11", "url", "body", "os",
-//				"storage", "display", "resolution", "camera",
-//				"video", "ram", "chipset", "batterySize",
-//				"batteryType", "specs", dateOfRelease2);
-//
-//		Date dateOfRelease3 = new GregorianCalendar(2021, Calendar.MAY, 11).getTime();
-//		Phone phone3 = new Phone("brand3", "Apple iPhone 13 Pro", "url", "body", "os",
-//				"storage", "display", "resolution", "camera",
-//				"video", "ram", "chipset", "batterySize",
-//				"batteryType", "specs", dateOfRelease3);
-//
-//		phoneMongo.addPhone(phone);
-//		phoneMongo.addPhone(phone2);
-//		String id = phoneMongo.getPhoneMongo().findAll().get(0).getId();
-//		List<Phone> phones = phoneMongo.getPhoneMongo().findAll();
-//		phones.forEach(System.out::println);
-//		phoneMongo.updatePhone(id, phone3);
-//		phones = phoneMongo.getPhoneMongo().findAll();
-//		System.out.println("\n");
-//		phones.forEach(System.out::println);
+
 	}
 
 	public static void main(String[] args) {
@@ -93,5 +85,4 @@ public class Application {
 			Application.getInstance().init();
 		});
 	}
-
 }

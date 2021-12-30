@@ -31,11 +31,49 @@ public class GraphUser {
         this.username = username;
     }
 
+    public List<GraphPhone> getWatchlist() {
+        return watchlist;
+    }
+
+    public void setWatchlist(List<GraphPhone> watchlist) {
+        this.watchlist = watchlist;
+    }
+
+    public void addToWatchlist(GraphPhone phone) {
+        this.watchlist.add(phone);
+    }
+
+    public void removeFromWatchlist(String id) {
+        if (!this.watchlist.isEmpty()) {
+            watchlist.removeIf(phone -> phone.getId().equals(id));
+        }
+    }
+
+    public List<GraphUser> getFollowedUsers() {
+        return followedUsers;
+    }
+
+    public void setFollowedUsers(List<GraphUser> followedUsers) {
+        this.followedUsers = followedUsers;
+    }
+
+    public void addFollowedUser(GraphUser user) {
+        this.followedUsers.add(user);
+    }
+
+    public void removeFollow(String id) {
+        if (!this.followedUsers.isEmpty()) {
+            followedUsers.removeIf(user -> user.getId().equals(id));
+        }
+    }
+
     @Override
     public String toString() {
         return "GraphUser{" +
                 "id='" + id + '\'' +
                 ", username='" + username + '\'' +
+                ", watchlist=" + watchlist +
+                ", followedUsers=" + followedUsers +
                 '}';
     }
 

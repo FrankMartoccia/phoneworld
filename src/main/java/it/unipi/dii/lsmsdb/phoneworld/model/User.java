@@ -159,21 +159,13 @@ public class User extends GenericUser{
 
     public void deletePhone(String id) {
         if (!this.phones.isEmpty()) {
-            for (Phone phone: phones) {
-                if (phone.getId().equals(id)) {
-                    this.phones.remove(phone);
-                }
-            }
+            phones.removeIf(phone -> phone.getId().equals(id));
         }
     }
 
     public void deleteReview(String id) {
         if (!this.reviews.isEmpty()) {
-            for (Review review: reviews) {
-                if (review.getId().equals(id)) {
-                    this.reviews.remove(review);
-                }
-            }
+            reviews.removeIf(review -> review.getId().equals(id));
         }
     }
 

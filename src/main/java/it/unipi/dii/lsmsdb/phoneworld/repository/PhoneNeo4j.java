@@ -14,13 +14,17 @@ public class PhoneNeo4j{
 
     private final GraphNeo4j graphNeo4j;
 
+    public GraphNeo4j getGraphNeo4j() {
+        return graphNeo4j;
+    }
+
     public PhoneNeo4j(GraphNeo4j graphNeo4j) {
         this.graphNeo4j = graphNeo4j;
     }
 
     public void addPhone(String id, String brand, String name, String picture) {
         graphNeo4j.write("MERGE (p:Phone {id: $id, brand: $brand, name: $name, " +
-                        "picture: $picture})",
+                                "picture: $picture})",
                 parameters("id", id, "brand", brand, "name", name,
                         "picture", picture));
     }
@@ -31,11 +35,11 @@ public class PhoneNeo4j{
                 parameters("id", id));
     }
 
-    public void updatePhone(String brand, String name, String picture) {
+    public void updatePhone(String id, String brand, String name, String picture) {
         graphNeo4j.write("MATCH (p:Phone {id: $id}) " +
-                                "SET p.brand = $brand, p.name = $name, p.picture = $picture" +
-                                "RETURN p",
-                parameters("brand", brand, "name", name, "picture", picture));
+                               "SET p.brand = $brand, p.name = $name, p.picture = $picture " +
+                               "RETURN p",
+                parameters("id", id, "brand", brand, "name", name, "picture", picture));
     }
 
     public void deletePhoneById(String id) {

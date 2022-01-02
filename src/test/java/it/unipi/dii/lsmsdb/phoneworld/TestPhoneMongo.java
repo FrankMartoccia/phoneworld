@@ -10,7 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -33,20 +34,29 @@ public class TestPhoneMongo {
     }
 
     private void init() {
-        Date dateOfRelease = new GregorianCalendar(2005, Calendar.FEBRUARY, 11).getTime();
+//        Date dateOfRelease = new GregorianCalendar(2005, Calendar.FEBRUARY, 11).getTime();
+        int dateOfRelease = 2000;
         Phone phone = new Phone("brand", "Nokia Lumia 800", "url", "body", "os",
                 "storage", "display", "resolution", "camera",
                 "video", "ram", "chipset", "batterySize",
                 "batteryType", "specs", dateOfRelease);
 
-        Date dateOfRelease2 = new GregorianCalendar(2000, Calendar.MAY, 11).getTime();
+//        Date dateOfRelease2 = new GregorianCalendar(2000, Calendar.MAY, 11).getTime();
+        int dateOfRelease2 = 2006;
         Phone phone2 = new Phone("brand2", "Apple iPhone 11", "url", "body", "os",
                 "storage", "display", "resolution", "camera",
                 "video", "ram", "chipset", "batterySize",
                 "batteryType", "specs", dateOfRelease2);
 
+        int dateOfRelease3 = 2009;
+        Phone phone3 = new Phone("brand", "Nokia Lumia 800", "url", "body", "os",
+                "storage", "display", "resolution", "camera",
+                "video", "ram", "chipset", "batterySize",
+                "batteryType", "specs", dateOfRelease3);
+
         phoneMongo.addPhone(phone);
         phoneMongo.addPhone(phone2);
+        phoneMongo.addPhone(phone3);
         id = phoneMongo.getPhoneMongo().findAll().get(0).getId();
     }
 
@@ -55,7 +65,7 @@ public class TestPhoneMongo {
         List<Phone> phones = phoneMongo.getPhoneMongo().findAll();
         phones.forEach(System.out::println);
         assertEquals("resolution", phones.get(0).getDisplayResolution());
-        assertEquals(2, phones.size());
+        assertEquals(3, phones.size());
     }
 
     @Test
@@ -68,7 +78,7 @@ public class TestPhoneMongo {
     }
 
     @Test
-    public void testFindReviewById() {
+    public void testFindPhoneById() {
         Optional<Phone> phones = phoneMongo.findPhoneById("11111");
         assertEquals(phones, Optional.empty());
         phones = phoneMongo.findPhoneById(id);
@@ -80,7 +90,8 @@ public class TestPhoneMongo {
 
     @Test
     public void testUpdatePhone() {
-        Date dateOfRelease = new GregorianCalendar(2005, Calendar.FEBRUARY, 11).getTime();
+//        Date dateOfRelease = new GregorianCalendar(2005, Calendar.FEBRUARY, 11).getTime();
+        int dateOfRelease = 2003;
         Phone phone = new Phone("brand3", "Nokia Lumia 753", "url3", "body3", "os",
                 "storage3", "display", "resolution", "camera",
                 "video", "ram", "chipset", "batterySize",
@@ -90,7 +101,7 @@ public class TestPhoneMongo {
         phoneMongo.updatePhone(id, phone);
         phones = phoneMongo.getPhoneMongo().findAll();
         phones.forEach(System.out::println);
-        assertEquals(2, phones.size());
+        assertEquals(3, phones.size());
         assertEquals("brand3", phoneMongo.getPhoneMongo().findAll().get(0).getBrand());
     }
 
@@ -100,7 +111,7 @@ public class TestPhoneMongo {
         phones.forEach(System.out::println);
         phoneMongo.deletePhoneById(id);
         phones = phoneMongo.getPhoneMongo().findAll();
-        assertEquals(1,phones.size());
+        assertEquals(2,phones.size());
         phones.forEach(System.out::println);
     }
 
@@ -110,8 +121,16 @@ public class TestPhoneMongo {
         phones.forEach(System.out::println);
         phoneMongo.deletePhone(phoneMongo.getPhoneMongo().findAll().get(0));
         phones = phoneMongo.getPhoneMongo().findAll();
-        assertEquals(1,phones.size());
+        assertEquals(2,phones.size());
         phones.forEach(System.out::println);
     }
+
+    @Test
+    public void testFindRecentPhones() {
+        List<Phone> phones = phoneMongo.findRecentPhones();
+        System.out.println(phones);
+        assertEquals((int)Optional.of(2009).get(), phones.get(0).getReleaseYear());
+    }
+
 
 }

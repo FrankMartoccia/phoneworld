@@ -4,7 +4,7 @@ import it.unipi.dii.lsmsdb.phoneworld.model.Admin;
 import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.UserMongo;
-import org.junit.After;
+import org.bson.Document;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,10 +30,10 @@ public class TestUserMongo {
         init();
     }
 
-    @After
-    public void clean() {
-        userMongo.getUserMongo().deleteAll();
-    }
+//    @After
+//    public void clean() {
+//        userMongo.getUserMongo().deleteAll();
+//    }
 
     private void init() {
         Admin admin = new Admin("admin123", "ndas732neaj",
@@ -41,13 +41,18 @@ public class TestUserMongo {
         userMongo.addUser(admin);
 
         Date dateOfBirth = new GregorianCalendar(1965, Calendar.FEBRUARY, 11).getTime();
-        User user = new User("Frank", "kdasd", "dasdksamda",
+        User user1 = new User("Frank", "kdasd", "dasdksamda",
                 false, "male", "Paul", "Murray", "21",
                 "street", "Las Vegas", "Nevada", "dnsak@gmail.com",
                 dateOfBirth, 57);
-        userMongo.addUser(user);
+        User user2 = new User("Mario", "kdasd", "dasdksamda",
+                false, "male", "Paul", "Murray", "21",
+                "street", "Las Vegas", "Italy", "dnsak@gmail.com",
+                dateOfBirth, 23);
+        userMongo.addUser(user1);
         id1 = userMongo.getUserMongo().findAll().get(0).getId();
         id2 = userMongo.getUserMongo().findAll().get(1).getId();
+        userMongo.addUser(user2);
     }
 
     @Test
@@ -56,7 +61,7 @@ public class TestUserMongo {
         users.forEach(System.out::println);
         assertEquals("ndas732neaj", users.get(0).getSalt());
         assertEquals("Nevada", ((User)users.get(1)).getCountry());
-        assertEquals(2, users.size());
+        assertEquals(3, users.size());
     }
 
     @Test
@@ -95,7 +100,7 @@ public class TestUserMongo {
         userMongo.updateUser(id1, newAdmin, true);
         users = userMongo.getUserMongo().findAll();
         users.forEach(System.out::println);
-        assertEquals(2, users.size());
+        assertEquals(3, users.size());
         assertEquals(users.get(0).getUsername(), "admin1234");
         assertEquals(users.get(1).getUsername(), "Franko");
     }
@@ -106,7 +111,7 @@ public class TestUserMongo {
         users.forEach(System.out::println);
         userMongo.deleteUserById(id1);
         users = userMongo.getUserMongo().findAll();
-        assertEquals(1,users.size());
+        assertEquals(2,users.size());
         users.forEach(System.out::println);
     }
 
@@ -116,7 +121,16 @@ public class TestUserMongo {
         users.forEach(System.out::println);
         userMongo.deleteUser(userMongo.getUserMongo().findAll().get(0));
         users = userMongo.getUserMongo().findAll();
-        assertEquals(1,users.size());
+        assertEquals(2,users.size());
         users.forEach(System.out::println);
     }
+
+    @Test
+    public void testFindAvgUserAgeByCountry() {
+        Document users = userMongo.findAvgUserAgeByCountry();
+        List<Document> results = (List<Document>) users.get("results");
+        System.out.println(results);
+        assertEquals(23.0, results.get(0).get("avgAge"));
+    }
+
 }

@@ -21,9 +21,16 @@ public class UserNeo4j {
         this.graphNeo4j = graphNeo4j;
     }
 
-    public void addUser(String id, String username) {
-        graphNeo4j.write("MERGE (u:User {id: $id, username: $username})",
-                parameters( "id", id, "username", username));
+    public boolean addUser(String id, String username) {
+        boolean result = true;
+        try {
+            graphNeo4j.write("MERGE (u:User {id: $id, username: $username})",
+                    parameters( "id", id, "username", username));
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            result = false;
+        }
+        return result;
     }
 
     public List<Record> findUserById(String id) {
@@ -32,14 +39,28 @@ public class UserNeo4j {
                 parameters("id", id));
     }
 
-    public void updateUser(String id, String username) {
-        graphNeo4j.write("MATCH (u:User {id: $id}) SET u.username = $username RETURN u",
-                parameters("id", id, "username", username));
+    public boolean updateUser(String id, String username) {
+        boolean result = true;
+        try {
+            graphNeo4j.write("MATCH (u:User {id: $id}) SET u.username = $username RETURN u",
+                    parameters("id", id, "username", username));
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            result = false;
+        }
+        return result;
     }
 
-    public void deleteUserById(String id) {
-        graphNeo4j.write(("MATCH (u:User {id: $id}) DETACH DELETE u"),
-                parameters( "id", id));
+    public boolean deleteUserById(String id) {
+        boolean result = true;
+        try {
+            graphNeo4j.write(("MATCH (u:User {id: $id}) DETACH DELETE u"),
+                    parameters( "id", id));
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            result = false;
+        }
+        return result;
     }
 
     public void followRelationship(String id1, String id2) {
@@ -64,6 +85,11 @@ public class UserNeo4j {
     public void removeRelationship(String userId, String phoneId) {
         graphNeo4j.write("MATCH (u:User {id: $userId})-[r:ADDS]->(p:Phone {id: $phoneId}) DELETE r",
                 parameters("userId", userId, "phoneId", phoneId));
+    }
+
+    public void findFavouriteBrand() {
+        graphNeo4j.read("",
+                parameters());
     }
 
 }

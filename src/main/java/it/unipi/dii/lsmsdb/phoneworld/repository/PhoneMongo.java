@@ -4,6 +4,8 @@ import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -20,17 +22,22 @@ public class PhoneMongo {
 
     @Autowired
     private IPhoneMongo phoneMongo;
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     public IPhoneMongo getPhoneMongo() {
         return phoneMongo;
     }
 
-    public void addPhone(Phone phone) {
+    public boolean addPhone(Phone phone) {
+        boolean result = true;
         try {
             phoneMongo.save(phone);
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
+            result = false;
         }
+        return result;
     }
 
     public List<Phone> findPhones(String name) {
@@ -57,14 +64,15 @@ public class PhoneMongo {
         return phone;
     }
 
-    public void updatePhone(String id, Phone newPhone) {
+    public boolean updatePhone(String id, Phone newPhone) {
+        boolean result = true;
         try {
             Optional<Phone> phone = phoneMongo.findById(id);
             if (phone.isPresent()) {
                 phone.get().setBrand(newPhone.getBrand());
                 phone.get().setName(newPhone.getName());
                 phone.get().setPicture(newPhone.getPicture());
-                phone.get().setReleaseDate(newPhone.getReleaseDate());
+                phone.get().setReleaseYear(newPhone.getReleaseYear());
                 phone.get().setBody(newPhone.getBody());
                 phone.get().setOs(newPhone.getOs());
                 phone.get().setStorage(newPhone.getStorage());
@@ -82,22 +90,49 @@ public class PhoneMongo {
             }
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
+            result = false;
         }
+        return result;
     }
 
-    public void deletePhoneById(String id) {
+    public boolean deletePhoneById(String id) {
+        boolean result = true;
         try {
             phoneMongo.deleteById(id);
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
+            result = false;
         }
+        return result;
     }
 
-    public void deletePhone(Phone phone) {
+    public boolean deletePhone(Phone phone) {
+        boolean result = true;
         try {
             phoneMongo.delete(phone);
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
+            result = false;
         }
+        return result;
     }
+
+//    public List<Phone> findRecentPhones() {
+//        List<Phone> phones = null;
+//        try {
+//            Query query = new Query();
+//            query.addCriteria(Criteria.where("releaseDate").regex("/Released\\s\\d+/"));
+//            query.with(Sort.by(Sort.Direction.DESC, "releaseDate"));
+//            query.
+//            phones = mongoTemplate.find(query, Phone.class);
+//        } catch (Exception e) {
+//            logger.error("Exception occurred: " + e.getLocalizedMessage());
+//        }
+//        return phones;
+//    }
+
+    public List<Phone> findRecentPhones() {
+        return phoneMongo.findAll(Sort.by(Sort.Direction.DESC, "releaseYear"));
+    }
+
 }

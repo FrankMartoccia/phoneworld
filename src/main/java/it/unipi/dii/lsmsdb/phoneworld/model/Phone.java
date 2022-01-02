@@ -4,7 +4,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Document(collection = "phones")
@@ -27,7 +26,7 @@ public class Phone {
     private String batterySize;
     private String batteryType;
     private String specifications;
-    private Date releaseDate;
+    private int releaseYear;
     private List<Review> reviews = new ArrayList<>();
 
     public Phone() {
@@ -37,11 +36,11 @@ public class Phone {
     public Phone(String brand, String name, String picture, String body, String os, String storage,
                  String displaySize, String displayResolution, String cameraPixels, String videoPixels,
                  String ram, String chipset, String batterySize, String batteryType, String specifications,
-                 Date releaseDate) {
+                 Integer releaseDate) {
         this.brand = brand;
         this.name = name;
         this.picture = picture;
-        this.releaseDate = releaseDate;
+        this.releaseYear = releaseDate;
         this.body = body;
         this.os = os;
         this.storage = storage;
@@ -80,8 +79,8 @@ public class Phone {
         return picture;
     }
 
-    public Date getReleaseDate() {
-        return releaseDate;
+    public int getReleaseYear() {
+        return releaseYear;
     }
 
     public String getBody() {
@@ -196,8 +195,8 @@ public class Phone {
         this.specifications = specifications;
     }
 
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
+    public void setReleaseYear(int releaseYear) {
+        this.releaseYear = releaseYear;
     }
 
     public void setReviews(List<Review> reviews) {
@@ -210,11 +209,7 @@ public class Phone {
 
     public void deleteReview(String id) {
         if (!this.reviews.isEmpty()) {
-            for (Review review: reviews) {
-                if (review.getId().equals(id)) {
-                    this.reviews.remove(review);
-                }
-            }
+            reviews.removeIf(review -> review.getId().equals(id));
         }
     }
 
@@ -225,7 +220,7 @@ public class Phone {
                 ", brand='" + brand + '\'' +
                 ", name='" + name + '\'' +
                 ", picture='" + picture + '\'' +
-                ", releaseDate=" + releaseDate +
+                ", releaseDate=" + releaseYear +
                 ", body='" + body + '\'' +
                 ", os='" + os + '\'' +
                 ", storage='" + storage + '\'' +

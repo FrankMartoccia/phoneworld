@@ -1,11 +1,19 @@
 package it.unipi.dii.lsmsdb.phoneworld;
 
-import javafx.stage.Stage;
 import it.unipi.dii.lsmsdb.phoneworld.model.ModelBean;
+import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.*;
+import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 //@ComponentScan("it.unipi.dii.lsmsdb.*")
 //@EntityScan("it.unipi.dii.lsmsdb.*")
@@ -69,20 +77,30 @@ public class Application extends javafx.application.Application {
         this.phoneNeo4j = new PhoneNeo4j(graphNeo4j);
     }
 
-    /*To test on the real database
+    // To test on the real database
 
         @EventListener(ApplicationReadyEvent.class)
         public void afterTheStart() {
+            Date dateOfBirth = new GregorianCalendar(1965, Calendar.FEBRUARY, 11).getTime();
+            User user1 = new User("Frank", "kdasd", "dasdksamda",
+                        false, "male", "Paul", "Murray", "21",
+                        "street", "Las Vegas", "Nevada", "dnsak@gmail.com",
+                        dateOfBirth, 57);
+                User user2 = new User("Mario", "kdasd", "dasdksamda",
+                        false, "male", "Paul", "Murray", "21",
+                        "street", "Las Vegas", "Italy", "dnsak@gmail.com",
+                        dateOfBirth, 23);
+                userMongo.addUser(user1);
+                userMongo.addUser(user2);
+            }
 
-        }
-    */
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
         Application.getInstance().initApp();
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws IOException {
 
     }
 

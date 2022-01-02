@@ -3,14 +3,23 @@ package it.unipi.dii.lsmsdb.phoneworld.repository;
 import it.unipi.dii.lsmsdb.phoneworld.model.Admin;
 import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
+import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.GroupOperation;
+import org.springframework.data.mongodb.core.aggregation.MatchOperation;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 @Component
 public class UserMongo {
@@ -22,17 +31,22 @@ public class UserMongo {
 
     @Autowired
     private IUserMongo userMongo;
+    @Autowired
+    private MongoOperations mongoOperations;
 
     public IUserMongo getUserMongo() {
         return userMongo;
     }
 
-    public void addUser(GenericUser user) {
+    public boolean addUser(GenericUser user) {
+        boolean result = true;
         try {
             userMongo.save(user);
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
+            result = false;
         }
+        return result;
     }
 
     public List<GenericUser> findUsers(String username, boolean admin) {
@@ -59,7 +73,8 @@ public class UserMongo {
         return user;
     }
 
-    public void updateUser(String id, GenericUser newGenericUser, boolean admin) {
+    public boolean updateUser(String id, GenericUser newGenericUser, boolean admin) {
+        boolean result = true;
         try {
             Optional<GenericUser> genericUser = userMongo.findById(id);
             if (genericUser.isPresent()) {
@@ -92,23 +107,46 @@ public class UserMongo {
             } 
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
+            result = false;
         }
+        return result;
     }
 
-    public void deleteUserById(String id) {
+    public boolean deleteUserById(String id) {
+        boolean result = true;
         try {
             userMongo.deleteById(id);
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
+            result = false;
         }
+        return result;
     }
 
-    public void deleteUser(GenericUser user) {
+    public boolean deleteUser(GenericUser user) {
+        boolean result = true;
         try {
             userMongo.delete(user);
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
+            result = false;
         }
+        return result;
     }
 
+    public Document findAvgUserAgeByCountry() {
+        MatchOperation matchOperation = match(new Criteria("admin").is(false));
+        GroupOperation groupOperation = group("$country").avg("$age").as("avgAge");
+        Aggregation aggregation = newAggregation(matchOperation,groupOperation);
+        AggregationResults<User> result = mongoOperations
+                .aggregate(aggregation, "users", User.class);
+        return result.getRawResults();
+    }
+
+
+
 }
+
+
+
+

@@ -32,15 +32,14 @@ public class Phone {
     public Phone() {
     }
 
-    //Constructor for MongoDB
     public Phone(String brand, String name, String picture, String body, String os, String storage,
                  String displaySize, String displayResolution, String cameraPixels, String videoPixels,
                  String ram, String chipset, String batterySize, String batteryType, String specifications,
-                 Integer releaseDate) {
+                 int releaseYear) {
         this.brand = brand;
         this.name = name;
         this.picture = picture;
-        this.releaseYear = releaseDate;
+        this.releaseYear = releaseYear;
         this.body = body;
         this.os = os;
         this.storage = storage;
@@ -53,14 +52,6 @@ public class Phone {
         this.batterySize = batterySize;
         this.batteryType = batteryType;
         this.specifications = specifications;
-    }
-
-    //Constructor for Neo4J
-    public Phone(String id, String brand, String name, String picture) {
-        this.id = id;
-        this.brand = brand;
-        this.name = name;
-        this.picture = picture;
     }
 
     public String getId() {

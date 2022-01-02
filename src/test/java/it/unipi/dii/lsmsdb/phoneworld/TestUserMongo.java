@@ -5,6 +5,7 @@ import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.UserMongo;
 import org.bson.Document;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,16 +31,14 @@ public class TestUserMongo {
         init();
     }
 
-//    @After
-//    public void clean() {
-//        userMongo.getUserMongo().deleteAll();
-//    }
+    @After
+    public void clean() {
+        userMongo.getUserMongo().deleteAll();
+    }
 
     private void init() {
         Admin admin = new Admin("admin123", "ndas732neaj",
                 "dsaodd", true);
-        userMongo.addUser(admin);
-
         Date dateOfBirth = new GregorianCalendar(1965, Calendar.FEBRUARY, 11).getTime();
         User user1 = new User("Frank", "kdasd", "dasdksamda",
                 false, "male", "Paul", "Murray", "21",
@@ -49,6 +48,7 @@ public class TestUserMongo {
                 false, "male", "Paul", "Murray", "21",
                 "street", "Las Vegas", "Italy", "dnsak@gmail.com",
                 dateOfBirth, 23);
+        userMongo.addUser(admin);
         userMongo.addUser(user1);
         id1 = userMongo.getUserMongo().findAll().get(0).getId();
         id2 = userMongo.getUserMongo().findAll().get(1).getId();
@@ -132,5 +132,7 @@ public class TestUserMongo {
         System.out.println(results);
         assertEquals(23.0, results.get(0).get("avgAge"));
     }
+
+
 
 }

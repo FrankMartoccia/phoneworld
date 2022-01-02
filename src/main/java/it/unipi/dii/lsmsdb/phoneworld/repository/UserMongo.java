@@ -8,10 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.aggregation.GroupOperation;
-import org.springframework.data.mongodb.core.aggregation.MatchOperation;
+import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Component;
 
@@ -137,11 +134,16 @@ public class UserMongo {
     public Document findAvgUserAgeByCountry() {
         MatchOperation matchOperation = match(new Criteria("admin").is(false));
         GroupOperation groupOperation = group("$country").avg("$age").as("avgAge");
-        Aggregation aggregation = newAggregation(matchOperation,groupOperation);
+        ProjectionOperation projectionOperation = project()
+                .andExpression("avgAge").as("avgAge").andExclude("_id")
+                .andExpression("_id").as("country");
+        Aggregation aggregation = newAggregation(matchOperation, groupOperation, projectionOperation);
         AggregationResults<User> result = mongoOperations
                 .aggregate(aggregation, "users", User.class);
         return result.getRawResults();
     }
+
+
 
 
 

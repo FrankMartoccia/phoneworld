@@ -2,6 +2,7 @@ package it.unipi.dii.lsmsdb.phoneworld;
 
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
 import it.unipi.dii.lsmsdb.phoneworld.repository.ReviewMongo;
+import org.bson.Document;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -118,6 +119,15 @@ public class TestReviewMongo {
         reviewMongo.deleteReviewByPhoneId("3");
         reviews = reviewMongo.getReviewMongo().findAll();
         assertEquals(0, reviews.size());
+    }
+
+    @Test
+    public void testFindMostActiveUsers() {
+        Document users = reviewMongo.findMostActiveUsers();
+        List<Document> results = (List<Document>) users.get("results");
+        System.out.println(results);
+//        assertEquals(23.0, results.get(0).get("avgAge"));
+        assertEquals(1,1);
     }
 
 }

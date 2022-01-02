@@ -1,14 +1,22 @@
 package it.unipi.dii.lsmsdb.phoneworld.repository;
 
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
+import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
 
 @Component
 public class ReviewMongo {
@@ -20,6 +28,8 @@ public class ReviewMongo {
 
     @Autowired
     private IReviewMongo reviewMongo;
+    @Autowired
+    private MongoOperations mongoOperations;
 
     public IReviewMongo getReviewMongo() {
         return reviewMongo;
@@ -121,6 +131,18 @@ public class ReviewMongo {
             result = false;
         }
         return result;
+    }
+
+    public Document findMostActiveUsers() {
+        GroupOperation groupOperation = group("$userId").count().
+                as("numReviews");
+//            ProjectionOperation projectionOperation = project()
+//                    .andExpression("avgAge").as("avgAge").andExclude("_id")
+//                    .andExpression("_id").as("country");
+        Aggregation aggregation = newAggregation(groupOperation);
+        AggregationResults<Review> result = mongoOperations
+                .aggregate(aggregation, "reviews", Review.class);
+        return result.getRawResults();
     }
 
 }

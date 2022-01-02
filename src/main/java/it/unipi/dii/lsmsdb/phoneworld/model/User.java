@@ -14,12 +14,6 @@ public class User extends GenericUser{
     public User() {
     }
 
-    //Constructor for Neo4J
-    public User(String username, String id) {
-        super(username);
-    }
-
-    //Constructor for MongoDB
     public User(String username, String salt, String sha, boolean admin, String gender,
                 String firstName, String lastName, String streetNumber, String streetName, String city,
                 String country, String email, Date dateOfBirth, int age) {

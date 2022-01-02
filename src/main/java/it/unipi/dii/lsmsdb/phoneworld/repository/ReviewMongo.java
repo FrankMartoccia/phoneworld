@@ -25,12 +25,15 @@ public class ReviewMongo {
         return reviewMongo;
     }
 
-    public void addReview(Review review) {
+    public boolean addReview(Review review) {
+        boolean result = true;
         try {
             reviewMongo.save(review);
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
+            result = false;
         }
+        return result;
     }
 
     public List<Review> findReviews(String word) {
@@ -57,7 +60,8 @@ public class ReviewMongo {
         return review;
     }
 
-    public void updateReview(String id, Review newReview) {
+    public boolean updateReview(String id, Review newReview) {
+        boolean result = true;
         try {
             Optional<Review> review = reviewMongo.findById(id);
             if (review.isPresent()) {
@@ -70,39 +74,53 @@ public class ReviewMongo {
             }
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
+            result = false;
         }
+        return result;
     }
 
-    public void deleteReviewById(String id) {
+    public boolean deleteReviewById(String id) {
+        boolean result = true;
         try {
             reviewMongo.deleteById(id);
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
+            result = false;
         }
+        return result;
     }
 
-    public void deleteReview(Review review) {
+    public boolean deleteReview(Review review) {
+        boolean result = true;
         try {
             reviewMongo.delete(review);
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
+            result = false;
         }
+        return result;
     }
 
-    public void deleteReviewByUserId(String id) {
+    public boolean deleteReviewByUserId(String id) {
+        boolean result = true;
         try {
             reviewMongo.deleteReviewByUserId(id);
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
+            result = false;
         }
+        return result;
     }
 
-    public void deleteReviewByPhoneId(String id) {
+    public boolean deleteReviewByPhoneId(String id) {
+        boolean result = true;
         try {
             reviewMongo.deleteReviewByPhoneId(id);
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
+            result = false;
         }
+        return result;
     }
 
 }

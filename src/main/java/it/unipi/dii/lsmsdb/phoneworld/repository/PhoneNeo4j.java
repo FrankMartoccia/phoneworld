@@ -22,11 +22,18 @@ public class PhoneNeo4j{
         this.graphNeo4j = graphNeo4j;
     }
 
-    public void addPhone(String id, String brand, String name, String picture) {
-        graphNeo4j.write("MERGE (p:Phone {id: $id, brand: $brand, name: $name, " +
-                                "picture: $picture})",
-                parameters("id", id, "brand", brand, "name", name,
-                        "picture", picture));
+    public boolean addPhone(String id, String brand, String name, String picture) {
+        boolean result = true;
+        try {
+            graphNeo4j.write("MERGE (p:Phone {id: $id, brand: $brand, name: $name, " +
+                            "picture: $picture})",
+                    parameters("id", id, "brand", brand, "name", name,
+                            "picture", picture));
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            result = false;
+        }
+        return result;
     }
 
     public List<Record> findPhoneById(String id) {
@@ -35,16 +42,30 @@ public class PhoneNeo4j{
                 parameters("id", id));
     }
 
-    public void updatePhone(String id, String brand, String name, String picture) {
-        graphNeo4j.write("MATCH (p:Phone {id: $id}) " +
-                               "SET p.brand = $brand, p.name = $name, p.picture = $picture " +
-                               "RETURN p",
-                parameters("id", id, "brand", brand, "name", name, "picture", picture));
+    public boolean updatePhone(String id, String brand, String name, String picture) {
+        boolean result = true;
+        try {
+            graphNeo4j.write("MATCH (p:Phone {id: $id}) " +
+                            "SET p.brand = $brand, p.name = $name, p.picture = $picture " +
+                            "RETURN p",
+                    parameters("id", id, "brand", brand, "name", name, "picture", picture));
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            result = false;
+        }
+        return result;
     }
 
-    public void deletePhoneById(String id) {
-        graphNeo4j.write("MATCH (p:Phone {id: $id}) DETACH DELETE p",
-                parameters("id", id));
+    public boolean deletePhoneById(String id) {
+        boolean result = true;
+        try {
+            graphNeo4j.write("MATCH (p:Phone {id: $id}) DETACH DELETE p",
+                    parameters("id", id));
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            result = false;
+        }
+        return result;
     }
 
 }

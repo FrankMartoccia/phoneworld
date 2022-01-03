@@ -69,6 +69,26 @@ public class ReviewMongo {
         return review;
     }
 
+    public List<Review> findReviewByUserId(String id) {
+        List<Review> reviews = null;
+        try {
+            reviews = reviewMongo.findByUserId(id);
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+        return reviews;
+    }
+
+    public List<Review> findReviewByPhoneId(String id) {
+        List<Review> reviews = null;
+        try {
+            reviews = reviewMongo.findByPhoneId(id);
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+        return reviews;
+    }
+
     public boolean updateReview(String id, Review newReview) {
         boolean result = true;
         try {

@@ -34,10 +34,22 @@ public class TestReviewMongo {
     }
 
     private void init() {
-        Date dateOfReview = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
-        Review review = new Review("1", "3", 5, dateOfReview, "Nice phone",
+        Date dateOfReview1 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
+        Review review1 = new Review("1", "2", 5, dateOfReview1, "Nice phone",
                 "this phone is very nice");
-        reviewMongo.addReview(review);
+        Date dateOfReview2 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
+        Review review2 = new Review("1", "3", 5, dateOfReview2, "Nice phone",
+                "this phone is very nice");
+        Date dateOfReview3 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
+        Review review3 = new Review("2", "3", 5, dateOfReview3, "Nice phone",
+                "this phone is very nice");
+        Date dateOfReview4 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
+        Review review4 = new Review("3", "3", 5, dateOfReview4, "Nice phone",
+                "this phone is very nice");
+        reviewMongo.addReview(review1);
+        reviewMongo.addReview(review2);
+        reviewMongo.addReview(review3);
+        reviewMongo.addReview(review4);
         id = reviewMongo.getReviewMongo().findAll().get(0).getId();
     }
 
@@ -46,7 +58,7 @@ public class TestReviewMongo {
         List<Review> reviews = reviewMongo.getReviewMongo().findAll();
         reviews.forEach(System.out::println);
         assertEquals("Nice phone", reviews.get(0).getTitle());
-        assertEquals(1, reviews.size());
+        assertEquals(4, reviews.size());
     }
 
     @Test
@@ -55,7 +67,7 @@ public class TestReviewMongo {
         assertEquals(0, reviews.size());
         reviews = reviewMongo.findReviews("nice");
         reviews.forEach(System.out::println);
-        assertEquals(1, reviews.size());
+        assertEquals(4, reviews.size());
     }
 
     @Test
@@ -79,7 +91,7 @@ public class TestReviewMongo {
         reviewMongo.updateReview(id, newReview);
         reviews = reviewMongo.getReviewMongo().findAll();
         reviews.forEach(System.out::println);
-        assertEquals(1, reviews.size());
+        assertEquals(4, reviews.size());
         assertEquals(reviews.get(0).getTitle(), "Bad phone");
     }
 
@@ -89,7 +101,7 @@ public class TestReviewMongo {
         reviews.forEach(System.out::println);
         reviewMongo.deleteReviewById(id);
         reviews = reviewMongo.getReviewMongo().findAll();
-        assertEquals(0,reviews.size());
+        assertEquals(3,reviews.size());
         reviews.forEach(System.out::println);
     }
 
@@ -99,7 +111,7 @@ public class TestReviewMongo {
         reviews.forEach(System.out::println);
         reviewMongo.deleteReview(reviewMongo.getReviewMongo().findAll().get(0));
         reviews = reviewMongo.getReviewMongo().findAll();
-        assertEquals(0,reviews.size());
+        assertEquals(3,reviews.size());
         reviews.forEach(System.out::println);
     }
 
@@ -109,7 +121,7 @@ public class TestReviewMongo {
         reviews.forEach(System.out::println);
         reviewMongo.deleteReviewByUserId("1");
         reviews = reviewMongo.getReviewMongo().findAll();
-        assertEquals(0, reviews.size());
+        assertEquals(2, reviews.size());
     }
 
     @Test
@@ -118,7 +130,7 @@ public class TestReviewMongo {
         reviews.forEach(System.out::println);
         reviewMongo.deleteReviewByPhoneId("3");
         reviews = reviewMongo.getReviewMongo().findAll();
-        assertEquals(0, reviews.size());
+        assertEquals(1, reviews.size());
     }
 
     @Test
@@ -126,8 +138,7 @@ public class TestReviewMongo {
         Document users = reviewMongo.findMostActiveUsers();
         List<Document> results = (List<Document>) users.get("results");
         System.out.println(results);
-//        assertEquals(23.0, results.get(0).get("avgAge"));
-        assertEquals(1,1);
+        assertEquals(2, results.get(0).get("Reviews"));
     }
 
 }

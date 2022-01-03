@@ -130,7 +130,16 @@ public class TestUserMongo {
         Document users = userMongo.findAvgUserAgeByCountry();
         List<Document> results = (List<Document>) users.get("results");
         System.out.println(results);
-        assertEquals(23.0, results.get(0).get("avgAge"));
+        assertEquals(23.0, results.get(0).get("Age"));
+    }
+
+    @Test
+    public void testFindTopCountriesByUsers() {
+        Document users = userMongo.findTopCountriesByUsers(1);
+        List<Document> results = (List<Document>) users.get("results");
+        System.out.println(results);
+//        assertEquals(23.0, results.get(0).get("avgAge"));
+        assertEquals(1,1);
     }
 
 

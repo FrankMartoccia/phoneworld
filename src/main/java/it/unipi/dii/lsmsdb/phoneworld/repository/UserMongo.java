@@ -7,6 +7,7 @@ import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -135,15 +136,28 @@ public class UserMongo {
         MatchOperation matchOperation = match(new Criteria("admin").is(false));
         GroupOperation groupOperation = group("$country").avg("$age").as("avgAge");
         ProjectionOperation projectionOperation = project()
-                .andExpression("avgAge").as("avgAge").andExclude("_id")
-                .andExpression("_id").as("country");
+                .andExpression("_id").as("country")
+                .andExpression("avgAge").as("age").andExclude("_id");
         Aggregation aggregation = newAggregation(matchOperation, groupOperation, projectionOperation);
         AggregationResults<User> result = mongoOperations
                 .aggregate(aggregation, "users", User.class);
         return result.getRawResults();
     }
 
-
+    public Document findTopCountriesByUsers(int number) {
+        MatchOperation matchOperation = match(new Criteria("admin").is(false));
+        GroupOperation groupOperation = group("$country").count().as("numUsers");
+        SortOperation sortOperation = sort(Sort.by(Sort.Direction.DESC, "numUsers"));
+        LimitOperation limitOperation = limit(number);
+        ProjectionOperation projectionOperation = project()
+                .andExpression("_id").as("country")
+                .andExpression("numUsers").as("users").andExclude("_id");
+        Aggregation aggregation = newAggregation(matchOperation, groupOperation, sortOperation,
+                limitOperation, projectionOperation);
+        AggregationResults<User> result = mongoOperations
+                .aggregate(aggregation, "users", User.class);
+        return result.getRawResults();
+    }
 
 
 

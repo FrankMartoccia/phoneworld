@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.stereotype.Component;
 
+import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -141,6 +142,18 @@ public class ReviewMongo {
                 .andExpression("numReviews").as("Reviews").andExclude("_id");
         Aggregation aggregation = newAggregation(groupOperation, sortOperation, limitOperation,
                 projectionOperation);
+        AggregationResults<Review> result = mongoOperations
+                .aggregate(aggregation, "reviews", Review.class);
+        return result.getRawResults();
+    }
+
+    public Document findTopPhonesByRating() {
+        GroupOperation groupOperation = group("$phoneId").avg("$rating").as("avgRating");
+        SortOperation sortOperation = sort(Sort.by(Sort.Direction.DESC, "avgRating"));
+        LimitOperation limitOperation = limit(10);
+        ProjectionOperation projectionOperation = project().andExpression("_id").as("phoneId")
+                .andExpression("avgRating").as("rating").andExclude("_id");
+        Aggregation aggregation = newAggregation(groupOperation, sortOperation, limitOperation, projectionOperation);
         AggregationResults<Review> result = mongoOperations
                 .aggregate(aggregation, "reviews", Review.class);
         return result.getRawResults();

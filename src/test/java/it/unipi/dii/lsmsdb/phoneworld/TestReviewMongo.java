@@ -41,7 +41,7 @@ public class TestReviewMongo {
         Review review2 = new Review("1", "3", 5, dateOfReview2, "Nice phone",
                 "this phone is very nice");
         Date dateOfReview3 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
-        Review review3 = new Review("2", "3", 5, dateOfReview3, "Nice phone",
+        Review review3 = new Review("2", "3", 2, dateOfReview3, "Bad phone",
                 "this phone is very nice");
         Date dateOfReview4 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
         Review review4 = new Review("3", "3", 5, dateOfReview4, "Nice phone",
@@ -139,6 +139,14 @@ public class TestReviewMongo {
         List<Document> results = (List<Document>) users.get("results");
         System.out.println(results);
         assertEquals(2, results.get(0).get("Reviews"));
+    }
+
+    @Test
+    public void testfindTopPhonesByRating() {
+        Document phones = reviewMongo.findTopPhonesByRating();
+        List<Document> results = (List<Document>) phones.get("results");
+        System.out.println(results);
+        assertEquals(4.0,results.get(1).get("rating"));
     }
 
 }

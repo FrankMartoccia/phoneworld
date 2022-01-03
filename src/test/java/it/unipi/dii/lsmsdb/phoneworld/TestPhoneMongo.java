@@ -2,6 +2,7 @@ package it.unipi.dii.lsmsdb.phoneworld;
 
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
+import org.bson.Document;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -132,5 +133,12 @@ public class TestPhoneMongo {
         assertEquals((int)Optional.of(2009).get(), phones.get(0).getReleaseYear());
     }
 
+    @Test
+    public void testTopRatedBrands() {
+        Document phones = phoneMongo.findTopRatedBrands();
+        List<Document> results = (List<Document>) phones.get("results");
+        System.out.println(phones);
+        assertEquals(1,1);
+    }
 
 }

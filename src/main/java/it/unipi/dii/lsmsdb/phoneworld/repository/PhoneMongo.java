@@ -1,7 +1,6 @@
 package it.unipi.dii.lsmsdb.phoneworld.repository;
 
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
-import it.unipi.dii.lsmsdb.phoneworld.model.Review;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,14 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.aggregation.*;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Component;
-
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 @Component
 public class PhoneMongo {
@@ -143,12 +141,14 @@ public class PhoneMongo {
 
     public Document findTopRatedBrands() {
         UnwindOperation unwindOperation = unwind("reviews");
-        GroupOperation groupOperation = group("$brand").avg("$reviews.rating").as("avgRating");
+        GroupOperation groupOperation = group("$brand").avg("$reviews.rating")
+                        .as("avgRating");
         SortOperation sortOperation = sort(Sort.by(Sort.Direction.DESC, "avgRating"));
-        LimitOperation limitOperation = limit(5);
-        ProjectionOperation projectionOperation = project().andExpression("_id").as("brand")
-                .andExpression("avgRating").as("rating").andExclude("_id");
-        Aggregation aggregation = newAggregation(groupOperation, sortOperation, limitOperation, projectionOperation);
+        LimitOperation limitOperation = limit(2);
+        ProjectionOperation projectionOperation = project().andExpression("_id").as
+                ("brand").andExpression("avgRating").as("rating").andExclude("_id");
+        Aggregation aggregation = newAggregation(unwindOperation, groupOperation, sortOperation,
+                limitOperation, projectionOperation);
         AggregationResults<Phone> result = mongoOperations
                 .aggregate(aggregation, "phones", Phone.class);
         return result.getRawResults();

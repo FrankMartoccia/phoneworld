@@ -142,11 +142,11 @@ public class TestReviewMongo {
     }
 
     @Test
-    public void testfindTopPhonesByRating() {
+    public void testFindTopPhonesByRating() {
         Document phones = reviewMongo.findTopPhonesByRating();
         List<Document> results = (List<Document>) phones.get("results");
         System.out.println(results);
-        assertEquals(4.0,results.get(1).get("rating"));
+        assertEquals(4.0,results.get(0).get("rating"));
     }
 
 }

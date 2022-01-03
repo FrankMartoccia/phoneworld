@@ -1,6 +1,7 @@
 package it.unipi.dii.lsmsdb.phoneworld;
 
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
+import it.unipi.dii.lsmsdb.phoneworld.model.Review;
 import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
 import org.bson.Document;
 import org.junit.After;
@@ -11,8 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -37,24 +37,40 @@ public class TestPhoneMongo {
     private void init() {
 //        Date dateOfRelease = new GregorianCalendar(2005, Calendar.FEBRUARY, 11).getTime();
         int dateOfRelease = 2000;
-        Phone phone = new Phone("brand", "Nokia Lumia 800", "url", "body", "os",
+        Phone phone = new Phone("Nokia", "Nokia Lumia 800", "url", "body", "os",
                 "storage", "display", "resolution", "camera",
                 "video", "ram", "chipset", "batterySize",
                 "batteryType", "specs", dateOfRelease);
 
 //        Date dateOfRelease2 = new GregorianCalendar(2000, Calendar.MAY, 11).getTime();
         int dateOfRelease2 = 2006;
-        Phone phone2 = new Phone("brand2", "Apple iPhone 11", "url", "body", "os",
+        Phone phone2 = new Phone("Apple", "Apple iPhone 11", "url", "body", "os",
                 "storage", "display", "resolution", "camera",
                 "video", "ram", "chipset", "batterySize",
                 "batteryType", "specs", dateOfRelease2);
 
         int dateOfRelease3 = 2009;
-        Phone phone3 = new Phone("brand", "Nokia Lumia 800", "url", "body", "os",
+        Phone phone3 = new Phone("Samsung", "Samsung Galaxy S21", "url", "body", "os",
                 "storage", "display", "resolution", "camera",
                 "video", "ram", "chipset", "batterySize",
                 "batteryType", "specs", dateOfRelease3);
 
+        Date dateOfReview1 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
+        Review review1 = new Review("1", "2", 4, dateOfReview1, "Nice phone",
+                "this phone is very nice");
+        Date dateOfReview2 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
+        Review review2 = new Review("1", "3", 1, dateOfReview2, "Nice phone",
+                "this phone is very nice");
+        Date dateOfReview3 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
+        Review review3 = new Review("2", "3", 2, dateOfReview3, "Bad phone",
+                "this phone is very nice");
+        Date dateOfReview4 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
+        Review review4 = new Review("3", "3", 5, dateOfReview4, "Nice phone",
+                "this phone is very nice");
+        phone.addReview(review1);
+        phone2.addReview(review2);
+        phone3.addReview(review3);
+        phone3.addReview(review4);
         phoneMongo.addPhone(phone);
         phoneMongo.addPhone(phone2);
         phoneMongo.addPhone(phone3);
@@ -137,8 +153,8 @@ public class TestPhoneMongo {
     public void testTopRatedBrands() {
         Document phones = phoneMongo.findTopRatedBrands();
         List<Document> results = (List<Document>) phones.get("results");
-        System.out.println(phones);
-        assertEquals(1,1);
+        System.out.println(results);
+        assertEquals("Nokia",results.get(0).get("brand"));
     }
 
 }

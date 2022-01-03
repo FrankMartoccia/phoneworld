@@ -41,7 +41,6 @@ public class User extends GenericUser{
     private Date dateOfBirth;
     private int age;
     private List<Review> reviews = new ArrayList<>();
-    private List<Phone> phones = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -91,10 +90,6 @@ public class User extends GenericUser{
         return reviews;
     }
 
-    public List<Phone> getPhones() {
-        return phones;
-    }
-
     public void setGender(String gender) {
         this.gender = gender;
     }
@@ -139,22 +134,8 @@ public class User extends GenericUser{
         this.reviews = reviews;
     }
 
-    public void setPhones(List<Phone> phones) {
-        this.phones = phones;
-    }
-
     public void addReview(Review review) {
         this.reviews.add(review);
-    }
-
-    public void addPhone(Phone phone) {
-        this.phones.add(phone);
-    }
-
-    public void deletePhone(String id) {
-        if (!this.phones.isEmpty()) {
-            phones.removeIf(phone -> phone.getId().equals(id));
-        }
     }
 
     public void deleteReview(String id) {
@@ -182,7 +163,6 @@ public class User extends GenericUser{
                 ", dateOfBirth=" + dateOfBirth +
                 ", age=" + age +
                 ", reviews=" + reviews +
-                ", phones=" + phones +
                 '}';
     }
 }

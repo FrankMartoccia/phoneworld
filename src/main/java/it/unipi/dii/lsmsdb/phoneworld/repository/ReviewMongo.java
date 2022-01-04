@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.aggregation.*;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Component;
 
-import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -67,6 +67,26 @@ public class ReviewMongo {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
         }
         return review;
+    }
+
+    public List<Review> findReviewByUserId(String id) {
+        List<Review> reviews = null;
+        try {
+            reviews = reviewMongo.findByUserId(id);
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+        return reviews;
+    }
+
+    public List<Review> findReviewByPhoneId(String id) {
+        List<Review> reviews = null;
+        try {
+            reviews = reviewMongo.findByPhoneId(id);
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+        return reviews;
     }
 
     public boolean updateReview(String id, Review newReview) {
@@ -132,11 +152,29 @@ public class ReviewMongo {
         return result;
     }
 
-    public Document findMostActiveUsers() {
+    public Document findTopPhonesByRating(int minReviews, int results) {
+        GroupOperation groupOperation = group("$phoneId").avg("$rating")
+                .as("avgRating").count().as("numReviews");
+        MatchOperation matchOperation = match(new Criteria("numReviews").gte(minReviews));
+        SortOperation sortOperation = sort(Sort.by(Sort.Direction.DESC, "avgRating",
+                "numReviews"));
+        LimitOperation limitOperation = limit(results);
+        ProjectionOperation projectionOperation = project()
+                .andExpression("_id").as("phoneId")
+                .andExpression("avgRating").as("rating").andExclude("_id")
+                .andExpression("numReviews").as("reviews");
+        Aggregation aggregation = newAggregation(groupOperation, matchOperation,
+                sortOperation, limitOperation, projectionOperation);
+        AggregationResults<Review> result = mongoOperations
+                .aggregate(aggregation, "reviews", Review.class);
+        return result.getRawResults();
+    }
+
+    public Document findMostActiveUsers(int number) {
         GroupOperation groupOperation = group("$userId").count().
                 as("numReviews");
         SortOperation sortOperation = sort(Sort.by(Sort.Direction.DESC, "numReviews"));
-        LimitOperation limitOperation = limit(5);
+        LimitOperation limitOperation = limit(number);
         ProjectionOperation projectionOperation = project()
                 .andExpression("_id").as("userId")
                 .andExpression("numReviews").as("Reviews").andExclude("_id");
@@ -147,16 +185,6 @@ public class ReviewMongo {
         return result.getRawResults();
     }
 
-    public Document findTopPhonesByRating() {
-        GroupOperation groupOperation = group("$phoneId").avg("$rating").as("avgRating");
-        SortOperation sortOperation = sort(Sort.by(Sort.Direction.DESC, "avgRating"));
-        LimitOperation limitOperation = limit(10);
-        ProjectionOperation projectionOperation = project().andExpression("_id").as("phoneId")
-                .andExpression("avgRating").as("rating").andExclude("_id");
-        Aggregation aggregation = newAggregation(groupOperation, sortOperation, limitOperation, projectionOperation);
-        AggregationResults<Review> result = mongoOperations
-                .aggregate(aggregation, "reviews", Review.class);
-        return result.getRawResults();
-    }
+
 
 }

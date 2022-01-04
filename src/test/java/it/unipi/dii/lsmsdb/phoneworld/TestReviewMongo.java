@@ -135,18 +135,19 @@ public class TestReviewMongo {
 
     @Test
     public void testFindMostActiveUsers() {
-        Document users = reviewMongo.findMostActiveUsers();
+        Document users = reviewMongo.findMostActiveUsers(5);
         List<Document> results = (List<Document>) users.get("results");
         System.out.println(results);
         assertEquals(2, results.get(0).get("Reviews"));
     }
 
     @Test
-    public void testfindTopPhonesByRating() {
-        Document phones = reviewMongo.findTopPhonesByRating();
+    public void testFindTopPhonesByRating() {
+        Document phones = reviewMongo.findTopPhonesByRating(3, 2);
         List<Document> results = (List<Document>) phones.get("results");
         System.out.println(results);
-        assertEquals(4.0,results.get(1).get("rating"));
+        assertEquals(4.0,results.get(0).get("rating"));
+//        assertEquals(0, results.size());
     }
 
 }

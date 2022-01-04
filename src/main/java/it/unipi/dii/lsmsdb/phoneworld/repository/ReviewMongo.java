@@ -152,13 +152,13 @@ public class ReviewMongo {
         return result;
     }
 
-    public Document findTopPhonesByRating() {
+    public Document findTopPhonesByRating(int minReviews, int results) {
         GroupOperation groupOperation = group("$phoneId").avg("$rating")
                 .as("avgRating").count().as("numReviews");
-        MatchOperation matchOperation = match(new Criteria("numReviews").gte(3));
+        MatchOperation matchOperation = match(new Criteria("numReviews").gte(minReviews));
         SortOperation sortOperation = sort(Sort.by(Sort.Direction.DESC, "avgRating",
                 "numReviews"));
-        LimitOperation limitOperation = limit(10);
+        LimitOperation limitOperation = limit(results);
         ProjectionOperation projectionOperation = project()
                 .andExpression("_id").as("phoneId")
                 .andExpression("avgRating").as("rating").andExclude("_id")
@@ -170,11 +170,11 @@ public class ReviewMongo {
         return result.getRawResults();
     }
 
-    public Document findMostActiveUsers() {
+    public Document findMostActiveUsers(int number) {
         GroupOperation groupOperation = group("$userId").count().
                 as("numReviews");
         SortOperation sortOperation = sort(Sort.by(Sort.Direction.DESC, "numReviews"));
-        LimitOperation limitOperation = limit(5);
+        LimitOperation limitOperation = limit(number);
         ProjectionOperation projectionOperation = project()
                 .andExpression("_id").as("userId")
                 .andExpression("numReviews").as("Reviews").andExclude("_id");

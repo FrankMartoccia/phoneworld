@@ -151,10 +151,10 @@ public class TestPhoneMongo {
 
     @Test
     public void testTopRatedBrands() {
-        Document phones = phoneMongo.findTopRatedBrands();
+        Document phones = phoneMongo.findTopRatedBrands(2,3);
         List<Document> results = (List<Document>) phones.get("results");
         System.out.println(results);
-        assertEquals("Nokia",results.get(0).get("brand"));
+        assertEquals("Samsung",results.get(0).get("brand"));
     }
 
 }

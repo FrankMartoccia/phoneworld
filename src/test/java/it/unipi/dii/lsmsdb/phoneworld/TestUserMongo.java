@@ -126,8 +126,8 @@ public class TestUserMongo {
     }
 
     @Test
-    public void testFindAvgUserAgeByCountry() {
-        Document users = userMongo.findAvgUserAgeByCountry();
+    public void testFindYoungerCountriesByUsers() {
+        Document users = userMongo.findYoungerCountriesByUsers(2);
         List<Document> results = (List<Document>) users.get("results");
         System.out.println(results);
         assertEquals(23.0, results.get(0).get("age"));

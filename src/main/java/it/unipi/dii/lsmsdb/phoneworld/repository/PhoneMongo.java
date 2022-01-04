@@ -153,5 +153,4 @@ public class PhoneMongo {
                 .aggregate(aggregation, "phones", Phone.class);
         return result.getRawResults();
     }
-
 }

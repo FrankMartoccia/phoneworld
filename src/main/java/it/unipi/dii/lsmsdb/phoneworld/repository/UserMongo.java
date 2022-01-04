@@ -132,13 +132,16 @@ public class UserMongo {
         return result;
     }
 
-    public Document findAvgUserAgeByCountry() {
+    public Document findYoungerCountriesByUsers(int number) {
         MatchOperation matchOperation = match(new Criteria("admin").is(false));
         GroupOperation groupOperation = group("$country").avg("$age").as("avgAge");
+        SortOperation sortOperation = sort(Sort.by(Sort.Direction.ASC, "avgAge"));
+        LimitOperation limitOperation = limit(number);
         ProjectionOperation projectionOperation = project()
                 .andExpression("_id").as("country")
                 .andExpression("avgAge").as("age").andExclude("_id");
-        Aggregation aggregation = newAggregation(matchOperation, groupOperation, projectionOperation);
+        Aggregation aggregation = newAggregation(matchOperation, groupOperation, sortOperation,
+                limitOperation, projectionOperation);
         AggregationResults<User> result = mongoOperations
                 .aggregate(aggregation, "users", User.class);
         return result.getRawResults();

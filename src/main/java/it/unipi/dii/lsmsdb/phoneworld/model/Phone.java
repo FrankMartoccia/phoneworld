@@ -195,7 +195,7 @@ public class Phone {
     }
 
     public void addReview (Review review) {
-        this.reviews.add(review);
+        this.reviews.add(0, review);
     }
 
     public void deleteReview(String id) {

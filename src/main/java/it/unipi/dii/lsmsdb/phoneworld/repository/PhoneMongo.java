@@ -137,7 +137,13 @@ public class PhoneMongo {
 //    }
 
     public List<Phone> findRecentPhones() {
-        return phoneMongo.findAll(Sort.by(Sort.Direction.DESC, "releaseYear"));
+        List<Phone> phones = new ArrayList<>();
+        try {
+           phones = phoneMongo.findAll(Sort.by(Sort.Direction.DESC, "releaseYear"));
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e);
+        }
+        return phones;
     }
 
     public Document findTopRatedBrands(int minReviews, int results) {

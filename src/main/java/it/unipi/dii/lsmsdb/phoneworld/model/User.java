@@ -15,7 +15,7 @@ public class User extends GenericUser{
     }
 
     public User(String username, String salt, String sha, boolean admin, String gender,
-                String firstName, String lastName, String streetNumber, String streetName, String city,
+                String firstName, String lastName, int streetNumber, String streetName, String city,
                 String country, String email, Date dateOfBirth, int age) {
         super(username, salt, sha, admin);
         this.gender = gender;
@@ -33,7 +33,7 @@ public class User extends GenericUser{
     private String gender;
     private String firstName;
     private String lastName;
-    private String streetNumber;
+    private int streetNumber;
     private String streetName;
     private String city;
     private String country;
@@ -58,7 +58,7 @@ public class User extends GenericUser{
         return lastName;
     }
 
-    public String getStreetNumber() {
+    public int getStreetNumber() {
         return streetNumber;
     }
 
@@ -102,7 +102,7 @@ public class User extends GenericUser{
         this.lastName = lastName;
     }
 
-    public void setStreetNumber(String streetNumber) {
+    public void setStreetNumber(int streetNumber) {
         this.streetNumber = streetNumber;
     }
 

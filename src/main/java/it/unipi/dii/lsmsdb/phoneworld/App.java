@@ -1,31 +1,27 @@
 package it.unipi.dii.lsmsdb.phoneworld;
 
 import it.unipi.dii.lsmsdb.phoneworld.model.ModelBean;
-import it.unipi.dii.lsmsdb.phoneworld.repository.*;
-import it.unipi.dii.lsmsdb.phoneworld.view.ViewUnUser;
-import org.springframework.beans.factory.annotation.Autowired;
+import it.unipi.dii.lsmsdb.phoneworld.repository.GraphNeo4j;
+import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneNeo4j;
+import it.unipi.dii.lsmsdb.phoneworld.repository.UserNeo4j;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
-//@ComponentScan("it.unipi.dii.lsmsdb.*")
-//@EntityScan("it.unipi.dii.lsmsdb.*")
-//@EnableMongoRepositories("it.unipi.dii.lsmsdb.*")
 @SpringBootApplication
-public class App {
-
-    @Autowired
-    private UserMongo userMongo;
-
-    @Autowired
-    private PhoneMongo phoneMongo;
-
-    @Autowired
-    private ReviewMongo reviewMongo;
+public class App extends Application {
 
     private GraphNeo4j graphNeo4j;
     private UserNeo4j userNeo4j;
     private PhoneNeo4j phoneNeo4j;
     private ModelBean modelBean;
-    private ViewUnUser viewUnUser;
+    private ConfigurableApplicationContext springContext;
+    private Parent rootNode;
 
     private static final App singleton = new App();
 
@@ -35,18 +31,6 @@ public class App {
 
     public ModelBean getModelBean() {
         return modelBean;
-    }
-
-    public UserMongo getUserMongo() {
-        return userMongo;
-    }
-
-    public PhoneMongo getPhoneMongo() {
-        return phoneMongo;
-    }
-
-    public ReviewMongo getReviewMongo() {
-        return reviewMongo;
     }
 
     public GraphNeo4j getGraphNeo4j() {
@@ -61,39 +45,57 @@ public class App {
         return phoneNeo4j;
     }
 
-    public ViewUnUser getViewUnUser() {
-        return viewUnUser;
-    }
-
     private void initApp() {
         this.modelBean = new ModelBean();
         this.graphNeo4j = new GraphNeo4j("bolt://localhost:7687",
                 "neo4j", "PhoneWorld");
         this.userNeo4j = new UserNeo4j(graphNeo4j);
         this.phoneNeo4j = new PhoneNeo4j(graphNeo4j);
-        this.viewUnUser = new ViewUnUser();
     }
 
-    // To test on the real database
+    @Override
+    public void init() throws Exception {
+        springContext = SpringApplication.run(App.class);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/viewUnregisteredUser.fxml"));
+        fxmlLoader.setControllerFactory(springContext::getBean);
+        rootNode = fxmlLoader.load();
+    }
 
-   // @EventListener(ApplicationReadyEvent.class)
-   // public void afterTheStart() {
-//        Date dateOfBirth = new GregorianCalendar(1965, Calendar.FEBRUARY, 11).getTime();
-//        User user1 = new User("Frank", "kdasd", "dasdksamda",
-//                        false, "male", "Paul", "Murray", "21",
-//                        "street", "Las Vegas", "Nevada", "dnsak@gmail.com",
-//                        dateOfBirth, 57);
-//        User user2 = new User("Mario", "kdasd", "dasdksamda",
-//                        false, "male", "Paul", "Murray", "21",
-//                        "street", "Las Vegas", "Italy", "dnsak@gmail.com",
-//                        dateOfBirth, 23);
-//        userMongo.addUser(user1);
-//        userMongo.addUser(user2);
-    //}
+    @Override
+    public void start(Stage stage) throws Exception {
+            initApp();
+            stage.setTitle("PhoneWorld");
+            stage.setScene(new Scene(rootNode));
+            stage.show();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        springContext.close();
+    }
+
 
     public static void main(String[] args) {
-        javafx.application.Application.launch(ViewUnUser.class, args);
-        App.getInstance().initApp();
+        Application.launch(args);
     }
 
+
+//    public void showInfoMessage(String title, String message) {
+//        Stage window = new Stage();
+//        window.initModality(Modality.APPLICATION_MODAL);
+//        window.setTitle(title);
+//        window.setMinWidth(300);
+//        window.setMinHeight(150);
+//        window.setOnCloseRequest(e -> window.close());
+//        Label label = new Label();
+//        label.setText(message);
+//        Button closeButton = new Button("Close");
+//        closeButton.setOnAction(e -> window.close());
+//        VBox vBox = new VBox(10);
+//        vBox.getChildren().addAll(label, closeButton);
+//        vBox.setAlignment(Pos.CENTER);
+//        Scene scene = new Scene(vBox);
+//        window.setScene(scene);
+//        window.show();
+//    }
 }

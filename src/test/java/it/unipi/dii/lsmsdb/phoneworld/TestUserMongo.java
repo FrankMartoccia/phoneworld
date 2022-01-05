@@ -41,11 +41,11 @@ public class TestUserMongo {
                 "dsaodd", true);
         Date dateOfBirth = new GregorianCalendar(1965, Calendar.FEBRUARY, 11).getTime();
         User user1 = new User("Frank", "kdasd", "dasdksamda",
-                false, "male", "Paul", "Murray", "21",
+                false, "male", "Paul", "Murray", 21,
                 "street", "Las Vegas", "Nevada", "dnsak@gmail.com",
                 dateOfBirth, 57);
         User user2 = new User("Mario", "kdasd", "dasdksamda",
-                false, "male", "Paul", "Murray", "21",
+                false, "male", "Paul", "Murray", 21,
                 "street", "Las Vegas", "Italy", "dnsak@gmail.com",
                 dateOfBirth, 23);
         userMongo.addUser(admin);
@@ -91,7 +91,7 @@ public class TestUserMongo {
 
         Date dateOfBirth = new GregorianCalendar(1965, Calendar.FEBRUARY, 11).getTime();
         User newUser = new User("Franko", "kdasddd", "dasdksamda",
-                false, "male", "Paul", "Murray", "21",
+                false, "male", "Paul", "Murray", 21,
                 "street", "Las Vegas", "Nevada", "dnsak@gmail.com",
                 dateOfBirth, 57);
         List<GenericUser> users = userMongo.getUserMongo().findAll();

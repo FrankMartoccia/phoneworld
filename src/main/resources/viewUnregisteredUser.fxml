@@ -14,9 +14,9 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.dii.lsmsdb.phoneworld.view.ControllerViewUnUser">
+<ScrollPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.dii.lsmsdb.phoneworld.controller.ControllerViewUnUser">
    <content>
-      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="830.0" prefWidth="1225.0">
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="890.0" prefWidth="1287.0">
          <top>
             <MenuBar BorderPane.alignment="CENTER">
               <menus>
@@ -39,7 +39,7 @@
             </MenuBar>
          </top>
          <left>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="150.0" prefWidth="160.0" BorderPane.alignment="TOP_LEFT">
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="350.0" prefWidth="160.0" BorderPane.alignment="TOP_LEFT">
                <BorderPane.margin>
                   <Insets left="20.0" />
                </BorderPane.margin>
@@ -54,6 +54,11 @@
                         <Insets top="15.0" />
                      </VBox.margin>
                   </Button>
+                  <Label fx:id="labelPhones" alignment="TOP_LEFT" text="LATEST PHONES..." VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets top="160.0" />
+                     </VBox.margin>
+                  </Label>
                </children>
             </VBox>
          </left>
@@ -63,7 +68,7 @@
                   <Insets right="20.0" />
                </BorderPane.margin>
                <children>
-                  <Button fx:id="buttonLogin" mnemonicParsing="false" onAction="#actionLogin" prefHeight="41.0" prefWidth="160.0" text="Button">
+                  <Button fx:id="buttonLogin" mnemonicParsing="false" onAction="#actionLogin" prefHeight="41.0" prefWidth="160.0" text="LOGIN">
                      <VBox.margin>
                         <Insets top="50.0" />
                      </VBox.margin>
@@ -86,12 +91,12 @@
                      <children>
                         <TextField fx:id="textFieldSearch" prefHeight="41.0" prefWidth="291.0" promptText="Search here...">
                            <FlowPane.margin>
-                              <Insets top="10.0" />
+                              <Insets bottom="10.0" top="10.0" />
                            </FlowPane.margin>
                         </TextField>
                         <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#actionSearch" prefHeight="41.0" prefWidth="160.0" text="SEARCH">
                            <FlowPane.margin>
-                              <Insets left="15.0" top="10.0" />
+                              <Insets bottom="10.0" left="15.0" top="10.0" />
                            </FlowPane.margin>
                         </Button>
                      </children>
@@ -100,40 +105,58 @@
                <padding>
                   <Insets top="10.0" />
                </padding>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
             </VBox>
          </center>
          <bottom>
-            <FlowPane prefHeight="495.0" prefWidth="1171.0" BorderPane.alignment="CENTER">
+            <FlowPane prefHeight="556.0" prefWidth="1225.0" BorderPane.alignment="CENTER">
                <children>
-                  <VBox alignment="CENTER" prefHeight="181.0" prefWidth="151.0">
+                  <VBox alignment="CENTER" prefHeight="554.0" prefWidth="102.0">
                      <children>
                         <ImageView fx:id="imagePhone1" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <VBox.margin>
-                              <Insets left="50.0" />
+                              <Insets left="70.0" top="10.0" />
                            </VBox.margin>
                         </ImageView>
                         <Label fx:id="labelPhone1" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
-                              <Insets bottom="5.0" top="5.0" />
+                              <Insets bottom="5.0" left="70.0" top="5.0" />
                            </VBox.margin>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
                         </Label>
-                        <ImageView fx:id="imagePhone7" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true"/>
+                        <ImageView fx:id="imagePhone7" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets left="70.0" />
+                           </VBox.margin></ImageView>
                         <Label fx:id="labelPhone7" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="165.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
-                              <Insets bottom="5.0" top="5.0" />
+                              <Insets bottom="5.0" left="70.0" top="5.0" />
                            </VBox.margin>
                         </Label>
-                        <ImageView fx:id="imagePhone13" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="181.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="labelPhone13" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="331.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
+                        <ImageView fx:id="imagePhone13" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="181.0" pickOnBounds="true" preserveRatio="true">
                            <VBox.margin>
-                              <Insets bottom="5.0" top="5.0" />
+                              <Insets left="70.0" />
+                           </VBox.margin></ImageView>
+                        <Label fx:id="labelPhone13" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="331.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="156.0" text="Label">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="70.0" top="5.0" />
                            </VBox.margin>
                         </Label>
                      </children>
+                     <FlowPane.margin>
+                        <Insets left="20.0" />
+                     </FlowPane.margin>
                   </VBox>
                   <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="181.0" prefWidth="151.0">
                      <children>
-                        <ImageView fx:id="imagePhone2" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="imagePhone2" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin></ImageView>
                         <Label fx:id="labelPhone2" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
@@ -158,7 +181,10 @@
                   </VBox>
                   <VBox alignment="CENTER" layoutX="161.0" layoutY="10.0" prefHeight="181.0" prefWidth="151.0">
                      <children>
-                        <ImageView fx:id="imagePhone3" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="imagePhone3" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin></ImageView>
                         <Label fx:id="labelPhone3" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
@@ -181,9 +207,12 @@
                         <Insets left="50.0" />
                      </FlowPane.margin>
                   </VBox>
-                  <VBox alignment="CENTER" layoutX="312.0" layoutY="10.0" prefHeight="181.0" prefWidth="151.0">
+                  <VBox alignment="CENTER" layoutX="312.0" layoutY="10.0" prefHeight="554.0" prefWidth="151.0">
                      <children>
-                        <ImageView fx:id="imagePhone4" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="imagePhone4" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin></ImageView>
                         <Label fx:id="labelPhone4" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
@@ -208,7 +237,10 @@
                   </VBox>
                   <VBox alignment="CENTER" layoutX="463.0" layoutY="10.0" prefHeight="181.0" prefWidth="151.0">
                      <children>
-                        <ImageView fx:id="imagePhone5" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="imagePhone5" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin></ImageView>
                         <Label fx:id="labelPhone5" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
@@ -233,7 +265,10 @@
                   </VBox>
                   <VBox alignment="CENTER" layoutX="614.0" layoutY="10.0" prefHeight="181.0" prefWidth="151.0">
                      <children>
-                        <ImageView fx:id="imagePhone6" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="imagePhone6" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin></ImageView>
                         <Label fx:id="labelPhone6" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
@@ -257,6 +292,9 @@
                      </FlowPane.margin>
                   </VBox>
                </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
             </FlowPane>
          </bottom>
       </BorderPane>

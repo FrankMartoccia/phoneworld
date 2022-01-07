@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -43,20 +44,6 @@ public class ReviewMongo {
             result = false;
         }
         return result;
-    }
-
-    public List<Review> findReviews(String word) {
-        List<Review> reviews = new ArrayList<>();
-        try {
-            if (word.isEmpty()) {
-                reviews.addAll(reviewMongo.findAll());
-            } else {
-                reviews.addAll(reviewMongo.findByTitleContainingOrBodyContaining(word, word));
-            }
-        } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
-        }
-        return reviews;
     }
 
     public Optional<Review> findReviewById(String id) {
@@ -152,6 +139,40 @@ public class ReviewMongo {
         return result;
     }
 
+//    public List<Review> findByWord(String word) {
+//        List<Review> reviews = new ArrayList<>();
+//        try {
+//            if (word.isEmpty()) {
+//                reviews.addAll(reviewMongo.findAll());
+//            } else {
+//                reviews.addAll(reviewMongo.findByTitleContainingOrBodyContaining(word, word));
+//            }
+//        } catch (Exception e) {
+//            logger.error("Exception occurred: " + e.getLocalizedMessage());
+//        }
+//        return reviews;
+//    }
+
+    public List<Review> findByWord(String word) {
+        List<Review> reviews = new ArrayList<>();
+        try {
+            Query query = new Query();
+            if (word.isEmpty()) {
+                query.with(Sort.by(Sort.Direction.DESC, "dateOfReview"));
+                query.limit(20);
+                reviews = mongoOperations.find(query, Review.class);
+            } else {
+                query.addCriteria(new Criteria(""));
+                query.with(Sort.by(Sort.Direction.DESC, "dateOfReview"));
+                query.limit(20);
+                reviews = mongoOperations.find(query, Review.class);
+            }
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+        return reviews;
+    }
+
     public Document findTopPhonesByRating(int minReviews, int results) {
         GroupOperation groupOperation = group("$phoneId").avg("$rating")
                 .as("avgRating").count().as("numReviews");
@@ -184,7 +205,5 @@ public class ReviewMongo {
                 .aggregate(aggregation, "reviews", Review.class);
         return result.getRawResults();
     }
-
-
 
 }

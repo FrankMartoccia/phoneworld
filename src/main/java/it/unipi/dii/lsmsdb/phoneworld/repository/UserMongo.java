@@ -74,7 +74,7 @@ public class UserMongo {
     public boolean updateUser(String id, GenericUser newGenericUser, boolean admin) {
         boolean result = true;
         try {
-            Optional<GenericUser> genericUser = userMongo.findById(id);
+            Optional<GenericUser> genericUser = Optional.ofNullable(userMongo.findByIdAndAdmin(id, admin));
             if (genericUser.isPresent()) {
                 if (admin) {
                     Admin administrator = (Admin) genericUser.get();

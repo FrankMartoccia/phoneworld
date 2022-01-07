@@ -5,17 +5,13 @@ import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,7 +121,7 @@ public class ControllerViewUnUser implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.buttonPhones.setDisable(true);
         List<Phone>phones = phoneMongo.findRecentPhones();
-        System.out.println(phones.size());
+//        System.out.println(phones.size());
         if (phones.isEmpty()) {
             App.getInstance().showInfoMessage("INFO", "Database is empty!");
             try {

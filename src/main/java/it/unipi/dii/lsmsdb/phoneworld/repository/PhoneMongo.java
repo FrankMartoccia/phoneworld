@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -122,26 +123,15 @@ public class PhoneMongo {
         return result;
     }
 
-//    public List<Phone> findRecentPhones() {
-//        List<Phone> phones = null;
-//        try {
-//            Query query = new Query();
-//            query.addCriteria(Criteria.where("releaseDate").regex("/Released\\s\\d+/"));
-//            query.with(Sort.by(Sort.Direction.DESC, "releaseDate"));
-//            query.
-//            phones = mongoTemplate.find(query, Phone.class);
-//        } catch (Exception e) {
-//            logger.error("Exception occurred: " + e.getLocalizedMessage());
-//        }
-//        return phones;
-//    }
-
     public List<Phone> findRecentPhones() {
-        List<Phone> phones = new ArrayList<>();
+        List<Phone> phones = null;
         try {
-           phones = phoneMongo.findAll(Sort.by(Sort.Direction.DESC, "releaseYear"));
+            Query query = new Query();
+            query.with(Sort.by(Sort.Direction.DESC, "releaseYear"));
+            query.limit(18);
+            phones = mongoOperations.find(query, Phone.class);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e);
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
         }
         return phones;
     }

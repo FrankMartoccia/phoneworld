@@ -27,13 +27,13 @@
                      </image>
                   </ImageView>
                   <Region VBox.vgrow="ALWAYS" />
-                  <TextField fx:id="textFieldUsEm" prefHeight="52.0" prefWidth="195.0">
+                  <TextField fx:id="textFieldUsEm" prefHeight="52.0" prefWidth="195.0" promptText="username or e-mail">
                      <VBox.margin>
                         <Insets bottom="10.0" left="70.0" right="70.0" />
                      </VBox.margin>
                   </TextField>
                   <Region VBox.vgrow="ALWAYS" />
-                  <PasswordField fx:id="textFieldPassword" prefHeight="52.0" prefWidth="195.0">
+                  <PasswordField fx:id="textFieldPassword" prefHeight="52.0" prefWidth="195.0" promptText="password">
                      <VBox.margin>
                         <Insets bottom="10.0" left="70.0" right="70.0" />
                      </VBox.margin>
@@ -41,12 +41,12 @@
                   <Region VBox.vgrow="ALWAYS" />
                   <HBox prefHeight="76.0" prefWidth="540.0">
                      <children>
-                        <Button fx:id="buttonCancel" mnemonicParsing="false" prefHeight="52.0" prefWidth="180.0" text="CANCEL">
+                        <Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="52.0" prefWidth="180.0" text="CANCEL">
                            <HBox.margin>
                               <Insets left="70.0" right="40.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="buttonLogin" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="180.0" text="LOGIN" />
+                        <Button fx:id="buttonLogin" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickLogin" prefHeight="52.0" prefWidth="180.0" text="LOGIN" />
                      </children>
                   </HBox>
                </children>
@@ -55,7 +55,7 @@
       </SplitPane>
    </center>
    <bottom>
-      <Button fx:id="buttonRegister" mnemonicParsing="false" prefHeight="52.0" prefWidth="180.0" text="SIGN IN" BorderPane.alignment="CENTER">
+      <Button fx:id="buttonRegister" mnemonicParsing="false" onAction="#onClickSignIn" prefHeight="52.0" prefWidth="180.0" text="SIGN IN" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="20.0" top="20.0" />
          </BorderPane.margin>

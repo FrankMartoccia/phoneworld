@@ -4,7 +4,6 @@ import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -29,6 +28,7 @@ public class ControllerViewAutorization {
     }
 
     public void actionOnClickLog(ActionEvent actionEvent) {
+        stageManager.switchScene(FxmlView.LOGIN);
     }
 
     public void actionOnClickSignIn(ActionEvent actionEvent) {

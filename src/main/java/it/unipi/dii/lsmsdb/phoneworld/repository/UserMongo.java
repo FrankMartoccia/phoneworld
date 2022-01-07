@@ -61,6 +61,16 @@ public class UserMongo {
         return users;
     }
 
+    public List<GenericUser> findByUsername(String username) {
+        List<GenericUser> users = new ArrayList<>();
+        try {
+            users = userMongo.findByUsername(username);
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+        return users;
+    }
+
     public GenericUser findUserById(String id, boolean admin) {
         GenericUser user = null;
         try {

@@ -11,5 +11,6 @@ public interface IUserMongo extends MongoRepository<GenericUser, String> {
 
     List<GenericUser> findByAdmin(boolean admin);
     List<GenericUser> findByUsernameContainingAndAdmin(String username, boolean admin);
+    List<GenericUser> findByUsername(String username);
     GenericUser findByIdAndAdmin(String id, boolean admin);
 }

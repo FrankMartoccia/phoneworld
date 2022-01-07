@@ -50,9 +50,10 @@ public class PhoneMongo {
         List<Phone> phones = new ArrayList<>();
         try {
             if (name.isEmpty()) {
-                phones.addAll(phoneMongo.findAll());
+                phones.addAll(findRecentPhones());
             } else {
-                phones.addAll(phoneMongo.findByNameRegex(name));
+                phones.addAll(phoneMongo.findByNameRegexOrderByReleaseYearDesc(name,
+                        Sort.by(Sort.Direction.DESC, "releaseYear")));
             }
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());

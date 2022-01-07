@@ -87,7 +87,7 @@ public class ControllerViewUnUser implements Initializable {
 
 
     public void actionClickOnPhones() {
-        labelPhone1.setText("Ciao");
+//        labelPhone1.setText("Ciao");
     }
 
     public void actionSearch() {
@@ -100,6 +100,7 @@ public class ControllerViewUnUser implements Initializable {
         if (phones.isEmpty()) {
             App.getInstance().showInfoMessage("INFO", "There aren't phones with the name searched!");
             this.textFieldSearch.clear();
+            return;
         }
         this.clearList(this.imageViews, this.labels);
         labelPhones.setText("'" + text + "'...");

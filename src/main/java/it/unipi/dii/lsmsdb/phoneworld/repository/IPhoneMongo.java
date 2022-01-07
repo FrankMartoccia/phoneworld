@@ -17,5 +17,4 @@ public interface IPhoneMongo extends MongoRepository<Phone, String> {
     @Query(value = "{'name': {$regex : ?0}}")
     List<Phone> findByNameRegexOrderByReleaseYearDesc(String name, Sort sort);
 
-
 }

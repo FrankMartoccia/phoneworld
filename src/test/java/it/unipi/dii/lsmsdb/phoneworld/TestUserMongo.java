@@ -75,9 +75,9 @@ public class TestUserMongo {
 
     @Test
     public void testFindUserById() {
-        Optional<GenericUser> users = Optional.ofNullable(userMongo.findUserById("11111", false));
+        Optional<GenericUser> users = Optional.ofNullable(userMongo.findUserById("11111",false));
         assertEquals(users, Optional.empty());
-        users = Optional.ofNullable(userMongo.findUserById(id1, true));
+        users = Optional.ofNullable(userMongo.findUserById(id1,false));
         if (users.isPresent()) {
             System.out.println(users.get());
             assertEquals(users.get().getId(), id1);

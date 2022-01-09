@@ -90,7 +90,7 @@ public class UserMongo {
                     Admin administrator = (Admin) genericUser.get();
                     administrator.setUsername(newGenericUser.getUsername());
                     administrator.setAdmin(newGenericUser.isAdmin());
-                    administrator.setSha(newGenericUser.getSha());
+                    administrator.setHashedPassword(newGenericUser.getHashedPassword());
                     administrator.setSalt(newGenericUser.getSalt());
                     this.addUser(administrator);
                 } else {
@@ -98,7 +98,7 @@ public class UserMongo {
                     User newUser = (User)newGenericUser;
                     user.setUsername(newUser.getUsername());
                     user.setAdmin(newUser.isAdmin());
-                    user.setSha(newUser.getSha());
+                    user.setHashedPassword(newUser.getHashedPassword());
                     user.setSalt(newUser.getSalt());
                     user.setAge(newUser.getAge());
                     user.setCity(newUser.getCity());

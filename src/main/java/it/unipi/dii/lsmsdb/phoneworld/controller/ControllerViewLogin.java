@@ -1,6 +1,7 @@
 package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
+import it.unipi.dii.lsmsdb.phoneworld.model.Admin;
 import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.repository.UserMongo;
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Component;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 @Component
@@ -53,11 +54,11 @@ public class ControllerViewLogin {
         String username = textFieldUsEm.getText();
         if (password.isEmpty() && username.isEmpty()) {
             App.getInstance().showInfoMessage("ERROR", "You have to insert your " +
-                    "username or email and your password");
+                    "username and your password");
             return;
         } else if (username.isEmpty()) {
             App.getInstance().showInfoMessage("ERROR", "You have to insert your " +
-                    "username or email");
+                    "username");
             return;
         } else if (password.isEmpty()) {
             App.getInstance().showInfoMessage("ERROR", "You have to insert your " +
@@ -65,22 +66,35 @@ public class ControllerViewLogin {
             return;
         }
         try {
-            String salt = getSalt();
-            String hashedPassword = getHashedPassword(password, salt);
             List<GenericUser> users = userMongo.findByUsername(username);
-            if (users.isEmpty() || !users.get(0).getSha().equals(hashedPassword)) {
+            if (users.isEmpty()) {
+                App.getInstance().showInfoMessage("ERROR", "There aren't users with this username");
+                return;
+            }
+            String salt = users.get(0).getSalt();
+            String hashedPassword = getHashedPassword(password, salt);
+            if (!users.get(0).getHashedPassword().equals(hashedPassword)) {
                 App.getInstance().showInfoMessage("ERROR", "Wrong username or password");
                 return;
             }
             System.out.println("You're in!!");
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            logger.error("Exception occurred: ");
+            e.printStackTrace();
         }
     }
 
     public void onClickSignIn(ActionEvent actionEvent) {
+        try {
+            String salt = getSalt();
+            String password = "admin";
+            String hashedPassword = getHashedPassword(password, salt);
+            Admin admin = new Admin("admin", salt, hashedPassword, true);
+            userMongo.addUser(admin);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
 
     private String getHashedPassword(String passwordToHash, String salt) {
         String generatedPassword = null;
@@ -104,7 +118,7 @@ public class ControllerViewLogin {
         SecureRandom sr = new SecureRandom();
         byte[] salt = new byte[16];
         sr.nextBytes(salt);
-        return Arrays.toString(salt);
+        return Base64.getEncoder().encodeToString(salt);
     }
 
 }

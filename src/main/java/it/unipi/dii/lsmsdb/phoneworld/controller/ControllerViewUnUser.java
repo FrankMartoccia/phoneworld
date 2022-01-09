@@ -87,7 +87,7 @@ public class ControllerViewUnUser implements Initializable {
 
 
     public void actionClickOnPhones() {
-        labelPhone1.setText("Ciao");
+//        labelPhone1.setText("Ciao");
     }
 
     public void actionSearch() {

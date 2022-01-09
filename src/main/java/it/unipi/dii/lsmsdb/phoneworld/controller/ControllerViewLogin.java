@@ -53,11 +53,11 @@ public class ControllerViewLogin {
         String username = textFieldUsEm.getText();
         if (password.isEmpty() && username.isEmpty()) {
             App.getInstance().showInfoMessage("ERROR", "You have to insert your " +
-                    "username or email and your password");
+                    "username and your password");
             return;
         } else if (username.isEmpty()) {
             App.getInstance().showInfoMessage("ERROR", "You have to insert your " +
-                    "username or email");
+                    "username");
             return;
         } else if (password.isEmpty()) {
             App.getInstance().showInfoMessage("ERROR", "You have to insert your " +
@@ -65,13 +65,14 @@ public class ControllerViewLogin {
             return;
         }
         try {
-            String salt = getSalt();
-            String hashedPassword = getHashedPassword(password, salt);
+            String salt = App.getInstance().getSalt();
+            String hashedPassword = App.getInstance().getHashedPassword(password, salt);
             List<GenericUser> users = userMongo.findByUsername(username);
             if (users.isEmpty() || !users.get(0).getSha().equals(hashedPassword)) {
                 App.getInstance().showInfoMessage("ERROR", "Wrong username or password");
                 return;
             }
+//            App.getInstance().getModelBean().putBean();
             System.out.println("You're in!!");
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
@@ -79,32 +80,6 @@ public class ControllerViewLogin {
     }
 
     public void onClickSignIn(ActionEvent actionEvent) {
-    }
-
-
-    private String getHashedPassword(String passwordToHash, String salt) {
-        String generatedPassword = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(salt.getBytes());
-            byte[] bytes = md.digest(passwordToHash.getBytes());
-            StringBuilder sb = new StringBuilder();
-            for (byte aByte : bytes) {
-                sb.append(Integer.toString((aByte & 0xff) + 0x100, 16)
-                        .substring(1));
-            }
-            generatedPassword = sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return generatedPassword;
-    }
-
-    private String getSalt() throws NoSuchAlgorithmException {
-        SecureRandom sr = new SecureRandom();
-        byte[] salt = new byte[16];
-        sr.nextBytes(salt);
-        return Arrays.toString(salt);
     }
 
 }

@@ -44,7 +44,7 @@
                   <Insets left="20.0" />
                </BorderPane.margin>
                <children>
-                  <Button fx:id="buttonPhones" mnemonicParsing="false" onAction="#actionClickOnPhones" prefHeight="41.0" prefWidth="160.0" text="PHONES">
+                  <Button fx:id="buttonPhones" mnemonicParsing="false" prefHeight="41.0" prefWidth="160.0" text="PHONES">
                      <VBox.margin>
                         <Insets top="20.0" />
                      </VBox.margin>

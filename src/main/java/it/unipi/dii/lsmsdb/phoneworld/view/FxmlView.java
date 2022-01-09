@@ -34,6 +34,16 @@ public enum FxmlView {
         public String getFxmlFile() {
             return "/viewLogin.fxml";
         }
+    }, SIGNUP {
+        @Override
+        public String getTitle() {
+            return "SIGN IN";
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/viewSignUp.fxml";
+        }
     };
 
     public abstract String getTitle();

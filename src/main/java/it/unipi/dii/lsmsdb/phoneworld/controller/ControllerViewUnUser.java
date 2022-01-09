@@ -85,11 +85,6 @@ public class ControllerViewUnUser implements Initializable {
         this.stageManager = stageManager;
     }
 
-
-    public void actionClickOnPhones() {
-//        labelPhone1.setText("Ciao");
-    }
-
     public void actionSearch() {
         String text = this.textFieldSearch.getText();
         if (text.isEmpty()) {

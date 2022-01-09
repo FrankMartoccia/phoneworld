@@ -15,10 +15,8 @@ public class ControllerViewAutorization {
 
     @FXML
     public Button buttonAccess;
-    public Button buttonReg;
+    public Button buttonRegistration;
     public Button buttonBack;
-
-
 
     private final StageManager stageManager;
 
@@ -32,6 +30,7 @@ public class ControllerViewAutorization {
     }
 
     public void actionOnClickSignIn(ActionEvent actionEvent) {
+        stageManager.switchScene(FxmlView.SIGNUP);
     }
 
     public void actionOnClickCancel(ActionEvent actionEvent) {

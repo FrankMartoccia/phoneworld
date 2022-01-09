@@ -93,7 +93,7 @@ public class ControllerViewUnUser implements Initializable {
     public void actionSearch() {
         String text = this.textFieldSearch.getText();
         if (text.isEmpty()) {
-            App.getInstance().showInfoMessage("ERROR", "Type a part or full name of a phone!");
+            stageManager.switchScene(FxmlView.UNUSER);
             return;
         }
         List<Phone> phones = phoneMongo.findPhones(text);

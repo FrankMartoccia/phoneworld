@@ -1,6 +1,7 @@
 package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
+import it.unipi.dii.lsmsdb.phoneworld.model.Admin;
 import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.repository.UserMongo;
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Component;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 @Component
@@ -65,21 +66,59 @@ public class ControllerViewLogin {
             return;
         }
         try {
-            String salt = App.getInstance().getSalt();
-            String hashedPassword = App.getInstance().getHashedPassword(password, salt);
             List<GenericUser> users = userMongo.findByUsername(username);
-            if (users.isEmpty() || !users.get(0).getSha().equals(hashedPassword)) {
+            if (users.isEmpty()) {
+                App.getInstance().showInfoMessage("ERROR", "There aren't users with this username");
+                return;
+            }
+            String salt = users.get(0).getSalt();
+            String hashedPassword = getHashedPassword(password, salt);
+            if (!users.get(0).getHashedPassword().equals(hashedPassword)) {
                 App.getInstance().showInfoMessage("ERROR", "Wrong username or password");
                 return;
             }
-//            App.getInstance().getModelBean().putBean();
             System.out.println("You're in!!");
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            logger.error("Exception occurred: ");
+            e.printStackTrace();
         }
     }
 
     public void onClickSignIn(ActionEvent actionEvent) {
+        try {
+            String salt = getSalt();
+            String password = "admin";
+            String hashedPassword = getHashedPassword(password, salt);
+            Admin admin = new Admin("admin", salt, hashedPassword, true);
+            userMongo.addUser(admin);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getHashedPassword(String passwordToHash, String salt) {
+        String generatedPassword = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(salt.getBytes());
+            byte[] bytes = md.digest(passwordToHash.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte aByte : bytes) {
+                sb.append(Integer.toString((aByte & 0xff) + 0x100, 16)
+                        .substring(1));
+            }
+            generatedPassword = sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return generatedPassword;
+    }
+
+    private String getSalt() throws NoSuchAlgorithmException {
+        SecureRandom sr = new SecureRandom();
+        byte[] salt = new byte[16];
+        sr.nextBytes(salt);
+        return Base64.getEncoder().encodeToString(salt);
     }
 
 }

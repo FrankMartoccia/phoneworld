@@ -20,7 +20,7 @@ public class Admin extends GenericUser{
                 "id='" + id + '\'' +
                 ", username='" + username + '\'' +
                 ", salt='" + salt + '\'' +
-                ", sha='" + sha + '\'' +
+                ", sha='" + hashedPassword + '\'' +
                 ", admin=" + admin +
                 '}';
     }

@@ -150,7 +150,7 @@ public class User extends GenericUser{
                 "id='" + id + '\'' +
                 ", username='" + username + '\'' +
                 ", salt='" + salt + '\'' +
-                ", sha='" + sha + '\'' +
+                ", sha='" + hashedPassword + '\'' +
                 ", admin=" + admin +
                 ", gender='" + gender + '\'' +
                 ", firstName='" + firstName + '\'' +

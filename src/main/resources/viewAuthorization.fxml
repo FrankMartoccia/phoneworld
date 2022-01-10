@@ -27,7 +27,7 @@
                </VBox.margin>
             </Button>
             <Region VBox.vgrow="ALWAYS" />
-            <Button fx:id="buttonRegistration" layoutX="10.0" layoutY="160.0" mnemonicParsing="false" onAction="#actionOnClickSignIn" prefHeight="52.0" prefWidth="195.0" text="SIGN IN">
+            <Button fx:id="buttonRegistration" layoutX="10.0" layoutY="160.0" mnemonicParsing="false" onAction="#actionOnClickSignUp" prefHeight="52.0" prefWidth="195.0" text="SIGN UP">
                <VBox.margin>
                   <Insets bottom="50.0" left="175.0" right="50.0" />
                </VBox.margin>

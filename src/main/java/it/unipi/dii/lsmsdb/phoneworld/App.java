@@ -28,10 +28,11 @@ import java.util.Arrays;
 @SpringBootApplication
 public class App extends Application {
 
-    private GraphNeo4j graphNeo4j;
-    private UserNeo4j userNeo4j;
-    private PhoneNeo4j phoneNeo4j;
-    private ModelBean modelBean;
+    private GraphNeo4j graphNeo4j = new GraphNeo4j("bolt://localhost:7687",
+                                                               "neo4j", "PhoneWorld");
+    private UserNeo4j userNeo4j = new UserNeo4j(graphNeo4j);
+    private PhoneNeo4j phoneNeo4j = new PhoneNeo4j(graphNeo4j);
+    private ModelBean modelBean = new ModelBean();
     protected ConfigurableApplicationContext springContext;
     protected StageManager stageManager;
 
@@ -57,14 +58,6 @@ public class App extends Application {
         return phoneNeo4j;
     }
 
-    private void initApp() {
-        this.modelBean = new ModelBean();
-        this.graphNeo4j = new GraphNeo4j("bolt://localhost:7687",
-                "neo4j", "PhoneWorld");
-        this.userNeo4j = new UserNeo4j(graphNeo4j);
-        this.phoneNeo4j = new PhoneNeo4j(graphNeo4j);
-    }
-
     @Override
     public void init() throws Exception {
         springContext = bootStrapSpringApp();
@@ -72,7 +65,6 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-            initApp();
             stageManager = springContext.getBean(StageManager.class, stage);
             displayInitStage();
 

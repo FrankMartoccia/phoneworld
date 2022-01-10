@@ -1,10 +1,12 @@
 package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
-import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
-import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
-import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
+import it.unipi.dii.lsmsdb.phoneworld.Constants;
+import it.unipi.dii.lsmsdb.phoneworld.model.User;
+import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneNeo4j;
+import it.unipi.dii.lsmsdb.phoneworld.repository.UserNeo4j;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -12,8 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.neo4j.driver.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -24,12 +25,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 @Component
-public class ControllerViewUnUser implements Initializable {
-
-    @Autowired
-    private PhoneMongo phoneMongo;
-
-    private final static Logger logger = LoggerFactory.getLogger(PhoneMongo.class);
+public class ControllerViewRegisteredUser implements Initializable {
 
     @FXML
     public Button buttonPhones;
@@ -54,7 +50,6 @@ public class ControllerViewUnUser implements Initializable {
     public Label labelPhone16;
     public Label labelPhone17;
     public Label labelPhone18;
-    public Label labelPhones;
     public ImageView imagePhone1;
     public ImageView imagePhone2;
     public ImageView imagePhone3;
@@ -75,91 +70,77 @@ public class ControllerViewUnUser implements Initializable {
     public ImageView imagePhone18;
     public TextField textFieldSearch;
 
-    private final StageManager stageManager;
-
     private List<ImageView> imageViews = new ArrayList<>();
     private List<Label> labels = new ArrayList<>();
 
+    private final StageManager stageManager;
+
+
     @Autowired @Lazy
-    public ControllerViewUnUser(StageManager stageManager) {
+    public ControllerViewRegisteredUser(StageManager stageManager) {
         this.stageManager = stageManager;
-    }
-
-    public void actionSearch() {
-        String text = this.textFieldSearch.getText();
-        if (text.isEmpty()) {
-            stageManager.switchScene(FxmlView.UNUSER);
-            return;
-        }
-        List<Phone> phones = phoneMongo.findPhones(text);
-        if (phones.isEmpty()) {
-            App.getInstance().showInfoMessage("INFO", "There aren't phones with the name searched!");
-            this.textFieldSearch.clear();
-            return;
-        }
-        this.clearList(this.imageViews, this.labels);
-        labelPhones.setText("'" + text + "'...");
-        this.setListPhones(this.imageViews, this.labels, phones);
-        this.textFieldSearch.clear();
-    }
-
-    public void actionClickOnUsers() {
-        stageManager.switchScene(FxmlView.AUTORIZATION);
-    }
-
-
-    public void actionLogin() {
-        stageManager.switchScene(FxmlView.LOGIN);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        App.getInstance().getUserNeo4j().addUser("61dc0d13e321a81c2770b6f3", "Paolo");
-        App.getInstance().getUserNeo4j().addUser("61dc0d40f2c39e75656068bd", "Paolino");
-        App.getInstance().getUserNeo4j().addUser("61dc0d5e6776357ac980be03", "Paoletto");
-        App.getInstance().getPhoneNeo4j().addPhone("phoneid1", "Xiaomi", "Mi 11", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");
-        App.getInstance().getPhoneNeo4j().addPhone("phoneid2", "Xiaomi", "Mi 12", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");
-        App.getInstance().getPhoneNeo4j().addPhone("phoneid3", "Apple", "iPhone XS", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");
-        App.getInstance().getUserNeo4j().addRelationship("61dc0d40f2c39e75656068bd", "phoneid2");
-        App.getInstance().getUserNeo4j().addRelationship("61dc0d5e6776357ac980be03", "phoneid3");
-        App.getInstance().getUserNeo4j().followRelationship("61dc0d13e321a81c2770b6f3", "61dc0d40f2c39e75656068bd");
-        App.getInstance().getUserNeo4j().followRelationship("61dc0d40f2c39e75656068bd", "61dc0d5e6776357ac980be03");
-        App.getInstance().getUserNeo4j().followRelationship("61dc0d13e321a81c2770b6f3", "3");
-        App.getInstance().getUserNeo4j().addRelationship("3", "phoneid2");
-        App.getInstance().getUserNeo4j().addRelationship("3", "phoneid3");
-
-        this.buttonPhones.setDisable(true);
-        List<Phone>phones = phoneMongo.findRecentPhones();
-        if (phones.isEmpty()) {
-            App.getInstance().showInfoMessage("INFO", "Database is empty!");
-            try {
-                App.getInstance().stop();
-            } catch (Exception e) {
-                logger.error("Exception occurred: " + e.getLocalizedMessage());
-            }
-        }
         this.imageViews = this.createImageViewList();
         this.labels = this.createLabelList();
-        this.setListPhones(imageViews,labels, phones);
+        this.clearList(imageViews, labels);
+        this.buttonPhones.setDisable(true);
+        User user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+//        System.out.println(user.getUsername());
+        this.buttonLogin.setText("Hi, " + user.getUsername());
+        List<Record> phonesByFriends = App.getInstance().getPhoneNeo4j().findSuggestedPhonesByFriends(user.getId());
+//        System.out.println(phonesByFriends);
+        List<Record> phonesByBrand = App.getInstance().getPhoneNeo4j().findSuggestedPhonesByBrand(user.getId());
+//        System.out.println(phonesByBrand);
+        if (phonesByFriends.isEmpty() && phonesByBrand.isEmpty()) {
+            App.getInstance().showInfoMessage("INFO", "You don't have recommendations based on your " +
+                    "following and your favourite brand");
+                    return;
+        } else if (phonesByBrand.isEmpty()) {
+            App.getInstance().showInfoMessage("INFO", "You don't have recommendations based on your favourite brand");
+            this.setPhonesByFriends(labels, imageViews, phonesByFriends);
+            return;
+        } else if (phonesByFriends.isEmpty()) {
+            App.getInstance().showInfoMessage("INFO", "You don't have recommendations based on your following");
+            this.setPhonesByBrand(labels, imageViews, phonesByBrand);
+            return;
+        }
+        this.setPhonesByFriends(labels, imageViews, phonesByFriends);
+        this.setPhonesByBrand(labels, imageViews, phonesByBrand);
     }
 
-    private void setListPhones(List<ImageView> imageViews, List<Label> labels, List<Phone> phones) {
-        int i = 0;
-        for (ImageView imageView: imageViews) {
-            Image image = new Image(phones.get(i).getPicture());
-            imageView.setImage(image);
-            if (i+1 == phones.size()) {
+    private void setPhonesByFriends(List<Label> labels, List<ImageView> imageViews, List<Record> phonesByFriends) {
+        int i;
+        for (i = 0; i < imageViews.size();i++) {
+            Image image = new Image(phonesByFriends.get(i).get("p").get("picture").asString());
+//            System.out.println(phonesByFriends.get(i).get("p").get("picture").asString());
+            imageViews.get(i).setImage(image);
+            if (i+1 == phonesByFriends.size()) {
                 break;
             }
-            i++;
         }
-        i = 0;
-        for (Label label: labels) {
-            label.setText(phones.get(i).getName());
-            if(i+1 == phones.size()) {
+        for (i = 0;i < labels.size();i++) {
+            labels.get(i).setText(phonesByFriends.get(i).get("p").get("name").asString());
+            if(i+1 == phonesByFriends.size()) {
                 break;
             }
-            i++;
+        }
+    }
+
+    private void setPhonesByBrand(List<Label> labels, List<ImageView> imageViews, List<Record> phonesByBrand) {
+        int i;
+        int j = 0;
+        for (i = 9; i < phonesByBrand.size() + 9;i++) {
+            Image image = new Image(phonesByBrand.get(j).get("newPhone").get("picture").asString());
+            imageViews.get(i).setImage(image);
+            j++;
+        }
+        j = 0;
+        for (i = 9;i < phonesByBrand.size() + 9;i++) {
+            labels.get(i).setText(phonesByBrand.get(j).get("newPhone").get("name").asString());
+            j++;
         }
     }
 
@@ -216,5 +197,14 @@ public class ControllerViewUnUser implements Initializable {
         for (Label label: labels) {
             label.setText("");
         }
+    }
+
+    public void actionClickOnUsers(ActionEvent actionEvent) {
+    }
+
+    public void actionLogin(ActionEvent actionEvent) {
+    }
+
+    public void actionSearch(ActionEvent actionEvent) {
     }
 }

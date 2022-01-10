@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class ControllerViewAutorization {
+public class ControllerViewAuthorization {
 
     @FXML
     public Button buttonAccess;
@@ -21,7 +21,7 @@ public class ControllerViewAutorization {
     private final StageManager stageManager;
 
     @Autowired @Lazy
-    public ControllerViewAutorization(StageManager stageManager) {
+    public ControllerViewAuthorization(StageManager stageManager) {
         this.stageManager = stageManager;
     }
 
@@ -29,7 +29,7 @@ public class ControllerViewAutorization {
         stageManager.switchScene(FxmlView.LOGIN);
     }
 
-    public void actionOnClickSignIn(ActionEvent actionEvent) {
+    public void actionOnClickSignUp(ActionEvent actionEvent) {
         stageManager.switchScene(FxmlView.SIGNUP);
     }
 

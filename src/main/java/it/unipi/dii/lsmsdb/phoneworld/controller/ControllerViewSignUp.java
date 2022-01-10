@@ -1,6 +1,7 @@
 package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
+import it.unipi.dii.lsmsdb.phoneworld.Constants;
 import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
@@ -105,10 +106,12 @@ public class ControllerViewSignUp implements Initializable {
             User user = this.createUser(firstName,lastName,gender,country,city,streetName,
                     streetNumber, email,username,password, year, month, day);
             userMongo.addUser(user);
+            App.getInstance().getModelBean().putBean(Constants.CURRENT_USER, user);
+            stageManager.switchScene(FxmlView.USER);
         } catch (Exception e) {
             logger.error("Error in adding new user: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
-
 
     }
 

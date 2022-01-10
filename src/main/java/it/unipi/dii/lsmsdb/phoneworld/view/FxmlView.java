@@ -22,7 +22,7 @@ public enum FxmlView {
 
         @Override
         public String getFxmlFile() {
-            return "/viewAutorization.fxml";
+            return "/viewAuthorization.fxml";
         }
     }, LOGIN {
         @Override
@@ -43,6 +43,16 @@ public enum FxmlView {
         @Override
         public String getFxmlFile() {
             return "/viewSignUp.fxml";
+        }
+    }, USER {
+        @Override
+        public String getTitle() {
+            return "PhoneWorld";
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/viewRegisteredUser.fxml";
         }
     };
 

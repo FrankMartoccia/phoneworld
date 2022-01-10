@@ -55,7 +55,7 @@
       </SplitPane>
    </center>
    <bottom>
-      <Button fx:id="buttonRegister" mnemonicParsing="false" onAction="#onClickSignIn" prefHeight="52.0" prefWidth="180.0" text="SIGN IN" BorderPane.alignment="CENTER">
+      <Button fx:id="buttonRegister" mnemonicParsing="false" onAction="#onClickSignUp" prefHeight="52.0" prefWidth="180.0" text="SIGN UP" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="20.0" top="20.0" />
          </BorderPane.margin>

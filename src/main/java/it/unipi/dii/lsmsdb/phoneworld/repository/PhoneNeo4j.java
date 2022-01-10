@@ -89,7 +89,7 @@ public class PhoneNeo4j{
             return graphNeo4j.read("MATCH (u1:User{id:$id})-[:FOLLOWS]->(u2:User)-[:ADDS]->(p:Phone) " +
                     "WHERE u1.id <> u2.id AND NOT EXISTS ((u1)-[:ADDS]->(p)) " +
                     "RETURN DISTINCT p " +
-                    "LIMIT 10", parameters("id",id));
+                    "LIMIT 9", parameters("id",id));
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
         }
@@ -108,7 +108,7 @@ public class PhoneNeo4j{
                     "WITH rand() AS number, newPhone " +
                     "ORDER BY number " +
                     "RETURN DISTINCT newPhone " +
-                    "LIMIT 10", parameters("id",id));
+                    "LIMIT 9", parameters("id",id));
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
         }

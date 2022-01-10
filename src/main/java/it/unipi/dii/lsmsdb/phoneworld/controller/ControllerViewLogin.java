@@ -1,8 +1,10 @@
 package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
+import it.unipi.dii.lsmsdb.phoneworld.Constants;
 import it.unipi.dii.lsmsdb.phoneworld.model.Admin;
 import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
+import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.repository.UserMongo;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
@@ -38,7 +40,7 @@ public class ControllerViewLogin {
     public Button buttonRegister;
 
     private final StageManager stageManager;
-    private final static Logger logger = LoggerFactory.getLogger(PhoneMongo.class);
+    private final static Logger logger = LoggerFactory.getLogger(ControllerViewLogin.class);
 
     @Autowired @Lazy
     public ControllerViewLogin(StageManager stageManager) {
@@ -67,58 +69,37 @@ public class ControllerViewLogin {
         }
         try {
             List<GenericUser> users = userMongo.findByUsername(username);
+//            System.out.println(users);
             if (users.isEmpty()) {
                 App.getInstance().showInfoMessage("ERROR", "There aren't users with this username");
+                this.clearFields();
                 return;
             }
             String salt = users.get(0).getSalt();
-            String hashedPassword = getHashedPassword(password, salt);
+            String hashedPassword = App.getInstance().getHashedPassword(password, salt);
             if (!users.get(0).getHashedPassword().equals(hashedPassword)) {
                 App.getInstance().showInfoMessage("ERROR", "Wrong username or password");
+                this.clearFields();
                 return;
             }
-            System.out.println("You're in!!");
+//            System.out.println("You're in!!");
+            GenericUser user = new User();
+            user = users.get(0);
+            App.getInstance().getModelBean().putBean(Constants.CURRENT_USER, user);
+            stageManager.switchScene(FxmlView.USER);
         } catch (Exception e) {
             logger.error("Exception occurred: ");
             e.printStackTrace();
         }
     }
 
-    public void onClickSignIn(ActionEvent actionEvent) {
-        try {
-            String salt = getSalt();
-            String password = "admin";
-            String hashedPassword = getHashedPassword(password, salt);
-            Admin admin = new Admin("admin", salt, hashedPassword, true);
-            userMongo.addUser(admin);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void clearFields() {
+        this.textFieldUsEm.clear();
+        this.textFieldPassword.clear();
     }
 
-    private String getHashedPassword(String passwordToHash, String salt) {
-        String generatedPassword = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(salt.getBytes());
-            byte[] bytes = md.digest(passwordToHash.getBytes());
-            StringBuilder sb = new StringBuilder();
-            for (byte aByte : bytes) {
-                sb.append(Integer.toString((aByte & 0xff) + 0x100, 16)
-                        .substring(1));
-            }
-            generatedPassword = sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return generatedPassword;
-    }
-
-    private String getSalt() throws NoSuchAlgorithmException {
-        SecureRandom sr = new SecureRandom();
-        byte[] salt = new byte[16];
-        sr.nextBytes(salt);
-        return Base64.getEncoder().encodeToString(salt);
+    public void onClickSignUp(ActionEvent actionEvent) {
+        stageManager.switchScene(FxmlView.SIGNUP);
     }
 
 }

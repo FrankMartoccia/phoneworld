@@ -151,8 +151,8 @@ public class UserNeo4j {
                     ("MATCH (u1:User{id: $id})-[:FOLLOWS]->(u2:User)-[:FOLLOWS]->(u3:User) " +
                             "WHERE NOT EXISTS ((u1)-[:FOLLOWS]->(u3)) AND u1.id <> u3.id " +
                             "WITH u3, rand() AS number " +
-                            "RETURN u3.id AS id, u3.username AS username " +
                             "ORDER BY number " +
+                            "RETURN u3.id AS id, u3.username AS username " +
                             "LIMIT 9", parameters("id",id));
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());

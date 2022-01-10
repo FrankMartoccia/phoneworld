@@ -91,7 +91,7 @@ public class TestPhoneNeo4j {
         for (Record record : records) {
             results.add(record.get("id").asString());
         }
-        System.out.println(results);
+        System.out.println(records);
         Assertions.assertEquals(0, results.size());
         Assertions.assertTrue(records.isEmpty());
     }
@@ -100,6 +100,7 @@ public class TestPhoneNeo4j {
     public void testSuggestedPhonesByFriends() {
         List<Record> records = phoneNeo4j.findSuggestedPhonesByFriends("userId1");
         String name = String.valueOf(records.get(0).get("p").get("name").asString());
+        System.out.println(records.get(0).get("p"));
         Assertions.assertEquals("Galaxy S20",name);
     }
 

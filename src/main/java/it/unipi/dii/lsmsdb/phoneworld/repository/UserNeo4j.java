@@ -152,7 +152,7 @@ public class UserNeo4j {
                             "WHERE NOT EXISTS ((u1)-[:FOLLOWS]->(u3)) AND u1.id <> u3.id " +
                             "WITH u3, rand() AS number " +
                             "ORDER BY number " +
-                            "RETURN u3.id AS id, u3.username AS username " +
+                            "RETURN DISTINCT u3.id AS id, u3.username AS username " +
                             "LIMIT 9", parameters("id",id));
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());

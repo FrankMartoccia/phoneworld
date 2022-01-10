@@ -5,6 +5,7 @@ import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -134,7 +135,8 @@ public class ControllerViewUnUser implements Initializable {
         if (phones.isEmpty()) {
             App.getInstance().showInfoMessage("INFO", "Database is empty!");
             try {
-                App.getInstance().stop();
+                Platform.exit();
+                System.exit(0);
             } catch (Exception e) {
                 logger.error("Exception occurred: " + e.getLocalizedMessage());
             }

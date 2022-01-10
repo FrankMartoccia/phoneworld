@@ -119,6 +119,18 @@ public class UserNeo4j {
         return result;
     }
 
+    public List<Record> getWatchlist(String id) {
+        List<Record> result = new ArrayList<>();
+        try {
+            return graphNeo4j.read("MATCH (u1:User{id:$id})-[:ADDS]->(p:Phone)" +
+                    "RETURN DISTINCT p " +
+                    "LIMIT 10", parameters("id", id));
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+        return result;
+    }
+
     public List<Record> findMostFollowedUsers() {
         List<Record> result = new ArrayList<>();
         try {
@@ -141,7 +153,7 @@ public class UserNeo4j {
                             "WITH u3, rand() AS number " +
                             "RETURN u3.id AS id, u3.username AS username " +
                             "ORDER BY number " +
-                            "LIMIT 10", parameters("id",id));
+                            "LIMIT 9", parameters("id",id));
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
         }
@@ -159,7 +171,7 @@ public class UserNeo4j {
                     "WHERE u2.id <> u1.id AND NOT EXISTS ((u1)-[:FOLLOWS]->(u2)) " +
                     "RETURN COUNT (p.brand) AS phones, p.brand AS favouriteBrand, u2.id AS id, u2.username AS username " +
                     "ORDER BY phones DESC " +
-                    "LIMIT 10", parameters("id",id));
+                    "LIMIT 9", parameters("id",id));
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
         }

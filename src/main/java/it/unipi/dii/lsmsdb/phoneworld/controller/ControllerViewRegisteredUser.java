@@ -7,6 +7,7 @@ import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.repository.UserMongo;
+import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -349,5 +350,6 @@ public class ControllerViewRegisteredUser implements Initializable {
     }
 
     public void actionProfile(ActionEvent actionEvent) {
+        stageManager.switchScene(FxmlView.PROFILE);
     }
 }

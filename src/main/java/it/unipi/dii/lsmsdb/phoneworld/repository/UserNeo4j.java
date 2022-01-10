@@ -119,6 +119,18 @@ public class UserNeo4j {
         return result;
     }
 
+    public List<Record> getWatchlist(String id) {
+        List<Record> result = new ArrayList<>();
+        try {
+            return graphNeo4j.read("MATCH (u1:User{id:$id})-[:ADDS]->(p:Phone)" +
+                    "RETURN DISTINCT p " +
+                    "LIMIT 10", parameters("id", id));
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+        return result;
+    }
+
     public List<Record> findMostFollowedUsers() {
         List<Record> result = new ArrayList<>();
         try {

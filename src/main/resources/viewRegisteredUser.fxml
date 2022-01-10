@@ -55,12 +55,12 @@
                         <Insets top="15.0" />
                      </VBox.margin>
                   </Button>
-                  <Label alignment="TOP_LEFT" prefHeight="16.0" prefWidth="160.0" text="PHONES LIKED BY" VBox.vgrow="ALWAYS">
+                  <Label fx:id="labelPhones1" alignment="TOP_LEFT" prefHeight="16.0" prefWidth="160.0" text="PHONES LIKED BY" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets top="160.0" />
                      </VBox.margin>
                   </Label>
-                  <Label alignment="TOP_LEFT" layoutX="10.0" layoutY="287.0" prefHeight="16.0" prefWidth="160.0" text="THOSE YOU FOLLOW:" />
+                  <Label fx:id="labelPhones2" alignment="TOP_LEFT" layoutX="10.0" layoutY="287.0" prefHeight="16.0" prefWidth="160.0" text="THOSE YOU FOLLOW:" />
                </children>
             </VBox>
          </left>
@@ -103,12 +103,12 @@
                         </Button>
                      </children>
                   </FlowPane>
-                  <Label alignment="TOP_LEFT" prefHeight="16.0" prefWidth="124.0" text="PHONES OF YOUR">
+                  <Label fx:id="labelPhones3" alignment="TOP_LEFT" prefHeight="16.0" prefWidth="124.0" text="PHONES OF YOUR">
                      <VBox.margin>
                         <Insets left="150.0" top="30.0" />
                      </VBox.margin>
                   </Label>
-                  <Label alignment="TOP_LEFT" layoutX="346.0" layoutY="288.0" prefHeight="16.0" prefWidth="134.0" text="FAVOURITE BRAND:">
+                  <Label fx:id="labelPhones4" alignment="TOP_LEFT" layoutX="346.0" layoutY="288.0" prefHeight="16.0" prefWidth="134.0" text="FAVOURITE BRAND:">
                      <VBox.margin>
                         <Insets left="160.0" />
                      </VBox.margin>
@@ -219,7 +219,7 @@
                         <Insets left="50.0" />
                      </FlowPane.margin>
                   </VBox>
-                  <Separator orientation="VERTICAL" prefHeight="200.0" />
+                  <Separator fx:id="separator" orientation="VERTICAL" prefHeight="200.0" />
                   <VBox alignment="CENTER" layoutX="312.0" layoutY="10.0" prefHeight="554.0" prefWidth="151.0">
                      <children>
                         <ImageView fx:id="imagePhone10" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">

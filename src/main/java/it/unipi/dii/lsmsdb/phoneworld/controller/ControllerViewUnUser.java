@@ -87,20 +87,21 @@ public class ControllerViewUnUser implements Initializable {
 
     public void actionSearch() {
         String text = this.textFieldSearch.getText();
+        List<Phone> phones = new ArrayList<>();
         if (text.isEmpty()) {
-            stageManager.switchScene(FxmlView.UNUSER);
+            phones = phoneMongo.findRecentPhones();
+            labelPhones.setText("LATEST PHONES...");
+            this.setListPhones(this.imageViews, this.labels, phones);
             return;
         }
-        List<Phone> phones = phoneMongo.findPhones(text);
+        phones = phoneMongo.findPhones(text);
         if (phones.isEmpty()) {
             App.getInstance().showInfoMessage("INFO", "There aren't phones with the name searched!");
             this.textFieldSearch.clear();
             return;
         }
-        this.clearList(this.imageViews, this.labels);
         labelPhones.setText("'" + text + "'...");
         this.setListPhones(this.imageViews, this.labels, phones);
-        this.textFieldSearch.clear();
     }
 
     public void actionClickOnUsers() {
@@ -144,6 +145,8 @@ public class ControllerViewUnUser implements Initializable {
     }
 
     private void setListPhones(List<ImageView> imageViews, List<Label> labels, List<Phone> phones) {
+        this.clearList(this.imageViews, this.labels);
+        this.textFieldSearch.clear();
         int i = 0;
         for (ImageView imageView: imageViews) {
             Image image = new Image(phones.get(i).getPicture());

@@ -2,7 +2,9 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
+import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
+import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneNeo4j;
 import it.unipi.dii.lsmsdb.phoneworld.repository.UserNeo4j;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
@@ -11,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -50,6 +53,10 @@ public class ControllerViewRegisteredUser implements Initializable {
     public Label labelPhone16;
     public Label labelPhone17;
     public Label labelPhone18;
+    public Label labelPhones1;
+    public Label labelPhones2;
+    public Label labelPhones3;
+    public Label labelPhones4;
     public ImageView imagePhone1;
     public ImageView imagePhone2;
     public ImageView imagePhone3;
@@ -69,11 +76,15 @@ public class ControllerViewRegisteredUser implements Initializable {
     public ImageView imagePhone17;
     public ImageView imagePhone18;
     public TextField textFieldSearch;
+    public Separator separator;
 
     private List<ImageView> imageViews = new ArrayList<>();
     private List<Label> labels = new ArrayList<>();
 
     private final StageManager stageManager;
+
+    @Autowired
+    private PhoneMongo phoneMongo;
 
 
     @Autowired @Lazy
@@ -83,21 +94,26 @@ public class ControllerViewRegisteredUser implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.initView();
+    }
+
+    private void initView() {
+        this.labelPhones1.setText("PHONES LIKED BY");
+        this.labelPhones2.setText("THOSE YOU FOLLOW:");
+        this.labelPhones3.setText("PHONES OF YOUR");
+        this.labelPhones4.setText("FAVOURITE BRAND:");
         this.imageViews = this.createImageViewList();
         this.labels = this.createLabelList();
         this.clearList(imageViews, labels);
         this.buttonPhones.setDisable(true);
         User user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
-//        System.out.println(user.getUsername());
         this.buttonLogin.setText("Hi, " + user.getUsername());
         List<Record> phonesByFriends = App.getInstance().getPhoneNeo4j().findSuggestedPhonesByFriends(user.getId());
-//        System.out.println(phonesByFriends);
         List<Record> phonesByBrand = App.getInstance().getPhoneNeo4j().findSuggestedPhonesByBrand(user.getId());
-//        System.out.println(phonesByBrand);
         if (phonesByFriends.isEmpty() && phonesByBrand.isEmpty()) {
             App.getInstance().showInfoMessage("INFO", "You don't have recommendations based on your " +
                     "following and your favourite brand");
-                    return;
+            return;
         } else if (phonesByBrand.isEmpty()) {
             App.getInstance().showInfoMessage("INFO", "You don't have recommendations based on your favourite brand");
             this.setPhonesByFriends(labels, imageViews, phonesByFriends);
@@ -206,5 +222,48 @@ public class ControllerViewRegisteredUser implements Initializable {
     }
 
     public void actionSearch(ActionEvent actionEvent) {
+        this.separator.setVisible(false);
+        this.labelPhones1.setText("");
+        this.labelPhones2.setText("");
+        this.labelPhones3.setText("");
+        this.labelPhones4.setText("");
+            String text = this.textFieldSearch.getText();
+            List<Phone> phones = new ArrayList<>();
+            if (text.isEmpty()) {
+                phones = phoneMongo.findRecentPhones();
+                labelPhones2.setText("LATEST PHONES...");
+                this.setListPhones(this.imageViews, this.labels, phones);
+                return;
+            }
+            phones = phoneMongo.findPhones(text);
+            if (phones.isEmpty()) {
+                App.getInstance().showInfoMessage("INFO", "There aren't phones with the name searched!");
+                this.textFieldSearch.clear();
+                return;
+            }
+            labelPhones2.setText("'" + text + "'...");
+            this.setListPhones(this.imageViews, this.labels, phones);
+        }
+
+    private void setListPhones(List<ImageView> imageViews, List<Label> labels, List<Phone> phones) {
+        this.clearList(this.imageViews, this.labels);
+        this.textFieldSearch.clear();
+        int i = 0;
+        for (ImageView imageView: imageViews) {
+            Image image = new Image(phones.get(i).getPicture());
+            imageView.setImage(image);
+            if (i+1 == phones.size()) {
+                break;
+            }
+            i++;
+        }
+        i = 0;
+        for (Label label: labels) {
+            label.setText(phones.get(i).getName());
+            if(i+1 == phones.size()) {
+                break;
+            }
+            i++;
+        }
     }
 }

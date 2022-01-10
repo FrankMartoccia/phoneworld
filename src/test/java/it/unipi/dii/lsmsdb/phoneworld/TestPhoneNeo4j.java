@@ -109,7 +109,7 @@ public class TestPhoneNeo4j {
         List<Record> records = phoneNeo4j.findSuggestedPhonesByBrand("userId1");
         String name = String.valueOf(records.get(0).get("newPhone").get("name").asString());
         System.out.println(name);
-        Assertions.assertEquals(10,records.size());
+        Assertions.assertEquals(9,records.size());
     }
 
     @Test

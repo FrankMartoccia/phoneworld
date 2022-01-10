@@ -50,11 +50,7 @@ public class UserMongo {
     public List<GenericUser> findUsers(String username, boolean admin) {
         List<GenericUser> users = new ArrayList<>();
         try {
-            if (username.isEmpty()) {
-                users.addAll(userMongo.findByAdmin(admin));
-            } else {
-                users.addAll(userMongo.findByUsernameContainingAndAdmin(username, admin));
-            }
+            users.addAll(userMongo.findByUsernameContainingAndAdmin(username, admin));
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
         }

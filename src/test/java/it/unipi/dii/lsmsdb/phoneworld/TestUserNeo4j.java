@@ -153,8 +153,16 @@ public class TestUserNeo4j {
     public void testSuggestedUsersByBrand() {
         List<Record> records = userNeo4j.findSuggestedUsersByBrand("id1");
         System.out.println(records);
-        String username = records.get(0).get("username").asString();
-        Assertions.assertEquals("ticklishwolf110", username);
+        int phones = records.get(0).get("phones").asInt();
+        Assertions.assertEquals(3, phones);
+    }
+
+    @Test
+    public void testGetWatchlist() {
+        List<Record> records = userNeo4j.getWatchlist("id1");
+        System.out.println(records);
+        String name = records.get(0).get("p").get("name").asString();
+        Assertions.assertEquals("Mi 11", name);
     }
 
 }

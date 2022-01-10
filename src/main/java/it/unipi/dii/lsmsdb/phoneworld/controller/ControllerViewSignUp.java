@@ -4,7 +4,6 @@ import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
 import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
-import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.repository.UserMongo;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
@@ -22,10 +21,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.ZoneId;
 import java.util.*;
 
 @Component
@@ -87,16 +84,8 @@ public class ControllerViewSignUp implements Initializable {
         String sbError = this.generateStringBuilderError(firstName,lastName,gender,country,city,streetName,
                 streetNumber, email,username,password,repeatedPassword);
         if (!sbError.isEmpty()) {
-            List<String> errors = List.of(sbError.split(" "));
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0;i < errors.size();i++) {
-                if (i == errors.size()-1) {
-                    stringBuilder.append(errors.get(i));
-                    break;
-                }
-                stringBuilder.append(errors.get(i) + ", ");
-            }
-            App.getInstance().showInfoMessage("ERROR", "You have to insert the following fields: " + stringBuilder);
+            App.getInstance().showInfoMessage("ERROR", "You have to insert the following fields: "
+                    + getErrors(sbError));
             return;
         }
         int year = this.spinnerYear.getValue();
@@ -105,7 +94,11 @@ public class ControllerViewSignUp implements Initializable {
         try {
             User user = this.createUser(firstName,lastName,gender,country,city,streetName,
                     streetNumber, email,username,password, year, month, day);
-            userMongo.addUser(user);
+            if (!insertUser(user)) {
+                App.getInstance().showInfoMessage("ERROR", "Error in adding new user, " +
+                        "please try again");
+                return;
+            }
             App.getInstance().getModelBean().putBean(Constants.CURRENT_USER, user);
             stageManager.switchScene(FxmlView.USER);
         } catch (Exception e) {
@@ -115,9 +108,38 @@ public class ControllerViewSignUp implements Initializable {
 
     }
 
+    private boolean insertUser(User user) {
+        boolean result = true;
+        if (!userMongo.addUser(user)) {
+            logger.error("Error in adding the user to MongoDB");
+            return false;
+        }
+        if (!App.getInstance().getUserNeo4j().addUser(user.getId(), user.getUsername())) {
+            logger.error("Error in adding the user to Neo4j");
+            if (!userMongo.deleteUser(user)) {
+                logger.error("Error in deleting the user from MongoDB");
+            }
+            return false;
+        }
+        return result;
+    }
+
+    private String getErrors(String sbError) {
+        List<String> errors = List.of(sbError.split(" "));
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0;i < errors.size();i++) {
+            if (i == errors.size()-1) {
+                stringBuilder.append(errors.get(i));
+                break;
+            }
+            stringBuilder.append(errors.get(i) + ", ");
+        }
+        return stringBuilder.toString();
+    }
+
     private User createUser(String firstName, String lastName, String gender, String country, String city,
                             String streetName, int streetNumber, String email, String username, String password,
-                            int year, int month, int day) throws NoSuchAlgorithmException {
+                            int year, int month, int day) {
         LocalDate localDate = LocalDate.now();
         LocalDate birthday = LocalDate.of(year,month,day);
         int age = Period.between(birthday,localDate).getYears();

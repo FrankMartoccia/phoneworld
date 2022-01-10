@@ -114,19 +114,19 @@ public class ControllerViewUnUser implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        App.getInstance().getUserNeo4j().addUser("61dc0d13e321a81c2770b6f3", "Paolo");
-        App.getInstance().getUserNeo4j().addUser("61dc0d40f2c39e75656068bd", "Paolino");
-        App.getInstance().getUserNeo4j().addUser("61dc0d5e6776357ac980be03", "Paoletto");
-        App.getInstance().getPhoneNeo4j().addPhone("phoneid1", "Xiaomi", "Mi 11", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");
-        App.getInstance().getPhoneNeo4j().addPhone("phoneid2", "Xiaomi", "Mi 12", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");
-        App.getInstance().getPhoneNeo4j().addPhone("phoneid3", "Apple", "iPhone XS", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");
-        App.getInstance().getUserNeo4j().addRelationship("61dc0d40f2c39e75656068bd", "phoneid2");
-        App.getInstance().getUserNeo4j().addRelationship("61dc0d5e6776357ac980be03", "phoneid3");
-        App.getInstance().getUserNeo4j().followRelationship("61dc0d13e321a81c2770b6f3", "61dc0d40f2c39e75656068bd");
-        App.getInstance().getUserNeo4j().followRelationship("61dc0d40f2c39e75656068bd", "61dc0d5e6776357ac980be03");
-        App.getInstance().getUserNeo4j().followRelationship("61dc0d13e321a81c2770b6f3", "3");
-        App.getInstance().getUserNeo4j().addRelationship("3", "phoneid2");
-        App.getInstance().getUserNeo4j().addRelationship("3", "phoneid3");
+//        App.getInstance().getUserNeo4j().addUser("61dc0d13e321a81c2770b6f3", "Paolo");
+//        App.getInstance().getUserNeo4j().addUser("61dc0d40f2c39e75656068bd", "Paolino");
+//        App.getInstance().getUserNeo4j().addUser("61dc0d5e6776357ac980be03", "Paoletto");
+//        App.getInstance().getPhoneNeo4j().addPhone("phoneid1", "Xiaomi", "Mi 11", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");
+//        App.getInstance().getPhoneNeo4j().addPhone("phoneid2", "Xiaomi", "Mi 12", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");
+//        App.getInstance().getPhoneNeo4j().addPhone("phoneid3", "Apple", "iPhone XS", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");
+//        App.getInstance().getUserNeo4j().addRelationship("61dc0d40f2c39e75656068bd", "phoneid2");
+//        App.getInstance().getUserNeo4j().addRelationship("61dc0d5e6776357ac980be03", "phoneid3");
+//        App.getInstance().getUserNeo4j().followRelationship("61dc0d13e321a81c2770b6f3", "61dc0d40f2c39e75656068bd");
+//        App.getInstance().getUserNeo4j().followRelationship("61dc0d40f2c39e75656068bd", "61dc0d5e6776357ac980be03");
+//        App.getInstance().getUserNeo4j().followRelationship("61dc0d13e321a81c2770b6f3", "3");
+//        App.getInstance().getUserNeo4j().addRelationship("3", "phoneid2");
+//        App.getInstance().getUserNeo4j().addRelationship("3", "phoneid3");
 
         this.buttonPhones.setDisable(true);
         List<Phone>phones = phoneMongo.findRecentPhones();

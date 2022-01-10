@@ -1,18 +1,16 @@
 package it.unipi.dii.lsmsdb.phoneworld;
 
-import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import it.unipi.dii.lsmsdb.phoneworld.model.ModelBean;
 import it.unipi.dii.lsmsdb.phoneworld.repository.GraphNeo4j;
 import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneNeo4j;
 import it.unipi.dii.lsmsdb.phoneworld.repository.UserNeo4j;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
+import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.application.Application;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -23,7 +21,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Arrays;
+import java.util.Base64;
 
 @SpringBootApplication
 public class App extends Application {
@@ -81,7 +79,7 @@ public class App extends Application {
 
     private ConfigurableApplicationContext bootStrapSpringApp() {
         SpringApplicationBuilder builder = new SpringApplicationBuilder(App.class);
-        String[] args = getParameters().getRaw().stream().toArray(String[]::new);
+        String[] args = getParameters().getRaw().toArray(String[]::new);
         return builder.run(args);
     }
 
@@ -131,6 +129,6 @@ public class App extends Application {
         SecureRandom sr = new SecureRandom();
         byte[] salt = new byte[16];
         sr.nextBytes(salt);
-        return Arrays.toString(salt);
+        return Base64.getEncoder().encodeToString(salt);
     }
 }

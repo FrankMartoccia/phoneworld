@@ -67,7 +67,7 @@ public class ControllerViewProfile implements Initializable {
     }
 
     public void onClickDetails() {
-
+        stageManager.switchScene(FxmlView.DETAILS);
     }
     public void onClickCancel() {
         stageManager.switchScene(FxmlView.USER);

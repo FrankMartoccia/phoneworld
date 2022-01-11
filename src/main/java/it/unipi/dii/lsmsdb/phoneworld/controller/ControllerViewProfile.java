@@ -63,7 +63,7 @@ public class ControllerViewProfile implements Initializable {
     }
 
     public void onClickUpdate() {
-
+        stageManager.switchScene(FxmlView.UPDATE);
     }
 
     public void onClickDetails() {

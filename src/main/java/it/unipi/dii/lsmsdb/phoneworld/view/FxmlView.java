@@ -64,6 +64,16 @@ public enum FxmlView {
         public String getFxmlFile() {
             return "/viewProfile.fxml";
         }
+    }, UPDATE {
+        @Override
+        public String getTitle() {
+            return "UPDATE PROFILE";
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/viewUpdate.fxml";
+        }
     };
 
     public abstract String getTitle();

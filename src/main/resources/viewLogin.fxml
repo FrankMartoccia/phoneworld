@@ -46,7 +46,7 @@
                               <Insets left="70.0" right="40.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="buttonLogin" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickLogin" prefHeight="52.0" prefWidth="180.0" text="LOGIN" />
+                        <Button fx:id="buttonLogin" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickLogin" prefHeight="52.0" prefWidth="180.0" text="LOG IN" />
                      </children>
                   </HBox>
                </children>

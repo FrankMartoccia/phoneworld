@@ -11,31 +11,41 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="917.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.dii.lsmsdb.phoneworld.controller.ControllerViewDetails">
    <top>
-      <HBox prefHeight="427.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="376.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="200.0" prefWidth="500.0">
+            <VBox prefHeight="318.0" prefWidth="494.0">
                <children>
-                  <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imageViewPhoto" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                      <VBox.margin>
                         <Insets left="30.0" top="30.0" />
                      </VBox.margin></ImageView>
                   <Label fx:id="labelUsername" prefHeight="30.0" prefWidth="193.0" text="Label">
                      <VBox.margin>
-                        <Insets bottom="10.0" left="30.0" top="10.0" />
+                        <Insets bottom="10.0" left="30.0" top="20.0" />
                      </VBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
                   </Label>
                   <Label fx:id="labelFirstName" layoutX="10.0" layoutY="190.0" maxWidth="193.0" prefHeight="30.0" text="Label">
                      <VBox.margin>
                         <Insets bottom="10.0" left="30.0" />
                      </VBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
                   </Label>
                   <Label fx:id="labelLastName" layoutX="10.0" layoutY="206.0" prefHeight="30.0" prefWidth="193.0" text="Label">
                      <VBox.margin>
                         <Insets left="30.0" />
                      </VBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
                   </Label>
                </children>
             </VBox>
@@ -44,14 +54,14 @@
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
             </Separator>
-            <VBox layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="500.0">
+            <VBox layoutX="10.0" layoutY="10.0" prefHeight="370.0" prefWidth="487.0">
                <children>
-                  <TableView fx:id="tableWatchList" prefHeight="408.0" prefWidth="500.0">
+                  <TableView fx:id="tableWatchList" prefHeight="327.0" prefWidth="454.0">
                      <VBox.margin>
                         <Insets right="30.0" top="30.0" />
                      </VBox.margin>
                      <columns>
-                        <TableColumn prefWidth="456.0" text="YOUR WATCHLIST" />
+                        <TableColumn fx:id="columnWatchList" prefWidth="456.0" text="YOUR WATCHLIST" />
                      </columns>
                   </TableView>
                </children></VBox>
@@ -61,10 +71,13 @@
    <bottom>
       <VBox BorderPane.alignment="CENTER">
          <children>
-            <TableView fx:id="tableReviews" prefHeight="349.0" prefWidth="1000.0">
+            <TableView fx:id="tableReviews" prefHeight="426.0" prefWidth="940.0">
               <columns>
-                <TableColumn prefWidth="999.0" text="YOUR REVIEWS" />
+                <TableColumn fx:id="columnReviews" prefWidth="999.0" text="YOUR REVIEWS" />
               </columns>
+               <VBox.margin>
+                  <Insets left="30.0" right="30.0" />
+               </VBox.margin>
             </TableView>
             <Separator prefWidth="200.0">
                <padding>

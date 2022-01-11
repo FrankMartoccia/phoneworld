@@ -3,7 +3,9 @@ package it.unipi.dii.lsmsdb.phoneworld.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 @Document(collection = "reviews")
 public class Review {
@@ -79,14 +81,15 @@ public class Review {
 
     @Override
     public String toString() {
-        return "Review{" +
-                "id='" + id + '\'' +
-                ", userId='" + userId + '\'' +
-                ", phoneId='" + phoneId + '\'' +
-                ", rating=" + rating +
-                ", dateOfReview=" + dateOfReview +
-                ", title='" + title + '\'' +
-                ", body='" + body + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("Title: ").append(this.title).append("/n");
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(this.dateOfReview);
+        sb.append("Date: ").append(calendar.get(Calendar.YEAR)).append("-").append(calendar.get(Calendar.MONTH)).
+                append("-").append(calendar.get(Calendar.DAY_OF_MONTH)).append("/n");
+        sb.append("Phone: ").append(this.phoneId).append("/n");
+        sb.append("Vote: ").append(this.rating).append("/n");
+        sb.append("Body: ").append(this.body);
+        return sb.toString();
     }
 }

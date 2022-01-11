@@ -27,7 +27,7 @@ public enum FxmlView {
     }, LOGIN {
         @Override
         public String getTitle() {
-            return "LOGIN";
+            return "LOG IN";
         }
 
         @Override

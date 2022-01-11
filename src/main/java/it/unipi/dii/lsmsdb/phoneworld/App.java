@@ -11,6 +11,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -130,5 +132,11 @@ public class App extends Application {
         byte[] salt = new byte[16];
         sr.nextBytes(salt);
         return Base64.getEncoder().encodeToString(salt);
+    }
+
+    public void setProfileImage(ImageView imageView, String gender) {
+        if (gender.equalsIgnoreCase("male")) imageView.setImage(new Image("man.png"));
+        if (gender.equalsIgnoreCase("female")) imageView.setImage(new Image("woman.png"));
+        if (gender.equalsIgnoreCase("not specified")) imageView.setImage(new Image("user.png"));
     }
 }

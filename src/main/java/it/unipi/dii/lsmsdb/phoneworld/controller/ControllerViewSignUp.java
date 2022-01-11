@@ -68,6 +68,9 @@ public class ControllerViewSignUp implements Initializable {
         String city = this.textFieldCity.getText();
         String streetName = this.textFieldStreetName.getText();
         int streetNumber = this.spinnerStreetNumber.getValue();
+        int year = this.spinnerYear.getValue();
+        int month = this.spinnerMonth.getValue();
+        int day = this.spinnerDay.getValue();
         String email = this.textFieldEmail.getText();
         String username = this.textFieldUsername.getText();
         String password = this.textFieldPassword.getText();
@@ -82,15 +85,12 @@ public class ControllerViewSignUp implements Initializable {
             return;
         }
         String sbError = this.generateStringBuilderError(firstName,lastName,gender,country,city,streetName,
-                streetNumber, email,username,password,repeatedPassword);
+                streetNumber, year, month, day, email,username,password,repeatedPassword);
         if (!sbError.isEmpty()) {
             App.getInstance().showInfoMessage("ERROR", "You have to insert the following fields: "
                     + getErrors(sbError));
             return;
         }
-        int year = this.spinnerYear.getValue();
-        int month = this.spinnerMonth.getValue();
-        int day = this.spinnerDay.getValue();
         try {
             User user = this.createUser(firstName,lastName,gender,country,city,streetName,
                     streetNumber, email,username,password, year, month, day);
@@ -151,8 +151,9 @@ public class ControllerViewSignUp implements Initializable {
     }
 
     private String generateStringBuilderError(String firstName, String lastName, String gender, String country,
-                                              String city, String streetName, int streetNumber, String email,
-                                              String username, String password, String repeatedPassword) {
+                                              String city, String streetName, int streetNumber, int year, int month,
+                                              int day, String email, String username, String password,
+                                              String repeatedPassword) {
         StringBuilder sbError = new StringBuilder();
         if (firstName.isEmpty()) sbError.append("First_Name ");
         if (lastName.isEmpty()) sbError.append("Last_Name ");
@@ -161,6 +162,8 @@ public class ControllerViewSignUp implements Initializable {
         if (city.isEmpty()) sbError.append("City ");
         if (streetName.isEmpty()) sbError.append("Street_Name ");
         if (streetNumber == 0) sbError.append("Street_Number ");
+        if (month == 0) sbError.append("Month ");
+        if (day == 0) sbError.append("Day ");
         if (email.isEmpty()) sbError.append("E-mail ");
         if (username.isEmpty()) sbError.append("Username ");
         if (password.isEmpty()) sbError.append("Password ");
@@ -177,14 +180,15 @@ public class ControllerViewSignUp implements Initializable {
     private void initSpinnerValues() {
         int year = Calendar.getInstance().get(Calendar.YEAR);
         SpinnerValueFactory<Integer> valueFactoryYear = new SpinnerValueFactory.IntegerSpinnerValueFactory(1900, year);
-        SpinnerValueFactory<Integer> valueFactoryMonth = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12);
-        SpinnerValueFactory<Integer> valueFactoryDay = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 31);
+        SpinnerValueFactory<Integer> valueFactoryMonth = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 12);
+        SpinnerValueFactory<Integer> valueFactoryDay = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 31);
         SpinnerValueFactory<Integer> valueFactoryStreetNumber = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000000);
 
         this.spinnerYear.setValueFactory(valueFactoryYear);
         this.spinnerMonth.setValueFactory(valueFactoryMonth);
         this.spinnerDay.setValueFactory(valueFactoryDay);
         this.spinnerStreetNumber.setValueFactory(valueFactoryStreetNumber);
+        this.spinnerYear.getValueFactory().setValue(2000);
     }
 
     private void initComboBox() {

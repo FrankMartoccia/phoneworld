@@ -273,10 +273,7 @@ public class ControllerViewRegisteredUser implements Initializable {
         for (i = 0; i < imageViews.size();i++) {
             String id = usersByFollows.get(i).get("id").asString();
             User user = (User)userMongo.findUserById(id, false);
-            String gender =  user.getGender();
-            if (gender.equalsIgnoreCase("male")) imageViews.get(i).setImage(new Image("man.png"));
-            if (gender.equalsIgnoreCase("female")) imageViews.get(i).setImage(new Image("woman.png"));
-            if (gender.equalsIgnoreCase("not specified")) imageViews.get(i).setImage(new Image("user.png"));
+            App.getInstance().setProfileImage(imageViews.get(i), user.getGender());
             if (i+1 == usersByFollows.size()) {
                 break;
             }
@@ -357,5 +354,11 @@ public class ControllerViewRegisteredUser implements Initializable {
 
     public void onClickPhones(ActionEvent actionEvent) {
         this.initViewPhones();
+    }
+
+    public void actionLogOut(ActionEvent actionEvent) {
+        User user = null;
+        App.getInstance().getModelBean().putBean(Constants.CURRENT_USER, user);
+        stageManager.switchScene(FxmlView.UNUSER);
     }
 }

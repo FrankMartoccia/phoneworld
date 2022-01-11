@@ -38,9 +38,9 @@ public class TestUserNeo4j {
                     "neo4j", "PhoneWorld");
             userNeo4j = new UserNeo4j(graphNeo4j);
             phoneNeo4j = new PhoneNeo4j(graphNeo4j);
-            userNeo4j.addUser("id1", "Paolo");
-            userNeo4j.addUser("id2", "Paolino");
-            userNeo4j.addUser("id3", "Paoletto");
+            userNeo4j.addUser("id1", "Paolo", "male");
+            userNeo4j.addUser("id2", "Paolino", "not specified");
+            userNeo4j.addUser("id3", "Paoletto", "male");
             phoneNeo4j.addPhone("phoneid1", "Xiaomi", "Mi 11", "picture");
             phoneNeo4j.addPhone("phoneid2", "Xiaomi", "Mi 12", "picture");
             phoneNeo4j.addPhone("phoneid3", "Apple", "iPhone XS", "picture");
@@ -76,7 +76,7 @@ public class TestUserNeo4j {
 
     @Test
     public void testUpdateUser() {
-        userNeo4j.updateUser("id1", "Paola");
+        userNeo4j.updateUser("id1", "Paola", "female");
         List<Record> records = userNeo4j.findUserById("id1");
         String username = records.get(0).get("username").asString();
         Assertions.assertEquals("Paola", username);
@@ -137,8 +137,8 @@ public class TestUserNeo4j {
     public void testMostFollowedUsers() {
         List<Record> records = userNeo4j.findMostFollowedUsers();
         System.out.println(records);
-        String username = records.get(0).get("username").asString();
-        Assertions.assertEquals("tinygoose301", username);
+//        String username = records.get(0).get("username").asString();
+        Assertions.assertEquals(10, records.size());
     }
 
     @Test
@@ -154,7 +154,7 @@ public class TestUserNeo4j {
         List<Record> records = userNeo4j.findSuggestedUsersByBrand("id1");
         System.out.println(records);
         int phones = records.get(0).get("phones").asInt();
-        Assertions.assertEquals(3, phones);
+        Assertions.assertEquals(4, phones);
     }
 
     @Test

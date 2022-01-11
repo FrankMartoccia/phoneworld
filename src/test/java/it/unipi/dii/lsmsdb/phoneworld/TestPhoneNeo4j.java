@@ -37,8 +37,8 @@ public class TestPhoneNeo4j {
                     "neo4j", "PhoneWorld");
             phoneNeo4j = new PhoneNeo4j(graphNeo4j);
             userNeo4j = new UserNeo4j(graphNeo4j);
-            userNeo4j.addUser("userId1", "username1");
-            userNeo4j.addUser("userId2", "username2");
+            userNeo4j.addUser("userId1", "username1", "male");
+            userNeo4j.addUser("userId2", "username2", "female");
             phoneNeo4j.addPhone("id1", "Nokia", "Nokia Lumia 900",
                     "https://fdn2.gsmarena.com/vv/bigpic/nokia-800-ofic.jpg");
             phoneNeo4j.addPhone("id2", "Samsung", "Galaxy S20",

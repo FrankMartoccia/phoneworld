@@ -36,16 +36,16 @@ public class TestReviewMongo {
     private void init() {
         Date dateOfReview1 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
         Review review1 = new Review("1", "2", 5, dateOfReview1, "Nice phone",
-                "this phone is very nice");
+                "this phone is very nice", "user1", "phone1");
         Date dateOfReview2 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
         Review review2 = new Review("1", "3", 5, dateOfReview2, "Nice phone",
-                "this phone is very nice");
+                "this phone is very nice", "user2", "phone2");
         Date dateOfReview3 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
         Review review3 = new Review("2", "3", 2, dateOfReview3, "Bad phone",
-                "this phone is very nice");
+                "this phone is very nice", "user3", "phone3");
         Date dateOfReview4 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
         Review review4 = new Review("3", "3", 5, dateOfReview4, "Nice phone",
-                "this phone is very nice");
+                "this phone is very nice", "user4", "phone4");
         reviewMongo.addReview(review1);
         reviewMongo.addReview(review2);
         reviewMongo.addReview(review3);
@@ -85,7 +85,7 @@ public class TestReviewMongo {
     public void testUpdateReview() {
         Date dateOfReview = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
         Review newReview = new Review("1", "3", 2, dateOfReview, "Bad phone",
-                "this phone is very bad");
+                "this phone is very bad", "username", "phoneName");
         List<Review> reviews = reviewMongo.getReviewMongo().findAll();
         reviews.forEach(System.out::println);
         reviewMongo.updateReview(id, newReview);

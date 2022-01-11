@@ -139,12 +139,12 @@
                         <Insets left="50.0" right="50.0" top="35.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="buttonUpdate" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickUpdate" prefHeight="52.0" prefWidth="180.0" text="SIGN UP">
+                  <Button fx:id="buttonUpdate" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickUpdate" prefHeight="52.0" prefWidth="180.0" text="UPDATE">
                      <HBox.margin>
                         <Insets right="50.0" top="35.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="buttonDetails" layoutX="120.0" layoutY="45.0" mnemonicParsing="false" onAction="#onClickDetails" prefHeight="52.0" prefWidth="180.0" text="CANCEL">
+                  <Button fx:id="buttonDetails" layoutX="120.0" layoutY="45.0" mnemonicParsing="false" onAction="#onClickDetails" prefHeight="52.0" prefWidth="180.0" text="DETAILS">
                      <HBox.margin>
                         <Insets right="50.0" top="35.0" />
                      </HBox.margin>

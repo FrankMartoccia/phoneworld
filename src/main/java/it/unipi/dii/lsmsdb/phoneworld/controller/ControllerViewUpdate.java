@@ -10,10 +10,12 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
+@Component
 public class ControllerViewUpdate implements Initializable {
 
     @FXML

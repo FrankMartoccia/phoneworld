@@ -114,7 +114,7 @@ public class ControllerViewSignUp implements Initializable {
             logger.error("Error in adding the user to MongoDB");
             return false;
         }
-        if (!App.getInstance().getUserNeo4j().addUser(user.getId(), user.getUsername())) {
+        if (!App.getInstance().getUserNeo4j().addUser(user.getId(), user.getUsername(), user.getGender())) {
             logger.error("Error in adding the user to Neo4j");
             if (!userMongo.deleteUser(user)) {
                 logger.error("Error in deleting the user from MongoDB");
@@ -180,7 +180,6 @@ public class ControllerViewSignUp implements Initializable {
         SpinnerValueFactory<Integer> valueFactoryMonth = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12);
         SpinnerValueFactory<Integer> valueFactoryDay = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 31);
         SpinnerValueFactory<Integer> valueFactoryStreetNumber = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000000);
-
         this.spinnerYear.setValueFactory(valueFactoryYear);
         this.spinnerMonth.setValueFactory(valueFactoryMonth);
         this.spinnerDay.setValueFactory(valueFactoryDay);

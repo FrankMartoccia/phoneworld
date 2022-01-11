@@ -7,12 +7,14 @@ public class GraphUser {
 
     private String id;
     private String username;
+    private String gender;
     private List<GraphPhone> watchlist = new ArrayList<>();
     private List<GraphUser> followedUsers = new ArrayList<>();
 
-    public GraphUser(String id, String username) {
+    public GraphUser(String id, String username, String gender) {
         this.id = id;
         this.username = username;
+        this.gender = gender;
     }
 
     public String getId() {
@@ -25,6 +27,14 @@ public class GraphUser {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public void setUsername(String username) {

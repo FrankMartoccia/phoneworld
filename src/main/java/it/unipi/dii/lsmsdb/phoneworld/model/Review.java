@@ -16,17 +16,22 @@ public class Review {
     private Date dateOfReview;
     private String title;
     private String body;
+    private String username;
+    private String phoneName;
 
     public Review() {
     }
 
-    public Review(String userId, String phoneId, int rating, Date dateOfReview, String title, String body) {
+    public Review(String userId, String phoneId, int rating, Date dateOfReview, String title,
+                  String body, String username, String phoneName) {
         this.userId = userId;
         this.phoneId = phoneId;
         this.rating = rating;
         this.dateOfReview = dateOfReview;
         this.title = title;
         this.body = body;
+        this.username = username;
+        this.phoneName = phoneName;
     }
 
     public String getId() {
@@ -67,6 +72,22 @@ public class Review {
 
     public void setDateOfReview(Date dateOfReview) {
         this.dateOfReview = dateOfReview;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPhoneName() {
+        return phoneName;
+    }
+
+    public void setPhoneName(String phoneName) {
+        this.phoneName = phoneName;
     }
 
     public void setTitle(String title) {

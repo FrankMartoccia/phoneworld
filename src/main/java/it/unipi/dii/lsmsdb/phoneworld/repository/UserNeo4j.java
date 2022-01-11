@@ -22,11 +22,11 @@ public class UserNeo4j {
         this.graphNeo4j = graphNeo4j;
     }
 
-    public boolean addUser(String id, String username) {
+    public boolean addUser(String id, String username, String gender) {
         boolean result = true;
         try {
-            graphNeo4j.write("MERGE (u:User {id: $id, username: $username})",
-                    parameters( "id", id, "username", username));
+            graphNeo4j.write("MERGE (u:User {id: $id, username: $username, gender: $gender})",
+                    parameters( "id", id, "username", username, "gender", gender));
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
             result = false;
@@ -36,16 +36,16 @@ public class UserNeo4j {
 
     public List<Record> findUserById(String id) {
         return graphNeo4j.read("MATCH (u:User {id: $id})" +
-                                     "RETURN u.id AS id, u.username AS username",
+                                     "RETURN u.id AS id, u.username AS username, u.gender AS gender",
                 parameters("id", id));
     }
 
-    public boolean updateUser(String id, String username) {
+    public boolean updateUser(String id, String username, String gender) {
         boolean result = true;
         try {
-            graphNeo4j.write("MATCH (u:User {id: $id}) SET u.username = $username " +
-                                   "RETURN u.id AS id, u.username AS username",
-                    parameters("id", id, "username", username));
+            graphNeo4j.write("MATCH (u:User {id: $id}) SET u.username = $username, u.gender = $gender " +
+                                   "RETURN u.id AS id, u.username AS username, u.gender AS gender",
+                    parameters("id", id, "username", username, "gender", gender));
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
             result = false;

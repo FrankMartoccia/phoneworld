@@ -70,11 +70,6 @@
                                     <Insets bottom="30.0" left="50.0" />
                                  </VBox.margin>
                               </Label>
-                              <Label layoutX="10.0" layoutY="441.0" prefHeight="39.0" prefWidth="424.0" text="Username">
-                                 <VBox.margin>
-                                    <Insets bottom="30.0" left="50.0" />
-                                 </VBox.margin>
-                              </Label>
                               <Label layoutX="10.0" layoutY="480.0" prefHeight="39.0" prefWidth="424.0" text="Password">
                                  <VBox.margin>
                                     <Insets bottom="30.0" left="50.0" />
@@ -147,11 +142,6 @@
                                     <Insets bottom="30.0" right="50.0" />
                                  </VBox.margin>
                               </TextField>
-                              <TextField fx:id="textFieldUsername" layoutX="10.0" layoutY="402.0" prefHeight="39.0" prefWidth="424.0" promptText="Username">
-                                 <VBox.margin>
-                                    <Insets bottom="30.0" right="50.0" />
-                                 </VBox.margin>
-                              </TextField>
                               <PasswordField fx:id="textFieldPassword" prefHeight="39.0" prefWidth="424.0" promptText="Password">
                                  <VBox.margin>
                                     <Insets bottom="30.0" right="50.0" />
@@ -170,7 +160,7 @@
             </SplitPane>
          </center>
          <bottom>
-            <HBox prefHeight="114.0" prefWidth="738.0" BorderPane.alignment="CENTER">
+            <HBox prefHeight="122.0" prefWidth="738.0" BorderPane.alignment="CENTER">
                <children>
                   <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <HBox.margin>

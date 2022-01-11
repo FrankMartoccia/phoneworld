@@ -28,21 +28,20 @@ import java.util.*;
 @Component
 public class ControllerViewSignUp implements Initializable {
 
-    @FXML
-    public TextField textFieldFirstName;
-    public TextField textFieldLastName;
-    public TextField textFieldCountry;
-    public TextField textFieldCity;
-    public TextField textFieldStreetName;
-    public TextField textFieldEmail;
-    public TextField textFieldUsername;
-    public TextField textFieldPassword;
-    public TextField textFieldRepeatPassword;
-    public ComboBox<String> comboBoxGender;
-    public Spinner<Integer> spinnerStreetNumber;
-    public Spinner<Integer> spinnerYear;
-    public Spinner<Integer> spinnerMonth;
-    public Spinner<Integer> spinnerDay;
+    @FXML private TextField textFieldFirstName;
+    @FXML private TextField textFieldLastName;
+    @FXML private TextField textFieldCountry;
+    @FXML private TextField textFieldCity;
+    @FXML private TextField textFieldStreetName;
+    @FXML private TextField textFieldEmail;
+    @FXML private TextField textFieldUsername;
+    @FXML private TextField textFieldPassword;
+    @FXML private TextField textFieldRepeatPassword;
+    @FXML private ComboBox<String> comboBoxGender;
+    @FXML private Spinner<Integer> spinnerStreetNumber;
+    @FXML private Spinner<Integer> spinnerYear;
+    @FXML private Spinner<Integer> spinnerMonth;
+    @FXML private Spinner<Integer> spinnerDay;
 
     private final StageManager stageManager;
 

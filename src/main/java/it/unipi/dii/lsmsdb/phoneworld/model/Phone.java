@@ -25,7 +25,6 @@ public class Phone {
     private String chipset;
     private String batterySize;
     private String batteryType;
-    private String specifications;
     private int releaseYear;
     private List<Review> reviews = new ArrayList<>();
 
@@ -34,8 +33,7 @@ public class Phone {
 
     public Phone(String brand, String name, String picture, String body, String os, String storage,
                  String displaySize, String displayResolution, String cameraPixels, String videoPixels,
-                 String ram, String chipset, String batterySize, String batteryType, String specifications,
-                 int releaseYear) {
+                 String ram, String chipset, String batterySize, String batteryType, int releaseYear) {
         this.brand = brand;
         this.name = name;
         this.picture = picture;
@@ -51,7 +49,6 @@ public class Phone {
         this.chipset = chipset;
         this.batterySize = batterySize;
         this.batteryType = batteryType;
-        this.specifications = specifications;
     }
 
     public String getId() {
@@ -118,10 +115,6 @@ public class Phone {
         return batteryType;
     }
 
-    public String getSpecifications() {
-        return specifications;
-    }
-
     public List<Review> getReviews() {
         return reviews;
     }
@@ -182,10 +175,6 @@ public class Phone {
         this.batteryType = batteryType;
     }
 
-    public void setSpecifications(String specifications) {
-        this.specifications = specifications;
-    }
-
     public void setReleaseYear(int releaseYear) {
         this.releaseYear = releaseYear;
     }
@@ -223,7 +212,6 @@ public class Phone {
                 ", chipset='" + chipset + '\'' +
                 ", batterySize='" + batterySize + '\'' +
                 ", batteryType='" + batteryType + '\'' +
-                ", specifications='" + specifications + '\'' +
                 ", reviews=" + reviews +
                 '}';
     }

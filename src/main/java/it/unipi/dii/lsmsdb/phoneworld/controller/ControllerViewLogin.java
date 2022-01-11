@@ -2,10 +2,8 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
-import it.unipi.dii.lsmsdb.phoneworld.model.Admin;
 import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
-import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.repository.UserMongo;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
@@ -20,10 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.Base64;
 import java.util.List;
 
 @Component
@@ -33,11 +27,15 @@ public class ControllerViewLogin {
     private UserMongo userMongo;
 
     @FXML
-    public TextField textFieldUsEm;
-    public PasswordField textFieldPassword;
-    public Button buttonCancel;
-    public Button buttonLogin;
-    public Button buttonRegister;
+    private TextField textFieldUsEm;
+    @FXML
+    private PasswordField textFieldPassword;
+    @FXML
+    private Button buttonCancel;
+    @FXML
+    private Button buttonLogin;
+    @FXML
+    private Button buttonRegister;
 
     private final StageManager stageManager;
     private final static Logger logger = LoggerFactory.getLogger(ControllerViewLogin.class);

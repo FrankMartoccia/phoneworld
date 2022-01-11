@@ -40,20 +40,20 @@ public class TestPhoneMongo {
         Phone phone = new Phone("Nokia", "Nokia Lumia 800", "url", "body", "os",
                 "storage", "display", "resolution", "camera",
                 "video", "ram", "chipset", "batterySize",
-                "batteryType", "specs", dateOfRelease);
+                "batteryType", dateOfRelease);
 
 //        Date dateOfRelease2 = new GregorianCalendar(2000, Calendar.MAY, 11).getTime();
         int dateOfRelease2 = 2006;
         Phone phone2 = new Phone("Apple", "Apple iPhone 11", "url", "body", "os",
                 "storage", "display", "resolution", "camera",
                 "video", "ram", "chipset", "batterySize",
-                "batteryType", "specs", dateOfRelease2);
+                "batteryType", dateOfRelease2);
 
         int dateOfRelease3 = 2009;
         Phone phone3 = new Phone("Samsung", "Samsung Galaxy S21", "url", "body", "os",
                 "storage", "display", "resolution", "camera",
                 "video", "ram", "chipset", "batterySize",
-                "batteryType", "specs", dateOfRelease3);
+                "batteryType", dateOfRelease3);
 
         Date dateOfReview1 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
         Review review1 = new Review("1", "2", 4, dateOfReview1, "Nice phone",
@@ -112,7 +112,7 @@ public class TestPhoneMongo {
         Phone phone = new Phone("brand3", "Nokia Lumia 753", "url3", "body3", "os",
                 "storage3", "display", "resolution", "camera",
                 "video", "ram", "chipset", "batterySize",
-                "batteryType", "specs", dateOfRelease);
+                "batteryType", dateOfRelease);
         List<Phone> phones = phoneMongo.getPhoneMongo().findAll();
         phones.forEach(System.out::println);
         phoneMongo.updatePhone(id, phone);

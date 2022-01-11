@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.dii.lsmsdb.phoneworld.controller.ControllerViewUpdate">
+   <content>
+      <BorderPane prefHeight="1029.0" prefWidth="738.0">
+         <center>
+            <SplitPane prefHeight="919.0" prefWidth="738.0">
+               <items>
+                  <HBox prefHeight="904.0" prefWidth="736.0">
+                     <children>
+                        <VBox prefHeight="742.0" prefWidth="475.0">
+                           <children>
+                              <Label prefHeight="39.0" prefWidth="424.0" text="First Name">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" left="50.0" top="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label layoutX="60.0" layoutY="60.0" prefHeight="39.0" prefWidth="424.0" text="Last Name">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label layoutX="10.0" layoutY="129.0" prefHeight="39.0" prefWidth="424.0" text="Gender">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label layoutX="10.0" layoutY="168.0" prefHeight="39.0" prefWidth="424.0" text="Country">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label layoutX="10.0" layoutY="207.0" prefHeight="39.0" prefWidth="424.0" text="City">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label layoutX="10.0" layoutY="246.0" prefHeight="39.0" prefWidth="424.0" text="Street Name">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label layoutX="10.0" layoutY="285.0" prefHeight="39.0" prefWidth="424.0" text="Street Number">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label layoutX="10.0" layoutY="324.0" prefHeight="39.0" prefWidth="424.0" text="Date of Birth">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label layoutX="10.0" layoutY="363.0" prefHeight="39.0" prefWidth="424.0" text="E-mail">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label layoutX="10.0" layoutY="441.0" prefHeight="39.0" prefWidth="424.0" text="Username">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label layoutX="10.0" layoutY="480.0" prefHeight="39.0" prefWidth="424.0" text="Password">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label layoutX="10.0" layoutY="519.0" prefHeight="39.0" prefWidth="424.0" text="Retype the password">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox layoutX="10.0" layoutY="10.0" prefHeight="742.0" prefWidth="475.0">
+                           <children>
+                              <TextField fx:id="textFieldFirstName" prefHeight="39.0" prefWidth="424.0" promptText="First Name">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" right="50.0" top="50.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <TextField fx:id="textFieldLastName" layoutX="10.0" layoutY="60.0" prefHeight="39.0" prefWidth="424.0" promptText="Last Name">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" right="50.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <ComboBox fx:id="comboBoxGender" prefHeight="39.0" prefWidth="424.0">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" left="70.0" right="50.0" />
+                                 </VBox.margin>
+                              </ComboBox>
+                              <TextField fx:id="textFieldCountry" layoutX="10.0" layoutY="168.0" prefHeight="39.0" prefWidth="424.0" promptText="Country">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" right="50.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <TextField fx:id="textFieldCity" layoutX="10.0" layoutY="207.0" prefHeight="39.0" prefWidth="424.0" promptText="City">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" right="50.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <TextField fx:id="textFieldStreetName" layoutX="10.0" layoutY="246.0" prefHeight="39.0" prefWidth="424.0" promptText="Street Name">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" right="50.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <Spinner fx:id="spinnerStreetNumber" prefHeight="39.0" prefWidth="88.0">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" left="236.0" right="50.0" />
+                                 </VBox.margin>
+                              </Spinner>
+                              <HBox prefHeight="39.0" prefWidth="424.0">
+                                 <children>
+                                    <Spinner fx:id="spinnerYear" prefHeight="51.0" prefWidth="160.0">
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
+                                    </Spinner>
+                                    <Spinner fx:id="spinnerMonth" prefHeight="46.0" prefWidth="130.0">
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
+                                    </Spinner>
+                                    <Spinner fx:id="spinnerDay" layoutX="147.0" layoutY="10.0" prefHeight="46.0" prefWidth="130.0" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" right="50.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <TextField fx:id="textFieldEmail" layoutX="10.0" layoutY="363.0" prefHeight="39.0" prefWidth="424.0" promptText="E-mail">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" right="50.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <TextField fx:id="textFieldUsername" layoutX="10.0" layoutY="402.0" prefHeight="39.0" prefWidth="424.0" promptText="Username">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" right="50.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <PasswordField fx:id="textFieldPassword" prefHeight="39.0" prefWidth="424.0" promptText="Password">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" right="50.0" />
+                                 </VBox.margin>
+                              </PasswordField>
+                              <PasswordField fx:id="textFieldRepeatPassword" layoutX="10.0" layoutY="819.0" prefHeight="39.0" prefWidth="424.0" promptText="Password">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" right="50.0" />
+                                 </VBox.margin>
+                              </PasswordField>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </items>
+            </SplitPane>
+         </center>
+         <bottom>
+            <HBox prefHeight="114.0" prefWidth="738.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets left="50.0" top="8.0" />
+                     </HBox.margin>
+                     <image>
+                        <Image url="@logo-2.png" />
+                     </image>
+                  </ImageView>
+                  <Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="52.0" prefWidth="180.0" text="CANCEL">
+                     <HBox.margin>
+                        <Insets left="110.0" right="50.0" top="35.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="buttonUpdate" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickUpdate" prefHeight="52.0" prefWidth="180.0" text="UPDATE">
+                     <HBox.margin>
+                        <Insets top="35.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </bottom>
+      </BorderPane>
+   </content>
+</ScrollPane>

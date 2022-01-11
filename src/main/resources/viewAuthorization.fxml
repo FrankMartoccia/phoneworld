@@ -12,12 +12,12 @@
    <center>
       <VBox maxHeight="540.0" maxWidth="540.0" minHeight="540.0" minWidth="540.0" prefHeight="540.0" prefWidth="540.0">
          <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="167.0" fitWidth="195.0" pickOnBounds="true" preserveRatio="true">
                <VBox.margin>
                   <Insets bottom="50.0" left="175.0" right="200.0" top="50.0" />
                </VBox.margin>
                <image>
-                  <Image url="@/logo-1.png" />
+                  <Image url="@logo-1.png" />
                </image>
             </ImageView>
             <Region VBox.vgrow="ALWAYS" />

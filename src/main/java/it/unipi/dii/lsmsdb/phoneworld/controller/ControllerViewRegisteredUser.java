@@ -2,7 +2,6 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
-import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
@@ -13,7 +12,10 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.neo4j.driver.Record;
@@ -351,5 +353,9 @@ public class ControllerViewRegisteredUser implements Initializable {
 
     public void actionProfile(ActionEvent actionEvent) {
         stageManager.switchScene(FxmlView.PROFILE);
+    }
+
+    public void onClickPhones(ActionEvent actionEvent) {
+        this.initViewPhones();
     }
 }

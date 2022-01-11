@@ -25,20 +25,19 @@ import java.util.ResourceBundle;
 @Component
 public class ControllerViewUpdate implements Initializable {
 
-    @FXML
-    public TextField textFieldFirstName;
-    public TextField textFieldLastName;
-    public TextField textFieldCountry;
-    public TextField textFieldCity;
-    public TextField textFieldStreetName;
-    public TextField textFieldEmail;
-    public TextField textFieldPassword;
-    public TextField textFieldRepeatPassword;
-    public ComboBox<String> comboBoxGender;
-    public Spinner<Integer> spinnerStreetNumber;
-    public Spinner<Integer> spinnerYear;
-    public Spinner<Integer> spinnerMonth;
-    public Spinner<Integer> spinnerDay;
+    @FXML private TextField textFieldFirstName;
+    @FXML private TextField textFieldLastName;
+    @FXML private TextField textFieldCountry;
+    @FXML private TextField textFieldCity;
+    @FXML private TextField textFieldStreetName;
+    @FXML private TextField textFieldEmail;
+    @FXML private TextField textFieldPassword;
+    @FXML private TextField textFieldRepeatPassword;
+    @FXML private ComboBox<String> comboBoxGender;
+    @FXML private Spinner<Integer> spinnerStreetNumber;
+    @FXML private Spinner<Integer> spinnerYear;
+    @FXML private Spinner<Integer> spinnerMonth;
+    @FXML private Spinner<Integer> spinnerDay;
 
     private final StageManager stageManager;
     private User user;
@@ -76,15 +75,22 @@ public class ControllerViewUpdate implements Initializable {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
         SpinnerValueFactory<Integer> valueFactoryYear = new SpinnerValueFactory.IntegerSpinnerValueFactory(1900, yearValue);
         SpinnerValueFactory<Integer> valueFactoryMonth = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12);
         SpinnerValueFactory<Integer> valueFactoryDay = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 31);
         SpinnerValueFactory<Integer> valueFactoryStreetNumber = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000000);
-        spinnerDay.setEditable(true);
         this.spinnerYear.setValueFactory(valueFactoryYear);
         this.spinnerMonth.setValueFactory(valueFactoryMonth);
         this.spinnerDay.setValueFactory(valueFactoryDay);
         this.spinnerStreetNumber.setValueFactory(valueFactoryStreetNumber);
+        this.spinnerYear.getValueFactory().setValue(year);
+        this.spinnerMonth.getValueFactory().setValue(month);
+        this.spinnerDay.getValueFactory().setValue(day);
+        this.spinnerDay.getValueFactory().setValue(day);
+        this.spinnerStreetNumber.getValueFactory().setValue(user.getStreetNumber());
+        this.comboBoxGender.setValue(user.getGender());
     }
 
     private void initComboBox() {

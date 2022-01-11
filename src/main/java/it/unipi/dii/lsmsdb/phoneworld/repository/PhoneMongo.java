@@ -91,7 +91,6 @@ public class PhoneMongo {
                 phone.get().setChipset(newPhone.getChipset());
                 phone.get().setBatterySize(newPhone.getBatterySize());
                 phone.get().setBatteryType(newPhone.getBatteryType());
-                phone.get().setSpecifications(newPhone.getSpecifications());
 
                 this.addPhone(phone.get());
             }

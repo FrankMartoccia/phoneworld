@@ -15,24 +15,33 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.logging.SimpleFormatter;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.ResourceBundle;
 
 @Component
 public class ControllerViewProfile implements Initializable {
 
     @FXML
-    public Label labelUsername;
-    public Label labelFirstName;
-    public Label labelLastName;
-    public Label labelGender;
-    public Label labelCountry;
-    public Label labelCity;
-    public Label labelStreet;
-    public Label labelBirthday;
-    public Label labelEmail;
-    public ImageView imageViewProfile;
+    private Label labelUsername;
+    @FXML
+    private Label labelFirstName;
+    @FXML
+    private Label labelLastName;
+    @FXML
+    private Label labelGender;
+    @FXML
+    private Label labelCountry;
+    @FXML
+    private Label labelCity;
+    @FXML
+    private Label labelStreet;
+    @FXML
+    private Label labelBirthday;
+    @FXML
+    private Label labelEmail;
+    @FXML
+    private ImageView imageViewProfile;
 
     private final StageManager stageManager;
 

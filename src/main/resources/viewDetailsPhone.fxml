@@ -27,7 +27,7 @@
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelName1" layoutX="40.0" layoutY="30.0" prefHeight="30.0" prefWidth="676.0" text="Label">
+                  <Label fx:id="labelBrand" layoutX="40.0" layoutY="30.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -35,7 +35,7 @@
                         <Insets bottom="10.0" left="30.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="labelName11" layoutX="10.0" layoutY="80.0" prefHeight="30.0" prefWidth="676.0" text="Label">
+                  <Label fx:id="labelOs" layoutX="10.0" layoutY="80.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -43,7 +43,7 @@
                         <Insets bottom="10.0" left="30.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="labelName111" layoutX="10.0" layoutY="110.0" prefHeight="30.0" prefWidth="676.0" text="Label">
+                  <Label fx:id="labelBody" layoutX="10.0" layoutY="110.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -51,7 +51,7 @@
                         <Insets bottom="10.0" left="30.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="labelName1111" layoutX="10.0" layoutY="140.0" prefHeight="30.0" prefWidth="676.0" text="Label">
+                  <Label fx:id="labelStorage" layoutX="10.0" layoutY="140.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -59,7 +59,7 @@
                         <Insets bottom="10.0" left="30.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="labelName11111" layoutX="10.0" layoutY="170.0" prefHeight="30.0" prefWidth="676.0" text="Label">
+                  <Label fx:id="labelDisplaySize" layoutX="10.0" layoutY="170.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -67,7 +67,7 @@
                         <Insets bottom="10.0" left="30.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="labelName111111" layoutX="10.0" layoutY="200.0" prefHeight="30.0" prefWidth="676.0" text="Label">
+                  <Label fx:id="labelDisplayResolution" layoutX="10.0" layoutY="200.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -79,7 +79,7 @@
             </VBox>
             <VBox layoutX="10.0" layoutY="10.0" prefHeight="426.0" prefWidth="375.0">
                <children>
-                  <Label fx:id="labelName1" prefHeight="30.0" prefWidth="676.0" text="Label">
+                  <Label fx:id="labelCameraPixel" prefHeight="30.0" prefWidth="676.0" text="Label">
                      <VBox.margin>
                         <Insets bottom="10.0" left="30.0" top="20.0" />
                      </VBox.margin>
@@ -87,7 +87,7 @@
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelName11" layoutX="40.0" layoutY="30.0" prefHeight="30.0" prefWidth="676.0" text="Label">
+                  <Label fx:id="labelVideoPixels" layoutX="40.0" layoutY="30.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -95,7 +95,7 @@
                         <Insets bottom="10.0" left="30.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="labelName111" layoutX="10.0" layoutY="80.0" prefHeight="30.0" prefWidth="676.0" text="Label">
+                  <Label fx:id="labelRam" layoutX="10.0" layoutY="80.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -103,7 +103,7 @@
                         <Insets bottom="10.0" left="30.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="labelName1111" layoutX="10.0" layoutY="110.0" prefHeight="30.0" prefWidth="676.0" text="Label">
+                  <Label fx:id="labelChipset" layoutX="10.0" layoutY="110.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -111,7 +111,7 @@
                         <Insets bottom="10.0" left="30.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="labelName11111" layoutX="10.0" layoutY="140.0" prefHeight="30.0" prefWidth="676.0" text="Label">
+                  <Label fx:id="labelBatterySize" layoutX="10.0" layoutY="140.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -119,7 +119,7 @@
                         <Insets bottom="10.0" left="30.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="labelName111111" layoutX="10.0" layoutY="170.0" prefHeight="30.0" prefWidth="676.0" text="Label">
+                  <Label fx:id="labelBatteryType" layoutX="10.0" layoutY="170.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -127,7 +127,7 @@
                         <Insets bottom="10.0" left="30.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="labelName1111111" layoutX="10.0" layoutY="200.0" prefHeight="30.0" prefWidth="676.0" text="Label">
+                  <Label fx:id="labelReleaseYear" layoutX="10.0" layoutY="200.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                      <font>
                         <Font size="17.0" />
                      </font>

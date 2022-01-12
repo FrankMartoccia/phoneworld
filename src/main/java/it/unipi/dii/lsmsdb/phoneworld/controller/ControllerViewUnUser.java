@@ -2,7 +2,7 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
-import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.application.Platform;
@@ -95,7 +95,7 @@ public class ControllerViewUnUser implements Initializable {
             this.setListPhones(this.imageViews, this.labels, phones);
             return;
         }
-        phones = phoneMongo.findPhones(text);
+        phones = phoneMongo.findPhones(text, "Camera Pixels");
         if (phones.isEmpty()) {
             App.getInstance().showInfoMessage("INFO", "There aren't phones with the name searched!");
             this.textFieldSearch.clear();

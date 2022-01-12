@@ -4,7 +4,7 @@ import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
 import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
-import it.unipi.dii.lsmsdb.phoneworld.repository.UserMongo;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.UserMongo;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.event.ActionEvent;
@@ -74,8 +74,8 @@ public class ControllerViewSignUp implements Initializable {
         String username = this.textFieldUsername.getText();
         String password = this.textFieldPassword.getText();
         String repeatedPassword = this.textFieldRepeatPassword.getText();
-        List<GenericUser> users = userMongo.findByUsername(username);
-        if (!users.isEmpty()) {
+        Optional<GenericUser> users = userMongo.findByUsername(username);
+        if (users.isPresent()) {
             App.getInstance().showInfoMessage("INFO", "Username already taken!");
             return;
         }
@@ -145,7 +145,7 @@ public class ControllerViewSignUp implements Initializable {
         Date dateOfBirth = new GregorianCalendar(year, month-1, day+1).getTime();
         String salt = App.getInstance().getSalt();
         String hashedPassword = App.getInstance().getHashedPassword(password, salt);
-        return new User(username,salt,hashedPassword,false,gender,firstName,lastName,streetNumber,streetName,
+        return new User(username,salt,hashedPassword,"user",gender,firstName,lastName,streetNumber,streetName,
                 city,country, email,dateOfBirth,age);
     }
 

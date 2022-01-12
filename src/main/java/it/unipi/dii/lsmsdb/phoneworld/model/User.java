@@ -14,10 +14,10 @@ public class User extends GenericUser{
     public User() {
     }
 
-    public User(String username, String salt, String sha, boolean admin, String gender,
+    public User(String username, String salt, String sha, String _class, String gender,
                 String firstName, String lastName, int streetNumber, String streetName, String city,
                 String country, String email, Date dateOfBirth, int age) {
-        super(username, salt, sha, admin);
+        super(username, salt, sha, _class);
         this.gender = gender;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -151,7 +151,6 @@ public class User extends GenericUser{
                 ", username='" + username + '\'' +
                 ", salt='" + salt + '\'' +
                 ", sha='" + hashedPassword + '\'' +
-                ", admin=" + admin +
                 ", gender='" + gender + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

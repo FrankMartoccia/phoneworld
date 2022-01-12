@@ -4,7 +4,7 @@ import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
 import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
-import it.unipi.dii.lsmsdb.phoneworld.repository.UserMongo;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.UserMongo;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.event.ActionEvent;
@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ControllerViewLogin {
@@ -66,23 +66,23 @@ public class ControllerViewLogin {
             return;
         }
         try {
-            List<GenericUser> users = userMongo.findByUsername(username);
+            Optional<GenericUser> users = userMongo.findByUsername(username);
 //            System.out.println(users);
             if (users.isEmpty()) {
                 App.getInstance().showInfoMessage("ERROR", "There aren't users with this username");
                 this.clearFields();
                 return;
             }
-            String salt = users.get(0).getSalt();
+            String salt = users.get().getSalt();
             String hashedPassword = App.getInstance().getHashedPassword(password, salt);
-            if (!users.get(0).getHashedPassword().equals(hashedPassword)) {
+            if (!users.get().getHashedPassword().equals(hashedPassword)) {
                 App.getInstance().showInfoMessage("ERROR", "Wrong username or password");
                 this.clearFields();
                 return;
             }
 //            System.out.println("You're in!!");
             GenericUser user = new User();
-            user = users.get(0);
+            user = users.get();
             App.getInstance().getModelBean().putBean(Constants.CURRENT_USER, user);
             stageManager.switchScene(FxmlView.USER);
         } catch (Exception e) {

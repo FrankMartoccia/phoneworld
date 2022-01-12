@@ -1,8 +1,8 @@
 package it.unipi.dii.lsmsdb.phoneworld;
 
-import it.unipi.dii.lsmsdb.phoneworld.repository.GraphNeo4j;
-import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneNeo4j;
-import it.unipi.dii.lsmsdb.phoneworld.repository.UserNeo4j;
+import it.unipi.dii.lsmsdb.phoneworld.repository.neo4j.GraphNeo4j;
+import it.unipi.dii.lsmsdb.phoneworld.repository.neo4j.PhoneNeo4j;
+import it.unipi.dii.lsmsdb.phoneworld.repository.neo4j.UserNeo4j;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

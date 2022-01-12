@@ -113,7 +113,7 @@ public class ControllerViewSignUp implements Initializable {
             logger.error("Error in adding the user to MongoDB");
             return false;
         }
-        if (!App.getInstance().getUserNeo4j().addUser(user.getId(), user.getUsername(), user.getGender())) {
+        if (!App.getInstance().getUserNeo4j().addUser(user.getId(), user.getUsername())) {
             logger.error("Error in adding the user to Neo4j");
             if (!userMongo.deleteUser(user)) {
                 logger.error("Error in deleting the user from MongoDB");
@@ -131,7 +131,7 @@ public class ControllerViewSignUp implements Initializable {
                 stringBuilder.append(errors.get(i));
                 break;
             }
-            stringBuilder.append(errors.get(i) + ", ");
+            stringBuilder.append(errors.get(i)).append(", ");
         }
         return stringBuilder.toString();
     }

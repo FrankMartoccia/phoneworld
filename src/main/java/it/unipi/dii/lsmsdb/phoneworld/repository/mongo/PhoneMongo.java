@@ -1,4 +1,4 @@
-package it.unipi.dii.lsmsdb.phoneworld.repository;
+package it.unipi.dii.lsmsdb.phoneworld.repository.mongo;
 
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import org.bson.Document;
@@ -46,13 +46,31 @@ public class PhoneMongo {
         return result;
     }
 
-    public List<Phone> findPhones(String name) {
+    public List<Phone> findPhones(String name, String parameter) {
         List<Phone> phones = new ArrayList<>();
         try {
             if (name.isEmpty()) {
                 phones.addAll(findRecentPhones());
-            } else {
+            } else if (parameter.equals("Name")){
                 phones.addAll(phoneMongo.findByNameRegexOrderByReleaseYearDesc(name,
+                        Sort.by(Sort.Direction.DESC, "releaseYear")));
+            } else if (parameter.equals("Os")){
+                phones.addAll(phoneMongo.findByOsRegexOrderByReleaseYearDesc(name,
+                        Sort.by(Sort.Direction.DESC, "releaseYear")));
+            } else if (parameter.equals("Ram")){
+                phones.addAll(phoneMongo.findByRamRegexOrderByReleaseYearDesc(name,
+                        Sort.by(Sort.Direction.DESC, "releaseYear")));
+            } else if (parameter.equals("Storage")){
+                phones.addAll(phoneMongo.findByStorageRegexOrderByReleaseYearDesc(name,
+                        Sort.by(Sort.Direction.DESC, "releaseYear")));
+            } else if (parameter.equals("Chipset")){
+                phones.addAll(phoneMongo.findByChipsetRegexOrderByReleaseYearDesc(name,
+                        Sort.by(Sort.Direction.DESC, "releaseYear")));
+            } else if (parameter.equals("Battery size")){
+                phones.addAll(phoneMongo.findByBatterySizeRegexOrderByReleaseYearDesc(name,
+                        Sort.by(Sort.Direction.DESC, "releaseYear")));
+            } else if (parameter.equals("Camera Pixels")){
+                phones.addAll(phoneMongo.findByCameraPixelsRegexOrderByReleaseYearDesc(name,
                         Sort.by(Sort.Direction.DESC, "releaseYear")));
             }
         } catch (Exception e) {

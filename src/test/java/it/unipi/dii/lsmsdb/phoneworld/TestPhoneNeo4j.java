@@ -1,8 +1,8 @@
 package it.unipi.dii.lsmsdb.phoneworld;
 
-import it.unipi.dii.lsmsdb.phoneworld.repository.GraphNeo4j;
-import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneNeo4j;
-import it.unipi.dii.lsmsdb.phoneworld.repository.UserNeo4j;
+import it.unipi.dii.lsmsdb.phoneworld.repository.neo4j.GraphNeo4j;
+import it.unipi.dii.lsmsdb.phoneworld.repository.neo4j.PhoneNeo4j;
+import it.unipi.dii.lsmsdb.phoneworld.repository.neo4j.UserNeo4j;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,8 +37,8 @@ public class TestPhoneNeo4j {
                     "neo4j", "PhoneWorld");
             phoneNeo4j = new PhoneNeo4j(graphNeo4j);
             userNeo4j = new UserNeo4j(graphNeo4j);
-            userNeo4j.addUser("userId1", "username1", "male");
-            userNeo4j.addUser("userId2", "username2", "female");
+            userNeo4j.addUser("userId1", "username1");
+            userNeo4j.addUser("userId2", "username2");
             phoneNeo4j.addPhone("id1", "Nokia", "Nokia Lumia 900",
                     "https://fdn2.gsmarena.com/vv/bigpic/nokia-800-ofic.jpg");
             phoneNeo4j.addPhone("id2", "Samsung", "Galaxy S20",

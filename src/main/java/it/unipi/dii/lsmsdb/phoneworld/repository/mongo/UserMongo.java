@@ -1,4 +1,4 @@
-package it.unipi.dii.lsmsdb.phoneworld.repository;
+package it.unipi.dii.lsmsdb.phoneworld.repository.mongo;
 
 import it.unipi.dii.lsmsdb.phoneworld.model.Admin;
 import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
@@ -47,45 +47,44 @@ public class UserMongo {
         return result;
     }
 
-    public List<GenericUser> findUsers(String username, boolean admin) {
+    public List<GenericUser> findUsers(String username, String classType) {
         List<GenericUser> users = new ArrayList<>();
         try {
-            users.addAll(userMongo.findByUsernameContainingAndAdmin(username, admin));
+            users.addAll(userMongo.findByUsernameRegexAnd_class(username, classType));
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
         }
         return users;
     }
 
-    public List<GenericUser> findByUsername(String username) {
-        List<GenericUser> users = new ArrayList<>();
+    public Optional<GenericUser> findByUsername(String username) {
+        Optional<GenericUser> user = Optional.empty();
         try {
-            users = userMongo.findByUsername(username);
-        } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
-        }
-        return users;
-    }
-
-    public GenericUser findUserById(String id, boolean admin) {
-        GenericUser user = null;
-        try {
-            user = userMongo.findByIdAndAdmin(id, admin);
+            user = userMongo.findByUsername(username);
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
         }
         return user;
     }
 
-    public boolean updateUser(String id, GenericUser newGenericUser, boolean admin) {
+    public Optional<GenericUser> findUserById(String id) {
+        Optional<GenericUser> user = Optional.empty();
+        try {
+            user = userMongo.findById(id);
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+        return user;
+    }
+
+    public boolean updateUser(String id, GenericUser newGenericUser, String userType) {
         boolean result = true;
         try {
-            Optional<GenericUser> genericUser = Optional.ofNullable(userMongo.findByIdAndAdmin(id, admin));
+            Optional<GenericUser> genericUser = userMongo.findById(id);
             if (genericUser.isPresent()) {
-                if (admin) {
+                if (userType.equals("admin")) {
                     Admin administrator = (Admin) genericUser.get();
                     administrator.setUsername(newGenericUser.getUsername());
-                    administrator.setAdmin(newGenericUser.isAdmin());
                     administrator.setHashedPassword(newGenericUser.getHashedPassword());
                     administrator.setSalt(newGenericUser.getSalt());
                     this.addUser(administrator);
@@ -93,7 +92,6 @@ public class UserMongo {
                     User user = (User) genericUser.get();
                     User newUser = (User)newGenericUser;
                     user.setUsername(newUser.getUsername());
-                    user.setAdmin(newUser.isAdmin());
                     user.setHashedPassword(newUser.getHashedPassword());
                     user.setSalt(newUser.getSalt());
                     user.setAge(newUser.getAge());
@@ -139,7 +137,7 @@ public class UserMongo {
     }
 
     public Document findYoungerCountriesByUsers(int number) {
-        MatchOperation matchOperation = match(new Criteria("admin").is(false));
+        MatchOperation matchOperation = match(new Criteria("_class").is("user"));
         GroupOperation groupOperation = group("$country").avg("$age").as("avgAge");
         SortOperation sortOperation = sort(Sort.by(Sort.Direction.ASC, "avgAge"));
         LimitOperation limitOperation = limit(number);
@@ -154,7 +152,7 @@ public class UserMongo {
     }
 
     public Document findTopCountriesByUsers(int number) {
-        MatchOperation matchOperation = match(new Criteria("admin").is(false));
+        MatchOperation matchOperation = match(new Criteria("_class").is("user"));
         GroupOperation groupOperation = group("$country").count().as("numUsers");
         SortOperation sortOperation = sort(Sort.by(Sort.Direction.DESC, "numUsers"));
         LimitOperation limitOperation = limit(number);

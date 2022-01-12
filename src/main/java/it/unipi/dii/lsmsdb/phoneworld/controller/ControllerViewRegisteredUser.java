@@ -4,8 +4,8 @@ import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
-import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
-import it.unipi.dii.lsmsdb.phoneworld.repository.UserMongo;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.UserMongo;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.application.Platform;
@@ -254,7 +254,7 @@ public class ControllerViewRegisteredUser implements Initializable {
         int j = 0;
         for (i = 9; i < usersByBrand.size() + 9;i++) {
             String id = usersByBrand.get(j).get("id").asString();
-            String gender =  ((User)userMongo.findUserById(id, false)).getGender();
+            String gender =  ((User)userMongo.findUserById(id).get()).getGender();
             if (gender.equalsIgnoreCase("male")) imageViews.get(i).setImage(new Image("man.png"));
             if (gender.equalsIgnoreCase("female")) imageViews.get(i).setImage(new Image("woman.png"));
             if (gender.equalsIgnoreCase("not specified")) imageViews.get(i).setImage(new Image("user.png"));
@@ -271,7 +271,7 @@ public class ControllerViewRegisteredUser implements Initializable {
         int i;
         for (i = 0; i < imageViews.size();i++) {
             String id = usersByFollows.get(i).get("id").asString();
-            User user = (User)userMongo.findUserById(id, false);
+            User user = (User)userMongo.findUserById(id).get();
             App.getInstance().setProfileImage(imageViews.get(i), user.getGender());
             if (i+1 == usersByFollows.size()) {
                 break;
@@ -298,7 +298,7 @@ public class ControllerViewRegisteredUser implements Initializable {
             this.setListPhones(this.imageViews, this.labels, phones);
             return;
             }
-        phones = phoneMongo.findPhones(text);
+        phones = phoneMongo.findPhones(text, "Name");
         if (phones.isEmpty()) {
             App.getInstance().showInfoMessage("INFO", "There aren't phones with the name searched!");
             this.textFieldSearch.clear();

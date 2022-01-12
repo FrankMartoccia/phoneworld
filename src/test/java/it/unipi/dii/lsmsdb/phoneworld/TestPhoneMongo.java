@@ -2,7 +2,7 @@ package it.unipi.dii.lsmsdb.phoneworld;
 
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
-import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
 import org.bson.Document;
 import org.junit.After;
 import org.junit.Before;
@@ -87,9 +87,9 @@ public class TestPhoneMongo {
 
     @Test
     public void testFindPhones() {
-        List<Phone> phones = phoneMongo.findPhones("iss");
+        List<Phone> phones = phoneMongo.findPhones("iss", "Name");
         assertEquals(0, phones.size());
-        phones = phoneMongo.findPhones("iPhone");
+        phones = phoneMongo.findPhones("iPhone", "Name");
         phones.forEach(System.out::println);
         assertEquals(1, phones.size());
     }

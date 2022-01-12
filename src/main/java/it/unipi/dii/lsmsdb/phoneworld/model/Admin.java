@@ -10,8 +10,8 @@ public class Admin extends GenericUser{
     public Admin() {
     }
 
-    public Admin(String username, String salt, String sha, boolean admin) {
-        super(username, salt, sha, admin);
+    public Admin(String username, String salt, String sha, String _class) {
+        super(username, salt, sha, _class);
     }
 
     @Override
@@ -21,7 +21,6 @@ public class Admin extends GenericUser{
                 ", username='" + username + '\'' +
                 ", salt='" + salt + '\'' +
                 ", sha='" + hashedPassword + '\'' +
-                ", admin=" + admin +
                 '}';
     }
 }

@@ -2,10 +2,11 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
+import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
-import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
-import it.unipi.dii.lsmsdb.phoneworld.repository.UserMongo;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.UserMongo;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.application.Platform;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Component;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Component
@@ -236,9 +238,12 @@ public class ControllerViewRegisteredUser implements Initializable {
     private void setListByFriends(List<Label> labels, List<ImageView> imageViews, List<Record> list, boolean isUser) {
         for (int i = 0;i< imageViews.size();i++) {
             if (isUser) {
-                User user = (User) userMongo.findUserById(list.get(i).get("id").asString(), false);
-                labels.get(i).setText(list.get(i).get("username").asString());
-                imageViews.get(i).setImage(new Image("user.png"));
+                Optional<GenericUser> result = userMongo.findUserById(list.get(i).get("id").asString());
+                if (result.isPresent()) {
+                    User user = (User) result.get();
+                    labels.get(i).setText(list.get(i).get("username").asString());
+                    imageViews.get(i).setImage(new Image("user.png"));
+                }
             } else {
                 labels.get(i).setText(list.get(i).get("p").get("name").asString());
                 imageViews.get(i).setImage(new Image(list.get(i).get("p").get("picture").asString()));
@@ -262,7 +267,7 @@ public class ControllerViewRegisteredUser implements Initializable {
             this.setListPhones(this.imageViews, this.labels, phones);
             return;
             }
-        phones = phoneMongo.findPhones(text);
+        phones = phoneMongo.findPhones(text, "Name");
         if (phones.isEmpty()) {
             stageManager.showInfoMessage("INFO", "There aren't phones with the name searched!");
             this.textFieldSearch.clear();

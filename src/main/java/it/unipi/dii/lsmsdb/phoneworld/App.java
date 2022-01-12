@@ -1,9 +1,9 @@
 package it.unipi.dii.lsmsdb.phoneworld;
 
 import it.unipi.dii.lsmsdb.phoneworld.model.ModelBean;
-import it.unipi.dii.lsmsdb.phoneworld.repository.GraphNeo4j;
-import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneNeo4j;
-import it.unipi.dii.lsmsdb.phoneworld.repository.UserNeo4j;
+import it.unipi.dii.lsmsdb.phoneworld.repository.neo4j.GraphNeo4j;
+import it.unipi.dii.lsmsdb.phoneworld.repository.neo4j.PhoneNeo4j;
+import it.unipi.dii.lsmsdb.phoneworld.repository.neo4j.UserNeo4j;
 import it.unipi.dii.lsmsdb.phoneworld.services.ServicePhone;
 import it.unipi.dii.lsmsdb.phoneworld.services.ServiceReview;
 import it.unipi.dii.lsmsdb.phoneworld.services.ServiceUser;

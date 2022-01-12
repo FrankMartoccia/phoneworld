@@ -2,7 +2,7 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
-import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneMongo;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.application.Platform;
@@ -95,7 +95,7 @@ public class ControllerViewUnUser implements Initializable {
             this.setListPhones(this.imageViews, this.labels, phones);
             return;
         }
-        phones = phoneMongo.findPhones(text);
+        phones = phoneMongo.findPhones(text, "Name");
         if (phones.isEmpty()) {
             stageManager.showInfoMessage("INFO", "There aren't phones with the name searched!");
             this.textFieldSearch.clear();
@@ -116,9 +116,9 @@ public class ControllerViewUnUser implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        App.getInstance().getUserNeo4j().addUser("61de1530538b5a365a79ab5b", "PaoloYeah", "male");
-        App.getInstance().getUserNeo4j().addUser("61df1a38bbbad21499ed0881", "Paolino", "male");
-        App.getInstance().getUserNeo4j().addUser("61df1a56bbbad21499ed0882", "Paoletto", "not specified");
+        App.getInstance().getUserNeo4j().addUser("61de1530538b5a365a79ab5b", "PaoloYeah");
+        App.getInstance().getUserNeo4j().addUser("61df1a38bbbad21499ed0881", "Paolino");
+        App.getInstance().getUserNeo4j().addUser("61df1a56bbbad21499ed0882", "Paoletto");
         App.getInstance().getPhoneNeo4j().addPhone("phoneid1", "Xiaomi", "Mi 11", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");
         App.getInstance().getPhoneNeo4j().addPhone("phoneid2", "Xiaomi", "Mi 12", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");
         App.getInstance().getPhoneNeo4j().addPhone("phoneid3", "Apple", "iPhone XS", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");

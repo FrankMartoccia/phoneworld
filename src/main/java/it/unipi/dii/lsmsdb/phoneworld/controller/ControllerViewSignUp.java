@@ -76,17 +76,17 @@ public class ControllerViewSignUp implements Initializable {
         String repeatedPassword = this.textFieldRepeatPassword.getText();
         List<GenericUser> users = userMongo.findByUsername(username);
         if (!users.isEmpty()) {
-            App.getInstance().showInfoMessage("INFO", "Username already taken!");
+            stageManager.showInfoMessage("INFO", "Username already taken!");
             return;
         }
         if (!password.equals(repeatedPassword)){
-            App.getInstance().showInfoMessage("ERROR", "Password and repeated password must be the same!");
+            stageManager.showInfoMessage("ERROR", "Password and repeated password must be the same!");
             return;
         }
         String sbError = this.generateStringBuilderError(firstName,lastName,gender,country,city,streetName,
-                streetNumber, year, month, day, email,username,password,repeatedPassword);
+                streetNumber, month, day, email,username,password,repeatedPassword);
         if (!sbError.isEmpty()) {
-            App.getInstance().showInfoMessage("ERROR", "You have to insert the following fields: "
+            stageManager.showInfoMessage("ERROR", "You have to insert the following fields: "
                     + getErrors(sbError));
             return;
         }
@@ -94,7 +94,7 @@ public class ControllerViewSignUp implements Initializable {
             User user = this.createUser(firstName,lastName,gender,country,city,streetName,
                     streetNumber, email,username,password, year, month, day);
             if (!insertUser(user)) {
-                App.getInstance().showInfoMessage("ERROR", "Error in adding new user, " +
+                stageManager.showInfoMessage("ERROR", "Error in adding new user, " +
                         "please try again");
                 return;
             }
@@ -121,7 +121,7 @@ public class ControllerViewSignUp implements Initializable {
             return false;
         }
         return result;
-    }
+    }  //TODO add in Business Class
 
     private String getErrors(String sbError) {
         List<String> errors = List.of(sbError.split(" "));
@@ -134,7 +134,7 @@ public class ControllerViewSignUp implements Initializable {
             stringBuilder.append(errors.get(i) + ", ");
         }
         return stringBuilder.toString();
-    }
+    } //TODO add in Stage Manager
 
     private User createUser(String firstName, String lastName, String gender, String country, String city,
                             String streetName, int streetNumber, String email, String username, String password,
@@ -143,14 +143,14 @@ public class ControllerViewSignUp implements Initializable {
         LocalDate birthday = LocalDate.of(year,month,day);
         int age = Period.between(birthday,localDate).getYears();
         Date dateOfBirth = new GregorianCalendar(year, month-1, day+1).getTime();
-        String salt = App.getInstance().getSalt();
-        String hashedPassword = App.getInstance().getHashedPassword(password, salt);
+        String salt = App.getInstance().getServiceUser().getSalt();
+        String hashedPassword = App.getInstance().getServiceUser().getHashedPassword(password, salt);
         return new User(username,salt,hashedPassword,false,gender,firstName,lastName,streetNumber,streetName,
                 city,country, email,dateOfBirth,age);
     }
 
     private String generateStringBuilderError(String firstName, String lastName, String gender, String country,
-                                              String city, String streetName, int streetNumber, int year, int month,
+                                              String city, String streetName, int streetNumber, int month,
                                               int day, String email, String username, String password,
                                               String repeatedPassword) {
         StringBuilder sbError = new StringBuilder();
@@ -168,7 +168,7 @@ public class ControllerViewSignUp implements Initializable {
         if (password.isEmpty()) sbError.append("Password ");
         if (repeatedPassword.isEmpty()) sbError.append("Repeated_password ");
         return sbError.toString();
-    }
+    } //TODO add in Stage Manager
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

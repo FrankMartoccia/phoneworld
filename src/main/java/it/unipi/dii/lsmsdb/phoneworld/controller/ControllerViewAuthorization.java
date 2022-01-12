@@ -13,13 +13,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ControllerViewAuthorization {
 
-    @FXML
-    private Button buttonAccess;
-    @FXML
-    private Button buttonRegistration;
-    @FXML
-    private Button buttonBack;
-
     private final StageManager stageManager;
 
     @Autowired @Lazy

@@ -30,12 +30,6 @@ public class ControllerViewLogin {
     private TextField textFieldUsEm;
     @FXML
     private PasswordField textFieldPassword;
-    @FXML
-    private Button buttonCancel;
-    @FXML
-    private Button buttonLogin;
-    @FXML
-    private Button buttonRegister;
 
     private final StageManager stageManager;
     private final static Logger logger = LoggerFactory.getLogger(ControllerViewLogin.class);
@@ -53,34 +47,32 @@ public class ControllerViewLogin {
         String password = textFieldPassword.getText();
         String username = textFieldUsEm.getText();
         if (password.isEmpty() && username.isEmpty()) {
-            App.getInstance().showInfoMessage("ERROR", "You have to insert your " +
+            stageManager.showInfoMessage("ERROR", "You have to insert your " +
                     "username and your password");
             return;
         } else if (username.isEmpty()) {
-            App.getInstance().showInfoMessage("ERROR", "You have to insert your " +
+            stageManager.showInfoMessage("ERROR", "You have to insert your " +
                     "username");
             return;
         } else if (password.isEmpty()) {
-            App.getInstance().showInfoMessage("ERROR", "You have to insert your " +
+            stageManager.showInfoMessage("ERROR", "You have to insert your " +
                     "password");
             return;
         }
         try {
             List<GenericUser> users = userMongo.findByUsername(username);
-//            System.out.println(users);
             if (users.isEmpty()) {
-                App.getInstance().showInfoMessage("ERROR", "There aren't users with this username");
+                stageManager.showInfoMessage("ERROR", "There aren't users with this username");
                 this.clearFields();
                 return;
             }
             String salt = users.get(0).getSalt();
-            String hashedPassword = App.getInstance().getHashedPassword(password, salt);
+            String hashedPassword = App.getInstance().getServiceUser().getHashedPassword(password, salt);
             if (!users.get(0).getHashedPassword().equals(hashedPassword)) {
-                App.getInstance().showInfoMessage("ERROR", "Wrong username or password");
+                stageManager.showInfoMessage("ERROR", "Wrong username or password");
                 this.clearFields();
                 return;
             }
-//            System.out.println("You're in!!");
             GenericUser user = new User();
             user = users.get(0);
             App.getInstance().getModelBean().putBean(Constants.CURRENT_USER, user);

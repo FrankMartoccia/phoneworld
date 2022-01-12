@@ -115,52 +115,20 @@ public class ControllerViewRegisteredUser implements Initializable {
         List<Record> phonesByFriends = App.getInstance().getPhoneNeo4j().findSuggestedPhonesByFriends(user.getId());
         List<Record> phonesByBrand = App.getInstance().getPhoneNeo4j().findSuggestedPhonesByBrand(user.getId());
         if (phonesByFriends.isEmpty() && phonesByBrand.isEmpty()) {
-            App.getInstance().showInfoMessage("INFO", "You don't have recommendations based on your " +
+            stageManager.showInfoMessage("INFO", "You don't have recommendations based on your " +
                     "following and your favourite brand");
             return;
         } else if (phonesByBrand.isEmpty()) {
-            App.getInstance().showInfoMessage("INFO", "You don't have recommendations based on your favourite brand");
-            this.setPhonesByFriends(labels, imageViews, phonesByFriends);
+            stageManager.showInfoMessage("INFO", "You don't have recommendations based on your favourite brand");
+            this.setListByFriends(labels, imageViews, phonesByFriends, false);
             return;
         } else if (phonesByFriends.isEmpty()) {
-            App.getInstance().showInfoMessage("INFO", "You don't have recommendations based on your following");
-            this.setPhonesByBrand(labels, imageViews, phonesByBrand);
+            stageManager.showInfoMessage("INFO", "You don't have recommendations based on your following");
+            this.setListByBrand(labels, imageViews, phonesByBrand, false);
             return;
         }
-        this.setPhonesByFriends(labels, imageViews, phonesByFriends);
-        this.setPhonesByBrand(labels, imageViews, phonesByBrand);
-    }
-
-    private void setPhonesByFriends(List<Label> labels, List<ImageView> imageViews, List<Record> phonesByFriends) {
-        int i;
-        for (i = 0; i < imageViews.size();i++) {
-            Image image = new Image(phonesByFriends.get(i).get("p").get("picture").asString());
-            imageViews.get(i).setImage(image);
-            if (i+1 == phonesByFriends.size()) {
-                break;
-            }
-        }
-        for (i = 0;i < labels.size();i++) {
-            labels.get(i).setText(phonesByFriends.get(i).get("p").get("name").asString());
-            if(i+1 == phonesByFriends.size()) {
-                break;
-            }
-        }
-    }
-
-    private void setPhonesByBrand(List<Label> labels, List<ImageView> imageViews, List<Record> phonesByBrand) {
-        int i;
-        int j = 0;
-        for (i = 9; i < phonesByBrand.size() + 9;i++) {
-            Image image = new Image(phonesByBrand.get(j).get("newPhone").get("picture").asString());
-            imageViews.get(i).setImage(image);
-            j++;
-        }
-        j = 0;
-        for (i = 9;i < phonesByBrand.size() + 9;i++) {
-            labels.get(i).setText(phonesByBrand.get(j).get("newPhone").get("name").asString());
-            j++;
-        }
+        this.setListByFriends(labels, imageViews, phonesByFriends, false);
+        this.setListByBrand(labels, imageViews, phonesByBrand, false);
     }
 
     private List<Label> createLabelList() {
@@ -233,53 +201,49 @@ public class ControllerViewRegisteredUser implements Initializable {
         List<Record> usersByFollows = App.getInstance().getUserNeo4j().findSuggestedUsersByFriends(user.getId());
         List<Record> usersByBrand = App.getInstance().getUserNeo4j().findSuggestedUsersByBrand(user.getId());
         if (usersByFollows.isEmpty() && usersByBrand.isEmpty()) {
-            App.getInstance().showInfoMessage("INFO", "You don't have recommendations based on your " +
+            stageManager.showInfoMessage("INFO", "You don't have recommendations based on your " +
                     "following and your favourite brand");
             return;
         } else if (usersByBrand.isEmpty()) {
-            App.getInstance().showInfoMessage("INFO", "You don't have recommendations based on your favourite brand");
-            this.setUsersByFollow(labels, imageViews, usersByFollows);
+            stageManager.showInfoMessage("INFO", "You don't have recommendations based on your favourite brand");
+            this.setListByFriends(labels, imageViews, usersByFollows, true);
             return;
         } else if (usersByFollows.isEmpty()) {
-            App.getInstance().showInfoMessage("INFO", "You don't have recommendations based on your following");
-            this.setUsersByBrand(labels, imageViews, usersByBrand);
+            stageManager.showInfoMessage("INFO", "You don't have recommendations based on your following");
+            this.setListByBrand(labels, imageViews, usersByBrand, true);
             return;
         }
-        this.setUsersByFollow(labels, imageViews, usersByFollows);
-        this.setUsersByBrand(labels, imageViews, usersByBrand);
+        this.setListByFriends(labels, imageViews, usersByFollows, true);
+        this.setListByBrand(labels, imageViews, usersByBrand, true);
     }
 
-    private void setUsersByBrand(List<Label> labels, List<ImageView> imageViews, List<Record> usersByBrand) {
+
+    private void setListByBrand(List<Label> labels, List<ImageView> imageViews, List<Record> list, boolean isUser){
         int i;
         int j = 0;
-        for (i = 9; i < usersByBrand.size() + 9;i++) {
-            String id = usersByBrand.get(j).get("id").asString();
-            String gender =  ((User)userMongo.findUserById(id, false)).getGender();
-            if (gender.equalsIgnoreCase("male")) imageViews.get(i).setImage(new Image("man.png"));
-            if (gender.equalsIgnoreCase("female")) imageViews.get(i).setImage(new Image("woman.png"));
-            if (gender.equalsIgnoreCase("not specified")) imageViews.get(i).setImage(new Image("user.png"));
-            j++;
-        }
-        j = 0;
-        for (i = 9;i < usersByBrand.size() + 9;i++) {
-            labels.get(i).setText(usersByBrand.get(j).get("username").asString());
+        for (i = 9; i < list.size() + 9;i++) {
+            if (isUser) {
+                labels.get(i).setText(list.get(j).get("username").asString());
+                imageViews.get(i).setImage(new Image("user.png"));
+            } else {
+                imageViews.get(i).setImage(new Image(list.get(j).get("newPhone").get("picture").asString()));
+                labels.get(i).setText(list.get(j).get("newPhone").get("name").asString());
+            }
             j++;
         }
     }
 
-    private void setUsersByFollow(List<Label> labels, List<ImageView> imageViews, List<Record> usersByFollows) {
-        int i;
-        for (i = 0; i < imageViews.size();i++) {
-            String id = usersByFollows.get(i).get("id").asString();
-            User user = (User)userMongo.findUserById(id, false);
-            App.getInstance().setProfileImage(imageViews.get(i), user.getGender());
-            if (i+1 == usersByFollows.size()) {
-                break;
+    private void setListByFriends(List<Label> labels, List<ImageView> imageViews, List<Record> list, boolean isUser) {
+        for (int i = 0;i< imageViews.size();i++) {
+            if (isUser) {
+                User user = (User) userMongo.findUserById(list.get(i).get("id").asString(), false);
+                labels.get(i).setText(list.get(i).get("username").asString());
+                imageViews.get(i).setImage(new Image("user.png"));
+            } else {
+                labels.get(i).setText(list.get(i).get("p").get("name").asString());
+                imageViews.get(i).setImage(new Image(list.get(i).get("p").get("picture").asString()));
             }
-        }
-        for (i = 0;i < labels.size();i++) {
-            labels.get(i).setText(usersByFollows.get(i).get("username").asString());
-            if(i+1 == usersByFollows.size()) {
+            if(i+1 == list.size()) {
                 break;
             }
         }
@@ -300,7 +264,7 @@ public class ControllerViewRegisteredUser implements Initializable {
             }
         phones = phoneMongo.findPhones(text);
         if (phones.isEmpty()) {
-            App.getInstance().showInfoMessage("INFO", "There aren't phones with the name searched!");
+            stageManager.showInfoMessage("INFO", "There aren't phones with the name searched!");
             this.textFieldSearch.clear();
             return;
         }
@@ -310,27 +274,17 @@ public class ControllerViewRegisteredUser implements Initializable {
         this.labelDescription4.setText("");
         this.labelDescription2.setText("'" + text + "'...");
         this.setListPhones(this.imageViews, this.labels, phones);
-    }
+    }     //TODO add Search List Users
 
     private void setListPhones(List<ImageView> imageViews, List<Label> labels, List<Phone> phones) {
         this.clearList(this.imageViews, this.labels);
         this.textFieldSearch.clear();
-        int i = 0;
-        for (ImageView imageView: imageViews) {
-            Image image = new Image(phones.get(i).getPicture());
-            imageView.setImage(image);
+        for (int i = 0;i < labels.size(); i++) {
+            imageViews.get(i).setImage(new Image(phones.get(i).getPicture()));
+            labels.get(i).setText(phones.get(i).getName());
             if (i+1 == phones.size()) {
                 break;
             }
-            i++;
-        }
-        i = 0;
-        for (Label label: labels) {
-            label.setText(phones.get(i).getName());
-            if(i+1 == phones.size()) {
-                break;
-            }
-            i++;
         }
     }
 

@@ -87,8 +87,7 @@ public class ControllerViewUpdate implements Initializable {
         this.spinnerStreetNumber.setValueFactory(valueFactoryStreetNumber);
         this.spinnerYear.getValueFactory().setValue(year);
         this.spinnerMonth.getValueFactory().setValue(month);
-        this.spinnerDay.getValueFactory().setValue(day);
-        this.spinnerDay.getValueFactory().setValue(day);
+        this.spinnerDay.getValueFactory().setValue(day-1);
         this.spinnerStreetNumber.getValueFactory().setValue(user.getStreetNumber());
         this.comboBoxGender.setValue(user.getGender());
     }

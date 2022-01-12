@@ -1,8 +1,13 @@
 package it.unipi.dii.lsmsdb.phoneworld.view;
 
 import it.unipi.dii.lsmsdb.phoneworld.config.SpringFXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,5 +63,24 @@ public class StageManager {
         }
         scene.setRoot(rootNode);
         return scene;
+    }
+
+    public void showInfoMessage(String title, String message) {
+        Stage window = new Stage();
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setTitle(title);
+        window.setMinWidth(300);
+        window.setMinHeight(150);
+        window.setOnCloseRequest(e -> window.close());
+        Label label = new Label();
+        label.setText(message);
+        Button closeButton = new Button("Close");
+        closeButton.setOnAction(e -> window.close());
+        VBox vBox = new VBox(10);
+        vBox.getChildren().addAll(label, closeButton);
+        vBox.setAlignment(Pos.CENTER);
+        Scene scene = new Scene(vBox);
+        window.setScene(scene);
+        window.show();
     }
 }

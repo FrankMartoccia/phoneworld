@@ -97,7 +97,7 @@ public class ControllerViewUnUser implements Initializable {
         }
         phones = phoneMongo.findPhones(text);
         if (phones.isEmpty()) {
-            App.getInstance().showInfoMessage("INFO", "There aren't phones with the name searched!");
+            stageManager.showInfoMessage("INFO", "There aren't phones with the name searched!");
             this.textFieldSearch.clear();
             return;
         }
@@ -116,24 +116,24 @@ public class ControllerViewUnUser implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        App.getInstance().getUserNeo4j().addUser("61dc0d13e321a81c2770b6f3", "Paolo", "male");
-        App.getInstance().getUserNeo4j().addUser("61dc0d40f2c39e75656068bd", "Paolino", "male");
-        App.getInstance().getUserNeo4j().addUser("61dc0d5e6776357ac980be03", "Paoletto", "not specified");
+        App.getInstance().getUserNeo4j().addUser("61de1530538b5a365a79ab5b", "PaoloYeah", "male");
+        App.getInstance().getUserNeo4j().addUser("61df1a38bbbad21499ed0881", "Paolino", "male");
+        App.getInstance().getUserNeo4j().addUser("61df1a56bbbad21499ed0882", "Paoletto", "not specified");
         App.getInstance().getPhoneNeo4j().addPhone("phoneid1", "Xiaomi", "Mi 11", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");
         App.getInstance().getPhoneNeo4j().addPhone("phoneid2", "Xiaomi", "Mi 12", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");
         App.getInstance().getPhoneNeo4j().addPhone("phoneid3", "Apple", "iPhone XS", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");
-        App.getInstance().getUserNeo4j().addRelationship("61dc0d40f2c39e75656068bd", "phoneid2");
-        App.getInstance().getUserNeo4j().addRelationship("61dc0d5e6776357ac980be03", "phoneid3");
-        App.getInstance().getUserNeo4j().followRelationship("61dc0d13e321a81c2770b6f3", "61dc0d40f2c39e75656068bd");
-        App.getInstance().getUserNeo4j().followRelationship("61dc0d40f2c39e75656068bd", "61dc0d5e6776357ac980be03");
-        App.getInstance().getUserNeo4j().followRelationship("61dc0d13e321a81c2770b6f3", "3");
+        App.getInstance().getUserNeo4j().addRelationship("61de1530538b5a365a79ab5b", "phoneid2");
+        App.getInstance().getUserNeo4j().addRelationship("61df1a38bbbad21499ed0881", "phoneid3");
+        App.getInstance().getUserNeo4j().followRelationship("61de1530538b5a365a79ab5b", "61df1a38bbbad21499ed0881");
+        App.getInstance().getUserNeo4j().followRelationship("61df1a38bbbad21499ed0881", "61df1a56bbbad21499ed0882");
+        App.getInstance().getUserNeo4j().followRelationship("61de1530538b5a365a79ab5b", "3");
         App.getInstance().getUserNeo4j().addRelationship("3", "phoneid2");
         App.getInstance().getUserNeo4j().addRelationship("3", "phoneid3");
 
         this.buttonPhones.setDisable(true);
         List<Phone>phones = phoneMongo.findRecentPhones();
         if (phones.isEmpty()) {
-            App.getInstance().showInfoMessage("INFO", "Database is empty!");
+            stageManager.showInfoMessage("INFO", "Database is empty!");
             try {
                 Platform.exit();
                 System.exit(0);

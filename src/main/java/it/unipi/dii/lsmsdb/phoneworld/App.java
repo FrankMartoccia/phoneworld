@@ -4,6 +4,9 @@ import it.unipi.dii.lsmsdb.phoneworld.model.ModelBean;
 import it.unipi.dii.lsmsdb.phoneworld.repository.GraphNeo4j;
 import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneNeo4j;
 import it.unipi.dii.lsmsdb.phoneworld.repository.UserNeo4j;
+import it.unipi.dii.lsmsdb.phoneworld.services.ServicePhone;
+import it.unipi.dii.lsmsdb.phoneworld.services.ServiceReview;
+import it.unipi.dii.lsmsdb.phoneworld.services.ServiceUser;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.application.Application;
@@ -33,6 +36,9 @@ public class App extends Application {
     private UserNeo4j userNeo4j = new UserNeo4j(graphNeo4j);
     private PhoneNeo4j phoneNeo4j = new PhoneNeo4j(graphNeo4j);
     private ModelBean modelBean = new ModelBean();
+    private ServiceUser serviceUser = new ServiceUser();
+    private ServicePhone servicePhone = new ServicePhone();
+    private ServiceReview serviceReview = new ServiceReview();
     protected ConfigurableApplicationContext springContext;
     protected StageManager stageManager;
 
@@ -46,16 +52,24 @@ public class App extends Application {
         return modelBean;
     }
 
-    public GraphNeo4j getGraphNeo4j() {
-        return graphNeo4j;
-    }
-
     public UserNeo4j getUserNeo4j() {
         return userNeo4j;
     }
 
     public PhoneNeo4j getPhoneNeo4j() {
         return phoneNeo4j;
+    }
+
+    public ServiceUser getServiceUser() {
+        return serviceUser;
+    }
+
+    public ServicePhone getServicePhone() {
+        return servicePhone;
+    }
+
+    public ServiceReview getServiceReview() {
+        return serviceReview;
     }
 
     @Override
@@ -87,51 +101,6 @@ public class App extends Application {
 
     public static void main(String[] args) {
         Application.launch(args);
-    }
-
-    public void showInfoMessage(String title, String message) {
-        Stage window = new Stage();
-        window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle(title);
-        window.setMinWidth(300);
-        window.setMinHeight(150);
-        window.setOnCloseRequest(e -> window.close());
-        Label label = new Label();
-        label.setText(message);
-        Button closeButton = new Button("Close");
-        closeButton.setOnAction(e -> window.close());
-        VBox vBox = new VBox(10);
-        vBox.getChildren().addAll(label, closeButton);
-        vBox.setAlignment(Pos.CENTER);
-        Scene scene = new Scene(vBox);
-        window.setScene(scene);
-        window.show();
-    }
-
-
-    public String getHashedPassword(String passwordToHash, String salt) {
-        String generatedPassword = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(salt.getBytes());
-            byte[] bytes = md.digest(passwordToHash.getBytes());
-            StringBuilder sb = new StringBuilder();
-            for (byte aByte : bytes) {
-                sb.append(Integer.toString((aByte & 0xff) + 0x100, 16)
-                        .substring(1));
-            }
-            generatedPassword = sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return generatedPassword;
-    }
-
-    public String getSalt() {
-        SecureRandom sr = new SecureRandom();
-        byte[] salt = new byte[16];
-        sr.nextBytes(salt);
-        return Base64.getEncoder().encodeToString(salt);
     }
 
     public void setProfileImage(ImageView imageView, String gender) {

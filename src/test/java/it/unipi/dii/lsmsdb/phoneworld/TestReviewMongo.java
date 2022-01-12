@@ -1,7 +1,7 @@
 package it.unipi.dii.lsmsdb.phoneworld;
 
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
-import it.unipi.dii.lsmsdb.phoneworld.repository.ReviewMongo;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.ReviewMongo;
 import org.bson.Document;
 import org.junit.After;
 import org.junit.Before;

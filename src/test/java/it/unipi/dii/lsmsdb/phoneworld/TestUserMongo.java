@@ -3,7 +3,7 @@ package it.unipi.dii.lsmsdb.phoneworld;
 import it.unipi.dii.lsmsdb.phoneworld.model.Admin;
 import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
-import it.unipi.dii.lsmsdb.phoneworld.repository.UserMongo;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.UserMongo;
 import org.bson.Document;
 import org.junit.After;
 import org.junit.Before;
@@ -38,14 +38,14 @@ public class TestUserMongo {
 
     private void init() {
         Admin admin = new Admin("admin123", "ndas732neaj",
-                "dsaodd", true);
+                "dsaodd", "admin");
         Date dateOfBirth = new GregorianCalendar(1965, Calendar.FEBRUARY, 11).getTime();
         User user1 = new User("Frank", "kdasd", "dasdksamda",
-                false, "male", "Paul", "Murray", 21,
+                "user", "male", "Paul", "Murray", 21,
                 "street", "Las Vegas", "Nevada", "dnsak@gmail.com",
                 dateOfBirth, 57);
         User user2 = new User("Mario", "kdasd", "dasdksamda",
-                false, "male", "Paul", "Murray", 21,
+                "user", "male", "Paul", "Murray", 21,
                 "street", "Las Vegas", "Italy", "dnsak@gmail.com",
                 dateOfBirth, 23);
         userMongo.addUser(admin);
@@ -66,43 +66,44 @@ public class TestUserMongo {
 
     @Test
     public void testFindUsers() {
-        List<GenericUser> users = userMongo.findUsers("frank", false);
+        List<GenericUser> users = userMongo.findUsers("pinco", "user");
         assertEquals(0, users.size());
-        users = userMongo.findUsers("ank", false);
+        users = userMongo.findUsers("ank", "user");
         users.forEach(System.out::println);
         assertEquals(1, users.size());
     }
 
     @Test
     public void testFindUserById() {
-        Optional<GenericUser> users = Optional.ofNullable(userMongo.findUserById("11111",false));
-        assertEquals(users, Optional.empty());
-        users = Optional.ofNullable(userMongo.findUserById(id1,false));
-        if (users.isPresent()) {
-            System.out.println(users.get());
-            assertEquals(users.get().getId(), id1);
+        Optional<GenericUser> user = userMongo.findUserById("11111");
+        assertEquals(user, Optional.empty());
+        user = userMongo.findUserById(id1);
+        System.out.println(user);
+        if (user.isPresent()) {
+            System.out.println(user.get());
+            assertEquals(user.get().getId(), id1);
         }
     }
 
     @Test
     public void testUpdateUser() {
         Admin newAdmin = new Admin("admin1234", "ndas732neaj",
-                "dsaodd", true);
+                "dsaodd", "admin");
 
         Date dateOfBirth = new GregorianCalendar(1965, Calendar.FEBRUARY, 11).getTime();
         User newUser = new User("Franko", "kdasddd", "dasdksamda",
-                false, "male", "Paul", "Murray", 21,
+                "user", "male", "Paul", "Murray", 21,
                 "street", "Las Vegas", "Nevada", "dnsak@gmail.com",
                 dateOfBirth, 57);
         List<GenericUser> users = userMongo.getUserMongo().findAll();
         users.forEach(System.out::println);
-        userMongo.updateUser(id2, newUser,false);
-        userMongo.updateUser(id1, newAdmin, true);
+        userMongo.updateUser(id1, newAdmin, "admin");
+        userMongo.updateUser(id2, newUser,"user");
         users = userMongo.getUserMongo().findAll();
         users.forEach(System.out::println);
         assertEquals(3, users.size());
-        assertEquals(users.get(0).getUsername(), "admin1234");
-        assertEquals(users.get(1).getUsername(), "Franko");
+        assertEquals(users.get(2).getUsername(), "admin1234");
+        assertEquals(users.get(0).getUsername(), "Franko");
     }
 
     @Test

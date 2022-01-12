@@ -11,16 +11,16 @@ public abstract class GenericUser {
     protected String username;
     protected String salt;
     protected String hashedPassword;
-    protected boolean admin;
+    protected String _class;
 
     protected GenericUser() {
     }
 
-    protected GenericUser(String username, String salt, String hashedPassword, boolean admin) {
+    protected GenericUser(String username, String salt, String hashedPassword, String _class) {
         this.username = username;
         this.salt = salt;
         this.hashedPassword = hashedPassword;
-        this.admin = admin;
+        this._class = _class;
     }
 
     public String getId() {
@@ -39,10 +39,6 @@ public abstract class GenericUser {
         return hashedPassword;
     }
 
-    public boolean isAdmin() {
-        return admin;
-    }
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -55,7 +51,11 @@ public abstract class GenericUser {
         this.hashedPassword = hashedPassword;
     }
 
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
+    public String get_class() {
+        return _class;
+    }
+
+    public void set_class(String _class) {
+        this._class = _class;
     }
 }

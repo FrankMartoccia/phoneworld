@@ -1,8 +1,8 @@
 package it.unipi.dii.lsmsdb.phoneworld;
 
-import it.unipi.dii.lsmsdb.phoneworld.repository.GraphNeo4j;
-import it.unipi.dii.lsmsdb.phoneworld.repository.PhoneNeo4j;
-import it.unipi.dii.lsmsdb.phoneworld.repository.UserNeo4j;
+import it.unipi.dii.lsmsdb.phoneworld.repository.neo4j.GraphNeo4j;
+import it.unipi.dii.lsmsdb.phoneworld.repository.neo4j.PhoneNeo4j;
+import it.unipi.dii.lsmsdb.phoneworld.repository.neo4j.UserNeo4j;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,9 +38,9 @@ public class TestUserNeo4j {
                     "neo4j", "PhoneWorld");
             userNeo4j = new UserNeo4j(graphNeo4j);
             phoneNeo4j = new PhoneNeo4j(graphNeo4j);
-            userNeo4j.addUser("id1", "Paolo", "male");
-            userNeo4j.addUser("id2", "Paolino", "not specified");
-            userNeo4j.addUser("id3", "Paoletto", "male");
+            userNeo4j.addUser("id1", "Paolo");
+            userNeo4j.addUser("id2", "Paolino");
+            userNeo4j.addUser("id3", "Paoletto");
             phoneNeo4j.addPhone("phoneid1", "Xiaomi", "Mi 11", "picture");
             phoneNeo4j.addPhone("phoneid2", "Xiaomi", "Mi 12", "picture");
             phoneNeo4j.addPhone("phoneid3", "Apple", "iPhone XS", "picture");
@@ -76,7 +76,7 @@ public class TestUserNeo4j {
 
     @Test
     public void testUpdateUser() {
-        userNeo4j.updateUser("id1", "Paola", "female");
+        userNeo4j.updateUser("id1", "Paola");
         List<Record> records = userNeo4j.findUserById("id1");
         String username = records.get(0).get("username").asString();
         Assertions.assertEquals("Paola", username);

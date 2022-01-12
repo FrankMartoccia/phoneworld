@@ -1,4 +1,4 @@
-package it.unipi.dii.lsmsdb.phoneworld.repository;
+package it.unipi.dii.lsmsdb.phoneworld.repository.mongo;
 
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
 import org.springframework.data.mongodb.repository.MongoRepository;

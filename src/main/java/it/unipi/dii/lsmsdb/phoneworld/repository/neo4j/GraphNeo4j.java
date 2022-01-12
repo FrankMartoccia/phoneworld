@@ -1,4 +1,4 @@
-package it.unipi.dii.lsmsdb.phoneworld.repository;
+package it.unipi.dii.lsmsdb.phoneworld.repository.neo4j;
 
 import org.neo4j.driver.*;
 

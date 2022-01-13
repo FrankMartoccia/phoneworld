@@ -127,15 +127,14 @@ public class ControllerViewRegisteredUser implements Initializable {
             return;
         } else if (phonesByBrand.isEmpty()) {
             stageManager.showInfoMessage("INFO", "You don't have recommendations based on your favourite brand");
-            this.setListByFriends(labels, imageViews, phonesByFriends, false);
+            this.setElements(labels, imageViews, phonesByFriends, phonesByBrand, false);
             return;
         } else if (phonesByFriends.isEmpty()) {
             stageManager.showInfoMessage("INFO", "You don't have recommendations based on your following");
-            this.setListByBrand(labels, imageViews, phonesByBrand, false);
+            this.setElements(labels, imageViews, phonesByFriends, phonesByBrand, false);
             return;
         }
-        this.setListByFriends(labels, imageViews, phonesByFriends, false);
-        this.setListByBrand(labels, imageViews, phonesByBrand, false);
+        this.setElements(labels, imageViews, phonesByFriends, phonesByBrand, false);
     }
 
     private List<Label> createLabelList() {
@@ -213,15 +212,14 @@ public class ControllerViewRegisteredUser implements Initializable {
             return;
         } else if (usersByBrand.isEmpty()) {
             stageManager.showInfoMessage("INFO", "You don't have recommendations based on your favourite brand");
-            this.setListByFriends(labels, imageViews, usersByFollows, true);
+            this.setElements(labels, imageViews, usersByFollows, usersByBrand, true);
             return;
         } else if (usersByFollows.isEmpty()) {
             stageManager.showInfoMessage("INFO", "You don't have recommendations based on your following");
-            this.setListByBrand(labels, imageViews, usersByBrand, true);
+            this.setElements(labels, imageViews, usersByFollows, usersByBrand, true);
             return;
         }
-        this.setListByFriends(labels, imageViews, usersByFollows, true);
-        this.setListByBrand(labels, imageViews, usersByBrand, true);
+        this.setElements(labels, imageViews, usersByFollows, usersByBrand, true);
     }
 
 
@@ -243,12 +241,8 @@ public class ControllerViewRegisteredUser implements Initializable {
     private void setListByFriends(List<Label> labels, List<ImageView> imageViews, List<Record> list, boolean isUser) {
         for (int i = 0;i< imageViews.size();i++) {
             if (isUser) {
-                Optional<GenericUser> result = userMongo.findUserById(list.get(i).get("id").asString());
-                if (result.isPresent()) {
-                    User user = (User) result.get();
                     labels.get(i).setText(list.get(i).get("username").asString());
                     imageViews.get(i).setImage(new Image("user.png"));
-                }
             } else {
                 labels.get(i).setText(list.get(i).get("p").get("name").asString());
                 imageViews.get(i).setImage(new Image(list.get(i).get("p").get("picture").asString()));
@@ -256,6 +250,34 @@ public class ControllerViewRegisteredUser implements Initializable {
             if(i+1 == list.size()) {
                 break;
             }
+        }
+    }
+
+    private void setElements(List<Label> labels, List<ImageView> imageViews, List<Record> listFriends,
+                             List<Record> listBrand, boolean isUser) {
+        List<Record> genericList = listFriends;
+        int j = 0;
+        for (int i = 0;i< imageViews.size();i++) {
+            if (i == 9) {
+                genericList = listBrand;
+                j = 0;
+            }
+            if (isUser) {
+                labels.get(i).setText(genericList.get(j).get("username").asString());
+                imageViews.get(i).setImage(new Image("user.png"));
+            } else {
+                String testo = genericList.get(j).get("p").get("name").asString();
+                labels.get(i).setText(genericList.get(j).get("p").get("name").asString());
+                String picture = genericList.get(j).get("p").get("picture").asString();
+                imageViews.get(i).setImage(new Image(genericList.get(j).get("p").get("picture").asString()));
+            }
+            if(j+1 == genericList.size() && genericList==listBrand) {
+                break;
+            }
+            if (j+1 == genericList.size()) {
+                i = 8;
+            }
+            j++;
         }
     }
 

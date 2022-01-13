@@ -41,9 +41,9 @@ public class TestUserNeo4j {
             userNeo4j.addUser("id1", "Paolo");
             userNeo4j.addUser("id2", "Paolino");
             userNeo4j.addUser("id3", "Paoletto");
-            phoneNeo4j.addPhone("phoneid1", "Xiaomi", "Mi 11", "picture");
-            phoneNeo4j.addPhone("phoneid2", "Xiaomi", "Mi 12", "picture");
-            phoneNeo4j.addPhone("phoneid3", "Apple", "iPhone XS", "picture");
+            phoneNeo4j.addPhone("phoneid1", "Xiaomi", "Mi 11", "picture", 2020);
+            phoneNeo4j.addPhone("phoneid2", "Xiaomi", "Mi 12", "picture", 2021);
+            phoneNeo4j.addPhone("phoneid3", "Apple", "iPhone XS", "picture", 2019);
             userNeo4j.addRelationship("id1", "phoneid1");
             userNeo4j.addRelationship("id2", "phoneid2");
             userNeo4j.addRelationship("id3", "phoneid3");

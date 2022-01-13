@@ -85,7 +85,6 @@ public class ReviewMongo {
                 review.get().setDateOfReview(newReview.getDateOfReview());
                 review.get().setBody(newReview.getBody());
                 review.get().setRating(newReview.getRating());
-
                 this.addReview(review.get());
             }
         } catch (Exception e) {
@@ -175,7 +174,8 @@ public class ReviewMongo {
 
     public Document findTopPhonesByRating(int minReviews, int results) {
         GroupOperation groupOperation = group("$phoneId").avg("$rating")
-                .as("avgRating").count().as("numReviews");
+                .as("avgRating").count().as("numReviews")
+                .first("$phoneName").as("phone");
         MatchOperation matchOperation = match(new Criteria("numReviews").gte(minReviews));
         SortOperation sortOperation = sort(Sort.by(Sort.Direction.DESC, "avgRating",
                 "numReviews"));
@@ -183,7 +183,8 @@ public class ReviewMongo {
         ProjectionOperation projectionOperation = project()
                 .andExpression("_id").as("phoneId")
                 .andExpression("avgRating").as("rating").andExclude("_id")
-                .andExpression("numReviews").as("reviews");
+                .andExpression("numReviews").as("reviews")
+                .andExpression("phone").as("phoneName");
         Aggregation aggregation = newAggregation(groupOperation, matchOperation,
                 sortOperation, limitOperation, projectionOperation);
         AggregationResults<Review> result = mongoOperations

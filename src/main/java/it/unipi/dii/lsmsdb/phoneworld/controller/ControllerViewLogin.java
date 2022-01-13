@@ -44,7 +44,7 @@ public class ControllerViewLogin {
 
     public void onClickLogin(ActionEvent actionEvent) {
         String password = textFieldPassword.getText();
-        String username = textFieldUsEm.getText();
+        String username = textFieldUsEm.getText().trim();
         if (password.isEmpty() && username.isEmpty()) {
             stageManager.showInfoMessage("ERROR", "You have to insert your " +
                     "username and your password");

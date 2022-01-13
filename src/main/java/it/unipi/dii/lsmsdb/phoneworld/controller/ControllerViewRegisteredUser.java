@@ -107,7 +107,7 @@ public class ControllerViewRegisteredUser implements Initializable {
     }
 
     private void initComboBox() {
-        this.comboBoxFilter.getItems().addAll("Name", "Ram", "Storage", "Chipset", "Battery Size", "Camera Pixels");
+        this.comboBoxFilter.getItems().addAll("Name", "Ram (GB)", "Storage (GB)", "Chipset", "Battery Size (mAh)", "Camera Pixels (MP)");
         this.comboBoxFilter.setValue("Name");
     }
 
@@ -250,8 +250,8 @@ public class ControllerViewRegisteredUser implements Initializable {
                     imageViews.get(i).setImage(new Image("user.png"));
                 }
             } else {
-                labels.get(i).setText(list.get(i).get("p").get("name").asString());
-                imageViews.get(i).setImage(new Image(list.get(i).get("p").get("picture").asString()));
+                labels.get(i).setText(list.get(i).get("newPhone").get("name").asString());
+                imageViews.get(i).setImage(new Image(list.get(i).get("newPhone").get("picture").asString()));
             }
             if(i+1 == list.size()) {
                 break;

@@ -194,12 +194,13 @@ public class ReviewMongo {
 
     public Document findMostActiveUsers(int number) {
         GroupOperation groupOperation = group("$userId").count().
-                as("numReviews");
+                as("numReviews").first("$username").as("user");
         SortOperation sortOperation = sort(Sort.by(Sort.Direction.DESC, "numReviews"));
         LimitOperation limitOperation = limit(number);
         ProjectionOperation projectionOperation = project()
                 .andExpression("_id").as("userId")
-                .andExpression("numReviews").as("Reviews").andExclude("_id");
+                .andExpression("numReviews").as("Reviews").andExclude("_id")
+                .andExpression("user").as("username");
         Aggregation aggregation = newAggregation(groupOperation, sortOperation, limitOperation,
                 projectionOperation);
         AggregationResults<Review> result = mongoOperations

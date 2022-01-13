@@ -2,7 +2,6 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
-import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
@@ -24,7 +23,6 @@ import org.springframework.stereotype.Component;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Component
@@ -222,37 +220,6 @@ public class ControllerViewRegisteredUser implements Initializable {
         this.setElements(labels, imageViews, usersByFollows, usersByBrand, true);
     }
 
-
-    private void setListByBrand(List<Label> labels, List<ImageView> imageViews, List<Record> list, boolean isUser){
-        int i;
-        int j = 0;
-        for (i = 9; i < list.size() + 9;i++) {
-            if (isUser) {
-                labels.get(i).setText(list.get(j).get("username").asString());
-                imageViews.get(i).setImage(new Image("user.png"));
-            } else {
-                imageViews.get(i).setImage(new Image(list.get(j).get("newPhone").get("picture").asString()));
-                labels.get(i).setText(list.get(j).get("newPhone").get("name").asString());
-            }
-            j++;
-        }
-    }
-
-    private void setListByFriends(List<Label> labels, List<ImageView> imageViews, List<Record> list, boolean isUser) {
-        for (int i = 0;i< imageViews.size();i++) {
-            if (isUser) {
-                    labels.get(i).setText(list.get(i).get("username").asString());
-                    imageViews.get(i).setImage(new Image("user.png"));
-            } else {
-                labels.get(i).setText(list.get(i).get("newPhone").get("name").asString());
-                imageViews.get(i).setImage(new Image(list.get(i).get("newPhone").get("picture").asString()));
-            }
-            if(i+1 == list.size()) {
-                break;
-            }
-        }
-    }
-
     private void setElements(List<Label> labels, List<ImageView> imageViews, List<Record> listFriends,
                              List<Record> listBrand, boolean isUser) {
         List<Record> genericList = listFriends;
@@ -266,10 +233,8 @@ public class ControllerViewRegisteredUser implements Initializable {
                 labels.get(i).setText(genericList.get(j).get("username").asString());
                 imageViews.get(i).setImage(new Image("user.png"));
             } else {
-                String testo = genericList.get(j).get("p").get("name").asString();
-                labels.get(i).setText(genericList.get(j).get("p").get("name").asString());
-                String picture = genericList.get(j).get("p").get("picture").asString();
-                imageViews.get(i).setImage(new Image(genericList.get(j).get("p").get("picture").asString()));
+                labels.get(i).setText(genericList.get(j).get("newPhone").get("name").asString());
+                imageViews.get(i).setImage(new Image(genericList.get(j).get("newPhone").get("picture").asString()));
             }
             if(j+1 == genericList.size() && genericList==listBrand) {
                 break;

@@ -66,7 +66,7 @@ public class PhoneMongo {
             } else if (parameter.equals("Chipset")){
                 phones.addAll(phoneMongo.findByChipsetRegexOrderByReleaseYearDesc(name,
                         Sort.by(Sort.Direction.DESC, "releaseYear")));
-            } else if (parameter.equals("Battery size")){
+            } else if (parameter.equals("Battery Size")){
                 phones.addAll(phoneMongo.findByBatterySizeRegexOrderByReleaseYearDesc(name,
                         Sort.by(Sort.Direction.DESC, "releaseYear")));
             } else if (parameter.equals("Camera Pixels")){
@@ -146,7 +146,6 @@ public class PhoneMongo {
         try {
             Query query = new Query();
             query.with(Sort.by(Sort.Direction.DESC, "releaseYear"));
-            query.limit(18);
             phones = mongoOperations.find(query, Phone.class);
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());

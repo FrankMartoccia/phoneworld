@@ -66,9 +66,7 @@ public class ControllerViewProfile implements Initializable {
         int day = calendar.get(Calendar.DAY_OF_MONTH)-1;
         this.labelBirthday.setText(calendar.get(Calendar.YEAR) + "-" + "0" + month + "-" + "0" + day);
         this.labelEmail.setText(user.getEmail());
-        if (user.getGender().equalsIgnoreCase("male")) this.imageViewProfile.setImage(new Image("man.png"));
-        if (user.getGender().equalsIgnoreCase("female")) this.imageViewProfile.setImage(new Image("woman.png"));
-        if (user.getGender().equalsIgnoreCase("user")) this.imageViewProfile.setImage(new Image("user.png"));
+        this.imageViewProfile.setImage(new Image("user.png"));
 
     }
 

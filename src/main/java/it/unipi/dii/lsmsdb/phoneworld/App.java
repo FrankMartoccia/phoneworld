@@ -103,9 +103,4 @@ public class App extends Application {
         Application.launch(args);
     }
 
-    public void setProfileImage(ImageView imageView, String gender) {
-        if (gender.equalsIgnoreCase("male")) imageView.setImage(new Image("man.png"));
-        if (gender.equalsIgnoreCase("female")) imageView.setImage(new Image("woman.png"));
-        if (gender.equalsIgnoreCase("not specified")) imageView.setImage(new Image("user.png"));
-    }
 }

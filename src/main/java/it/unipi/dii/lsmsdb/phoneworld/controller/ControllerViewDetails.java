@@ -63,7 +63,7 @@ public class ControllerViewDetails implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         User user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
-        App.getInstance().setProfileImage(imageViewPhoto, user.getGender());
+        imageViewPhoto.setImage(new Image("user.png"));
         this.labelUsername.setText(user.getUsername());
         this.labelFirstName.setText(user.getFirstName());
         this.labelLastName.setText(user.getLastName());

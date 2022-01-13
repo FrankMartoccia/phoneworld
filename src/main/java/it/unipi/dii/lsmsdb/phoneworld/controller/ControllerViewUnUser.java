@@ -6,6 +6,7 @@ import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -37,6 +38,8 @@ public class ControllerViewUnUser implements Initializable {
     @FXML private Button buttonLogin;
     @FXML private Button buttonUsers;
     @FXML private Button buttonSearch;
+    @FXML private Button buttonPrevious;
+    @FXML private Button buttonNext;
     @FXML private Label labelPhone1;
     @FXML private Label labelPhone2;
     @FXML private Label labelPhone3;
@@ -80,6 +83,9 @@ public class ControllerViewUnUser implements Initializable {
 
     private List<ImageView> imageViews = new ArrayList<>();
     private List<Label> labels = new ArrayList<>();
+    private List<Phone> phones = new ArrayList<>();
+    private int counterPages = 0;
+    private int remainingElem;
 
     @Autowired @Lazy
     public ControllerViewUnUser(StageManager stageManager) {
@@ -87,8 +93,9 @@ public class ControllerViewUnUser implements Initializable {
     }
 
     public void actionSearch() {
+        this.buttonPrevious.setDisable(true);
+        this.counterPages = 0;
         String text = this.textFieldSearch.getText();
-        List<Phone> phones = new ArrayList<>();
         if (text.isEmpty()) {
             phones = phoneMongo.findRecentPhones();
             labelPhones.setText("LATEST PHONES...");
@@ -103,6 +110,8 @@ public class ControllerViewUnUser implements Initializable {
         }
         labelPhones.setText("'" + text + "'...");
         this.setListPhones(this.imageViews, this.labels, phones);
+        this.buttonNext.setDisable(false);
+        if (remainingElem < imageViews.size()) this.buttonNext.setDisable(true);
     }
 
     public void actionClickOnUsers() {
@@ -130,8 +139,9 @@ public class ControllerViewUnUser implements Initializable {
         App.getInstance().getUserNeo4j().addRelationship("3", "phoneid2");
         App.getInstance().getUserNeo4j().addRelationship("3", "phoneid3");
 
+        this.buttonPrevious.setDisable(true);
         this.buttonPhones.setDisable(true);
-        List<Phone>phones = phoneMongo.findRecentPhones();
+        phones = phoneMongo.findRecentPhones();
         if (phones.isEmpty()) {
             stageManager.showInfoMessage("INFO", "Database is empty!");
             try {
@@ -144,28 +154,23 @@ public class ControllerViewUnUser implements Initializable {
         this.imageViews = this.createImageViewList();
         this.labels = this.createLabelList();
         this.setListPhones(imageViews,labels, phones);
+        if (remainingElem < imageViews.size()) this.buttonNext.setDisable(true);
     }
 
     private void setListPhones(List<ImageView> imageViews, List<Label> labels, List<Phone> phones) {
         this.clearList(this.imageViews, this.labels);
         this.textFieldSearch.clear();
-        int i = 0;
-        for (ImageView imageView: imageViews) {
-            Image image = new Image(phones.get(i).getPicture());
-            imageView.setImage(image);
+        for (int i = 0; i< imageViews.size();i++) {
+            labels.get(i).setText(phones.get(i + counterPages*18).getName());
+            Image image = new Image(phones.get(i + counterPages*18).getPicture());
+            imageViews.get(i).setImage(image);
             if (i+1 == phones.size()) {
                 break;
             }
-            i++;
         }
-        i = 0;
-        for (Label label: labels) {
-            label.setText(phones.get(i).getName());
-            if(i+1 == phones.size()) {
-                break;
-            }
-            i++;
-        }
+        remainingElem = phones.size() - (counterPages + 1)*18;
+        System.out.println(counterPages);
+        System.out.println(remainingElem);
     }
 
     private List<Label> createLabelList() {
@@ -221,5 +226,19 @@ public class ControllerViewUnUser implements Initializable {
         for (Label label: labels) {
             label.setText("");
         }
+    }
+
+    public void actionClickOnPrevious(ActionEvent actionEvent) {
+        this.buttonNext.setDisable(false);
+        this.counterPages--;
+        if (counterPages == 0) this.buttonPrevious.setDisable(true);
+        this.setListPhones(this.imageViews, this.labels, this.phones);
+    }
+
+    public void actionClickOnNext(ActionEvent actionEvent) {
+        if (counterPages==0) this.buttonPrevious.setDisable(false);
+        this.counterPages++;
+        this.setListPhones(this.imageViews, this.labels, this.phones);
+        if (remainingElem < imageViews.size()) this.buttonNext.setDisable(true);
     }
 }

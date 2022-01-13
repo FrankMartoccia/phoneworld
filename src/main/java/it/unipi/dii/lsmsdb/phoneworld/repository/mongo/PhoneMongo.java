@@ -54,22 +54,19 @@ public class PhoneMongo {
             } else if (parameter.equals("Name")){
                 phones.addAll(phoneMongo.findByNameRegexOrderByReleaseYearDesc(name,
                         Sort.by(Sort.Direction.DESC, "releaseYear")));
-            } else if (parameter.equals("Os")){
-                phones.addAll(phoneMongo.findByOsRegexOrderByReleaseYearDesc(name,
-                        Sort.by(Sort.Direction.DESC, "releaseYear")));
-            } else if (parameter.equals("Ram")){
+            } else if (parameter.equals("Ram (GB)")){
                 phones.addAll(phoneMongo.findByRamRegexOrderByReleaseYearDesc(name,
                         Sort.by(Sort.Direction.DESC, "releaseYear")));
-            } else if (parameter.equals("Storage")){
+            } else if (parameter.equals("Storage (GB)")){
                 phones.addAll(phoneMongo.findByStorageRegexOrderByReleaseYearDesc(name,
                         Sort.by(Sort.Direction.DESC, "releaseYear")));
             } else if (parameter.equals("Chipset")){
                 phones.addAll(phoneMongo.findByChipsetRegexOrderByReleaseYearDesc(name,
                         Sort.by(Sort.Direction.DESC, "releaseYear")));
-            } else if (parameter.equals("Battery Size")){
+            } else if (parameter.equals("Battery Size (mAh)")){
                 phones.addAll(phoneMongo.findByBatterySizeRegexOrderByReleaseYearDesc(name,
                         Sort.by(Sort.Direction.DESC, "releaseYear")));
-            } else if (parameter.equals("Camera Pixels")){
+            } else if (parameter.equals("Camera Pixels (MP)")){
                 phones.addAll(phoneMongo.findByCameraPixelsRegexOrderByReleaseYearDesc(name,
                         Sort.by(Sort.Direction.DESC, "releaseYear")));
             }

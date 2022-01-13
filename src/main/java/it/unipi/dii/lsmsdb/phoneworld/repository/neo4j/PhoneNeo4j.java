@@ -88,11 +88,11 @@ public class PhoneNeo4j{
     public List<Record> findSuggestedPhonesByFriends(String id) {
         List<Record> result = new ArrayList<>();
         try {
-            return graphNeo4j.read("MATCH (u1:User{id:$id})-[:FOLLOWS]->(u2:User)-[:ADDS]->(p:Phone) " +
-                    "WHERE u1.id <> u2.id AND NOT EXISTS ((u1)-[:ADDS]->(p)) " +
-                    "WITH p " +
-                    "ORDER BY p.releaseYear DESC " +
-                    "RETURN DISTINCT p " +
+            return graphNeo4j.read("MATCH (u1:User{id:$id})-[:FOLLOWS]->(u2:User)-[:ADDS]->(newPhone:Phone) " +
+                    "WHERE u1.id <> u2.id AND NOT EXISTS ((u1)-[:ADDS]->(newPhone)) " +
+                    "WITH newPhone " +
+                    "ORDER BY newPhone.releaseYear DESC " +
+                    "RETURN DISTINCT newPhone " +
                     "LIMIT 9", parameters("id",id));
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());

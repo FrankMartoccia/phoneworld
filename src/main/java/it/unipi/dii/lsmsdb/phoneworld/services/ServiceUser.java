@@ -25,7 +25,6 @@ public class ServiceUser {
         return generatedPassword;
     }
 
-
     public String getSalt() {
         SecureRandom sr = new SecureRandom();
         byte[] salt = new byte[16];

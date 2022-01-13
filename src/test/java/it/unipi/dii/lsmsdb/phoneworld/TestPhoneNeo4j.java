@@ -99,8 +99,8 @@ public class TestPhoneNeo4j {
     @Test
     public void testSuggestedPhonesByFriends() {
         List<Record> records = phoneNeo4j.findSuggestedPhonesByFriends("userId1");
-        String name = String.valueOf(records.get(0).get("p").get("name").asString());
-        System.out.println(records.get(0).get("p"));
+        String name = String.valueOf(records.get(0).get("newPhone").get("name").asString());
+        System.out.println(records.get(0).get("newPhone"));
         Assertions.assertEquals("Galaxy S20",name);
     }
 

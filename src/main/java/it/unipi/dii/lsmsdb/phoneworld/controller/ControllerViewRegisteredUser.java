@@ -13,10 +13,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.neo4j.driver.Record;
@@ -36,7 +33,8 @@ public class ControllerViewRegisteredUser implements Initializable {
     @FXML private Button buttonPhones;
     @FXML private Button buttonLogin;
     @FXML private Button buttonUsers;
-    @FXML private Button buttonSearch;
+    @FXML private Button buttonPrevious;
+    @FXML private Button buttonNext;
     @FXML private Label label1;
     @FXML private Label label2;
     @FXML private Label label3;
@@ -79,6 +77,7 @@ public class ControllerViewRegisteredUser implements Initializable {
     @FXML private ImageView image18;
     @FXML private TextField textFieldSearch;
     @FXML private Separator separator;
+    @FXML private ComboBox<String> comboBoxFilter;
 
     private List<ImageView> imageViews = new ArrayList<>();
     private List<Label> labels = new ArrayList<>();
@@ -103,7 +102,13 @@ public class ControllerViewRegisteredUser implements Initializable {
         this.labels = this.createLabelList();
         user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
         this.buttonLogin.setText("Hi, " + user.getUsername());
+        this.initComboBox();
         this.initViewPhones();
+    }
+
+    private void initComboBox() {
+        this.comboBoxFilter.getItems().addAll("Name", "Ram", "Storage", "Chipset", "Battery Size", "Camera Pixels");
+        this.comboBoxFilter.setValue("Name");
     }
 
     private void initViewPhones() {
@@ -267,7 +272,7 @@ public class ControllerViewRegisteredUser implements Initializable {
             this.setListPhones(this.imageViews, this.labels, phones);
             return;
             }
-        phones = phoneMongo.findPhones(text, "Name");
+        phones = phoneMongo.findPhones(text, this.comboBoxFilter.getValue());
         if (phones.isEmpty()) {
             stageManager.showInfoMessage("INFO", "There aren't phones with the name searched!");
             this.textFieldSearch.clear();
@@ -318,5 +323,11 @@ public class ControllerViewRegisteredUser implements Initializable {
         User user = null;
         App.getInstance().getModelBean().putBean(Constants.CURRENT_USER, user);
         stageManager.switchScene(FxmlView.UNUSER);
+    }
+
+    public void actionClickOnNext(ActionEvent actionEvent) {
+    }
+
+    public void actionClickOnPrevious(ActionEvent actionEvent) {
     }
 }

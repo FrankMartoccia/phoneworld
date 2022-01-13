@@ -137,4 +137,16 @@ public class StageManager {
         imageViews.add(image17);
         imageViews.add(image18);
     }
+
+    public void clearList(List<ImageView> imageViews, List<Label> labels) {
+        imageViews.clear();
+        labels.clear();
+    }
+
+    public void setNullList(List<ImageView> imageViews, List<Label> labels) {
+        for (int i = 0;i <labels.size();i++) {
+            imageViews.get(i).setImage(null);
+            labels.get(i).setText("");
+        }
+    }
 }

@@ -160,7 +160,6 @@ public class ControllerViewUnUser implements Initializable {
     }
 
     private void setListPhones(List<ImageView> imageViews, List<Label> labels, List<Phone> phones) {
-        this.clearList(this.imageViews, this.labels);
         this.textFieldSearch.clear();
         for (int i = 0; i< imageViews.size();i++) {
             labels.get(i).setText(phones.get(i + (counterPages*18)).getName());
@@ -171,15 +170,6 @@ public class ControllerViewUnUser implements Initializable {
             }
         }
         remainingElem = phones.size() - (counterPages + 1)*18;
-    }
-
-    private void clearList(List<ImageView> imageViews, List<Label> labels) {
-        for (ImageView imageView: imageViews) {
-            imageView.setImage(null);
-        }
-        for (Label label: labels) {
-            label.setText("");
-        }
     }
 
     public void actionClickOnPrevious(ActionEvent actionEvent) {

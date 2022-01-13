@@ -2,6 +2,7 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
+import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
@@ -83,7 +84,9 @@ public class ControllerViewRegisteredUser implements Initializable {
     private List<Record> phonesByBrand = new ArrayList<>();
     private List<Record> usersByFollows = new ArrayList<>();
     private List<Record> usersByBrand = new ArrayList<>();
+    private List<Phone> phones = new ArrayList<>();
     private User user;
+    private List<GenericUser> users = new ArrayList<>();
 
     private final StageManager stageManager;
 
@@ -91,7 +94,6 @@ public class ControllerViewRegisteredUser implements Initializable {
     private PhoneMongo phoneMongo;
     @Autowired
     private UserMongo userMongo;
-
 
     @Autowired @Lazy
     public ControllerViewRegisteredUser(StageManager stageManager) {
@@ -107,7 +109,43 @@ public class ControllerViewRegisteredUser implements Initializable {
         user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
         this.buttonLogin.setText("Hi, " + user.getUsername());
         this.initComboBox();
-        this.initViewPhones();
+        this.buttonPhones.setDisable(true);
+        this.buttonUsers.setDisable(false);
+        phonesByFriends = App.getInstance().getPhoneNeo4j().findSuggestedPhonesByFriends(user.getId());
+        phonesByBrand = App.getInstance().getPhoneNeo4j().findSuggestedPhonesByBrand(user.getId());
+        usersByFollows = App.getInstance().getUserNeo4j().findSuggestedUsersByFriends(user.getId());
+        usersByBrand = App.getInstance().getUserNeo4j().findSuggestedUsersByBrand(user.getId());
+        this.initScene(phonesByFriends, phonesByBrand, false);
+    }
+
+    private void initScene(List<Record> listFriends, List<Record> listBrand, boolean isUser) {
+        this.stageManager.setNullList(this.imageViews, this.labels);
+        this.separator.setVisible(true);
+        if (isUser) {
+            this.labelDescription1.setText("USERS FOLLOWED BY");
+            this.labelDescription2.setText("THOSE YOU FOLLOW");
+            this.labelDescription3.setText("USERS THAT LIKE YOUR");
+            this.labelDescription4.setText("FAVOURITE BRAND");
+        } else {
+            this.labelDescription1.setText("PHONES LIKED BY");
+            this.labelDescription2.setText("THOSE YOU FOLLOW");
+            this.labelDescription3.setText("PHONES OF YOUR");
+            this.labelDescription4.setText("FAVOURITE BRAND");
+        }
+        if (listFriends.isEmpty() && listBrand.isEmpty()) {
+            stageManager.showInfoMessage("INFO", "You don't have recommendations based on your " +
+                    "following and your favourite brand");
+            return;
+        } else if (listBrand.isEmpty()) {
+            stageManager.showInfoMessage("INFO", "You don't have recommendations based on your favourite brand");
+            this.setElements(listFriends, listBrand, isUser);
+            return;
+        } else if (listFriends.isEmpty()) {
+            stageManager.showInfoMessage("INFO", "You don't have recommendations based on your following");
+            this.setElements(listFriends, listBrand, isUser);
+            return;
+        }
+        this.setElements(listFriends, listBrand, isUser);
     }
 
     private void initComboBox() {
@@ -115,86 +153,21 @@ public class ControllerViewRegisteredUser implements Initializable {
         this.comboBoxFilter.setValue("Name");
     }
 
-    private void initViewPhones() {
-        this.labelDescription1.setText("PHONES LIKED BY");
-        this.labelDescription2.setText("THOSE YOU FOLLOW:");
-        this.labelDescription3.setText("PHONES OF YOUR");
-        this.labelDescription4.setText("FAVOURITE BRAND:");
-        this.clearList(imageViews, labels);
-        this.buttonPhones.setDisable(true);
-        this.buttonUsers.setDisable(false);
-        phonesByFriends = App.getInstance().getPhoneNeo4j().findSuggestedPhonesByFriends(user.getId());
-        phonesByBrand = App.getInstance().getPhoneNeo4j().findSuggestedPhonesByBrand(user.getId());
-        if (phonesByFriends.isEmpty() && phonesByBrand.isEmpty()) {
-            stageManager.showInfoMessage("INFO", "You don't have recommendations based on your " +
-                    "following and your favourite brand");
-            return;
-        } else if (phonesByBrand.isEmpty()) {
-            stageManager.showInfoMessage("INFO", "You don't have recommendations based on your favourite brand");
-            this.setElements(labels, imageViews, phonesByFriends, phonesByBrand, false);
-            return;
-        } else if (phonesByFriends.isEmpty()) {
-            stageManager.showInfoMessage("INFO", "You don't have recommendations based on your following");
-            this.setElements(labels, imageViews, phonesByFriends, phonesByBrand, false);
-            return;
-        }
-        this.setElements(labels, imageViews, phonesByFriends, phonesByBrand, false);
-    }
-
-    private void clearList(List<ImageView> imageViews, List<Label> labels) {
-        for (ImageView imageView: imageViews) {
-            imageView.setImage(null);
-        }
-        for (Label label: labels) {
-            label.setText("");
-        }
-    }
-
-    public void actionClickOnUsers(ActionEvent actionEvent) {
-        this.initViewUsers();
-    }
-
-    private void initViewUsers() {
-        this.labelDescription1.setText("USERS FOLLOWED BY");
-        this.labelDescription2.setText("THOSE YOU FOLLOW:");
-        this.labelDescription3.setText("USERS THAT LIKE YOUR");
-        this.labelDescription4.setText("FAVOURITE BRAND:");
-        this.clearList(imageViews, labels);
-        this.buttonPhones.setDisable(false);
-        this.buttonUsers.setDisable(true);
-        usersByFollows = App.getInstance().getUserNeo4j().findSuggestedUsersByFriends(user.getId());
-        usersByBrand = App.getInstance().getUserNeo4j().findSuggestedUsersByBrand(user.getId());
-        if (usersByFollows.isEmpty() && usersByBrand.isEmpty()) {
-            stageManager.showInfoMessage("INFO", "You don't have recommendations based on your " +
-                    "following and your favourite brand");
-            return;
-        } else if (usersByBrand.isEmpty()) {
-            stageManager.showInfoMessage("INFO", "You don't have recommendations based on your favourite brand");
-            this.setElements(labels, imageViews, usersByFollows, usersByBrand, true);
-            return;
-        } else if (usersByFollows.isEmpty()) {
-            stageManager.showInfoMessage("INFO", "You don't have recommendations based on your following");
-            this.setElements(labels, imageViews, usersByFollows, usersByBrand, true);
-            return;
-        }
-        this.setElements(labels, imageViews, usersByFollows, usersByBrand, true);
-    }
-
-    private void setElements(List<Label> labels, List<ImageView> imageViews, List<Record> listFriends,
+    private void setElements(List<Record> listFriends,
                              List<Record> listBrand, boolean isUser) {
         List<Record> genericList = listFriends;
         int j = 0;
-        for (int i = 0;i< imageViews.size();i++) {
+        for (int i = 0;i< this.imageViews.size();i++) {
             if (i == 9) {
                 genericList = listBrand;
                 j = 0;
             }
             if (isUser) {
-                labels.get(i).setText(genericList.get(j).get("username").asString());
-                imageViews.get(i).setImage(new Image("user.png"));
+                this.labels.get(i).setText(genericList.get(j).get("username").asString());
+                this.imageViews.get(i).setImage(new Image("user.png"));
             } else {
-                labels.get(i).setText(genericList.get(j).get("newPhone").get("name").asString());
-                imageViews.get(i).setImage(new Image(genericList.get(j).get("newPhone").get("picture").asString()));
+                this.labels.get(i).setText(genericList.get(j).get("newPhone").get("name").asString());
+                this.imageViews.get(i).setImage(new Image(genericList.get(j).get("newPhone").get("picture").asString()));
             }
             if(j+1 == genericList.size() && genericList==listBrand) {
                 break;
@@ -207,41 +180,66 @@ public class ControllerViewRegisteredUser implements Initializable {
     }
 
     public void actionSearch(ActionEvent actionEvent) {
-        String text = this.textFieldSearch.getText();
-        List<Phone> phones = new ArrayList<>();
-        if (text.isEmpty()) {
-            this.separator.setVisible(false);
-            phones = phoneMongo.findRecentPhones();
-            this.labelDescription1.setText("");
-            this.labelDescription3.setText("");
-            this.labelDescription4.setText("");
-            this.labelDescription2.setText("LATEST PHONES...");
-            this.setListPhones(this.imageViews, this.labels, phones);
-            return;
-            }
-        phones = phoneMongo.findPhones(text, this.comboBoxFilter.getValue());
-        if (phones.isEmpty()) {
-            stageManager.showInfoMessage("INFO", "There aren't phones with the name searched!");
-            this.textFieldSearch.clear();
-            return;
-        }
-        this.separator.setVisible(false);
         this.labelDescription1.setText("");
         this.labelDescription3.setText("");
         this.labelDescription4.setText("");
-        this.labelDescription2.setText("'" + text + "'...");
-        this.setListPhones(this.imageViews, this.labels, phones);
-    }     //TODO add Search List Users
-
-    private void setListPhones(List<ImageView> imageViews, List<Label> labels, List<Phone> phones) {
-        this.clearList(this.imageViews, this.labels);
+        String text = this.textFieldSearch.getText().trim();
         this.textFieldSearch.clear();
-        for (int i = 0;i < labels.size(); i++) {
-            imageViews.get(i).setImage(new Image(phones.get(i).getPicture()));
-            labels.get(i).setText(phones.get(i).getName());
-            if (i+1 == phones.size()) {
-                break;
+        if (text.isEmpty()) {
+            if (this.buttonPhones.isDisabled()) {
+                this.separator.setVisible(false);
+                this.phones = phoneMongo.findRecentPhones();
+                this.labelDescription2.setText("LATEST PHONES...");
+                this.setListPhones(this.phones);
+                return;
+            } else {
+                this.textFieldSearch.clear();
+                stageManager.showInfoMessage("ERROR", "You didn't type a username!");
+                return;
             }
+            }
+        if (this.buttonPhones.isDisabled()) {
+            this.phones = phoneMongo.findPhones(text, this.comboBoxFilter.getValue());
+            if (phones.isEmpty()) {
+                this.textFieldSearch.clear();
+                stageManager.showInfoMessage("INFO", "There aren't phones with the parameter searched");
+                return;
+            }
+            this.separator.setVisible(false);
+            this.labelDescription2.setText("'" + text + "'...");
+            this.setListPhones(this.phones);
+        } else {
+             users = userMongo.findUsers(text, "user");
+             if (users.isEmpty()) {
+                 this.textFieldSearch.clear();
+                 stageManager.showInfoMessage("INFO", "There aren't users with the username searched");
+                 return;
+             }
+             this.separator.setVisible(false);
+             this.labelDescription2.setText("'" + text + "'...");
+             this.setListUsers(this.users);
+        }
+    }
+
+    private void setListUsers(List<GenericUser> users) {
+        stageManager.setNullList(this.imageViews, this.labels);
+        for (int i = 0;i < this.labels.size(); i++) {
+                this.imageViews.get(i).setImage(new Image("user.png"));
+                this.labels.get(i).setText(users.get(i).getUsername());
+                if (i+1 == phones.size()) {
+                    break;
+                }
+        }
+    }
+
+    private void setListPhones(List<Phone> phones) {
+        stageManager.setNullList(this.imageViews, this.labels);
+        for (int i = 0;i < this.labels.size(); i++) {
+                this.imageViews.get(i).setImage(new Image(phones.get(i).getPicture()));
+                this.labels.get(i).setText(phones.get(i).getName());
+                if (i+1 == phones.size()) {
+                    break;
+                }
         }
     }
 
@@ -251,19 +249,35 @@ public class ControllerViewRegisteredUser implements Initializable {
     }
 
     public void onSuggestedPhones(ActionEvent actionEvent) {
-        this.initViewPhones();
+        this.buttonPhones.setDisable(true);
+        this.buttonUsers.setDisable(false);
+        this.comboBoxFilter.setDisable(false);
+        this.initScene(phonesByFriends, phonesByBrand, false);
     }
 
     public void onSuggestedUsers(ActionEvent actionEvent) {
-        this.initViewUsers();
+        this.buttonUsers.setDisable(true);
+        this.buttonPhones.setDisable(false);
+        this.comboBoxFilter.setDisable(true);
+        this.initScene(usersByFollows, usersByBrand, true);
     }
 
     public void actionProfile(ActionEvent actionEvent) {
         stageManager.switchScene(FxmlView.PROFILE);
     }
 
+    public void actionClickOnUsers(ActionEvent actionEvent) {
+        this.buttonUsers.setDisable(true);
+        this.buttonPhones.setDisable(false);
+        this.comboBoxFilter.setDisable(true);
+        this.initScene(usersByFollows, usersByBrand, true);
+    }
+
     public void onClickPhones(ActionEvent actionEvent) {
-        this.initViewPhones();
+        this.buttonPhones.setDisable(true);
+        this.buttonUsers.setDisable(false);
+        this.comboBoxFilter.setDisable(false);
+        this.initScene(phonesByFriends, phonesByBrand, false);
     }
 
     public void actionLogOut(ActionEvent actionEvent) {

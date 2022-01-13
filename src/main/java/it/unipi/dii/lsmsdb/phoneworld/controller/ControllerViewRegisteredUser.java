@@ -2,7 +2,6 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
-import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
@@ -24,7 +23,6 @@ import org.springframework.stereotype.Component;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Component

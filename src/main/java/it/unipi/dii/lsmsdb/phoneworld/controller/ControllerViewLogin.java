@@ -59,21 +59,21 @@ public class ControllerViewLogin {
             return;
         }
         try {
-            Optional<GenericUser> users = userMongo.findByUsername(username);
-            if (users.isEmpty()) {
+            Optional<GenericUser> genericUser = userMongo.findByUsername(username);
+            if (genericUser.isEmpty()) {
                 stageManager.showInfoMessage("ERROR", "There aren't users with this username");
                 this.clearFields();
                 return;
             }
-            String salt = users.get().getSalt();
+            String salt = genericUser.get().getSalt();
             String hashedPassword = App.getInstance().getServiceUser().getHashedPassword(password, salt);
-            if (!users.get().getHashedPassword().equals(hashedPassword)) {
+            if (!genericUser.get().getHashedPassword().equals(hashedPassword)) {
                 stageManager.showInfoMessage("ERROR", "Wrong username or password");
                 this.clearFields();
                 return;
             }
             GenericUser user = new User();
-            user = users.get();
+            user = genericUser.get();
             App.getInstance().getModelBean().putBean(Constants.CURRENT_USER, user);
             stageManager.switchScene(FxmlView.USER);
         } catch (Exception e) {

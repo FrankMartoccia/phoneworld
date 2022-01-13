@@ -14,19 +14,19 @@ public interface IPhoneMongo extends MongoRepository<Phone, String> {
     @Query(value = "{'name': {$regex : ?0, $options: 'i'}}")
     List<Phone> findByNameRegexOrderByReleaseYearDesc(String name, Sort sort);
 
-    @Query(value = "{'ram': {$regex : ?0, $options: 'i'}}")
+    @Query(value = "{'ram': {$regex : /.*?0.*GB/, $options: 'i'}}")
     List<Phone> findByRamRegexOrderByReleaseYearDesc(String ram, Sort sort);
 
-    @Query(value = "{'storage': {$regex : /^.*?0GB.*/, $options: 'i'}}")
+    @Query(value = "{'storage': {$regex : /^?0GB.*/, $options: 'i'}}")
     List<Phone> findByStorageRegexOrderByReleaseYearDesc(String storage, Sort sort);
 
     @Query(value = "{'chipset': {$regex : ?0, $options: 'i'}}")
     List<Phone> findByChipsetRegexOrderByReleaseYearDesc(String chipset, Sort sort);
 
-    @Query(value = "{'batterySize': {$regex : ?0, $options: 'i'}}")
+    @Query(value = "{'batterySize': {$regex : /^?0 mAh.*/, $options: 'i'}}")
     List<Phone> findByBatterySizeRegexOrderByReleaseYearDesc(String batterySize, Sort sort);
 
-    @Query(value = "{'cameraPixels': {$regex : ?0, $options: 'i'}}")
+    @Query(value = "{'cameraPixels': {$regex : /^?0 MP.*/, $options: 'i'}}")
     List<Phone> findByCameraPixelsRegexOrderByReleaseYearDesc(String cameraPixels, Sort sort);
 
 }

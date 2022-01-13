@@ -6,12 +6,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class StageManager {
@@ -65,6 +68,31 @@ public class StageManager {
         return scene;
     }
 
+    public void createLabelList(List<Label> labels, Label label1,  Label label2,  Label label3,  Label label4, Label label5,
+                                Label label6, Label label7, Label label8, Label label9, Label label10, Label label11,
+                                Label label12, Label label13, Label label14, Label label15, Label label16, Label label17,
+                                Label label18) {
+        labels.clear();
+        labels.add(label1);
+        labels.add(label2);
+        labels.add(label3);
+        labels.add(label4);
+        labels.add(label5);
+        labels.add(label6);
+        labels.add(label7);
+        labels.add(label8);
+        labels.add(label9);
+        labels.add(label10);
+        labels.add(label11);
+        labels.add(label12);
+        labels.add(label13);
+        labels.add(label14);
+        labels.add(label15);
+        labels.add(label16);
+        labels.add(label17);
+        labels.add(label18);
+    }
+
     public void showInfoMessage(String title, String message) {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
@@ -82,5 +110,31 @@ public class StageManager {
         Scene scene = new Scene(vBox);
         window.setScene(scene);
         window.show();
+    }
+
+    public void createImageViewList(List<ImageView> imageViews, ImageView image1, ImageView image2, ImageView image3,
+                                    ImageView image4, ImageView image5, ImageView image6, ImageView image7,
+                                    ImageView image8, ImageView image9, ImageView image10, ImageView image11,
+                                    ImageView image12, ImageView image13, ImageView image14, ImageView image15,
+                                    ImageView image16, ImageView image17, ImageView image18) {
+        imageViews.clear();
+        imageViews.add(image1);
+        imageViews.add(image2);
+        imageViews.add(image3);
+        imageViews.add(image4);
+        imageViews.add(image5);
+        imageViews.add(image6);
+        imageViews.add(image7);
+        imageViews.add(image8);
+        imageViews.add(image9);
+        imageViews.add(image10);
+        imageViews.add(image11);
+        imageViews.add(image12);
+        imageViews.add(image13);
+        imageViews.add(image14);
+        imageViews.add(image15);
+        imageViews.add(image16);
+        imageViews.add(image17);
+        imageViews.add(image18);
     }
 }

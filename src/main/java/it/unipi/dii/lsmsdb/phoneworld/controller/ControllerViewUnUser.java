@@ -93,7 +93,7 @@ public class ControllerViewUnUser implements Initializable {
 
     public void actionSearch() {
         this.buttonPrevious.setDisable(true);
-        this.counterPages = 0;
+        counterPages = 0;
         String text = this.textFieldSearch.getText();
         if (text.isEmpty()) {
             phones = phoneMongo.findRecentPhones();
@@ -137,7 +137,6 @@ public class ControllerViewUnUser implements Initializable {
 //        App.getInstance().getUserNeo4j().followRelationship("61de1530538b5a365a79ab5b", "3");
 //        App.getInstance().getUserNeo4j().addRelationship("3", "phoneid2");
 //        App.getInstance().getUserNeo4j().addRelationship("3", "phoneid3");
-
         this.buttonPrevious.setDisable(true);
         this.buttonPhones.setDisable(true);
         phones = phoneMongo.findRecentPhones();
@@ -150,9 +149,13 @@ public class ControllerViewUnUser implements Initializable {
                 logger.error("Exception occurred: " + e.getLocalizedMessage());
             }
         }
-        this.imageViews = this.createImageViewList();
-        this.labels = this.createLabelList();
-        this.setListPhones(imageViews,labels, phones);
+        stageManager.createImageViewList(this.imageViews, imagePhone1, imagePhone2, imagePhone3, imagePhone4, imagePhone5,
+                imagePhone6, imagePhone7, imagePhone8, imagePhone9, imagePhone10, imagePhone11, imagePhone12, imagePhone13,
+                imagePhone14, imagePhone15, imagePhone16, imagePhone17, imagePhone18);
+        stageManager.createLabelList(this.labels, labelPhone1, labelPhone2, labelPhone3, labelPhone4, labelPhone5, labelPhone6,
+                labelPhone7, labelPhone8, labelPhone9, labelPhone10, labelPhone11, labelPhone12, labelPhone13, labelPhone14,
+                labelPhone15, labelPhone16, labelPhone17, labelPhone18);
+        this.setListPhones(this.imageViews,this.labels, this.phones);
         if (remainingElem < imageViews.size()) this.buttonNext.setDisable(true);
     }
 
@@ -160,62 +163,14 @@ public class ControllerViewUnUser implements Initializable {
         this.clearList(this.imageViews, this.labels);
         this.textFieldSearch.clear();
         for (int i = 0; i< imageViews.size();i++) {
-            labels.get(i).setText(phones.get(i + counterPages*18).getName());
-            Image image = new Image(phones.get(i + counterPages*18).getPicture());
+            labels.get(i).setText(phones.get(i + (counterPages*18)).getName());
+            Image image = new Image(phones.get(i + (counterPages*18)).getPicture());
             imageViews.get(i).setImage(image);
             if (i+1 == phones.size()) {
                 break;
             }
         }
         remainingElem = phones.size() - (counterPages + 1)*18;
-        System.out.println(counterPages);
-        System.out.println(remainingElem);
-    }
-
-    private List<Label> createLabelList() {
-        List<Label> labels = new ArrayList<>();
-        labels.add(labelPhone1);
-        labels.add(labelPhone2);
-        labels.add(labelPhone3);
-        labels.add(labelPhone4);
-        labels.add(labelPhone5);
-        labels.add(labelPhone6);
-        labels.add(labelPhone7);
-        labels.add(labelPhone8);
-        labels.add(labelPhone9);
-        labels.add(labelPhone10);
-        labels.add(labelPhone11);
-        labels.add(labelPhone12);
-        labels.add(labelPhone13);
-        labels.add(labelPhone14);
-        labels.add(labelPhone15);
-        labels.add(labelPhone16);
-        labels.add(labelPhone17);
-        labels.add(labelPhone18);
-        return labels;
-    }
-
-    private List<ImageView> createImageViewList() {
-        List<ImageView> imageViews = new ArrayList<>();
-        imageViews.add(imagePhone1);
-        imageViews.add(imagePhone2);
-        imageViews.add(imagePhone3);
-        imageViews.add(imagePhone4);
-        imageViews.add(imagePhone5);
-        imageViews.add(imagePhone6);
-        imageViews.add(imagePhone7);
-        imageViews.add(imagePhone8);
-        imageViews.add(imagePhone9);
-        imageViews.add(imagePhone10);
-        imageViews.add(imagePhone11);
-        imageViews.add(imagePhone12);
-        imageViews.add(imagePhone13);
-        imageViews.add(imagePhone14);
-        imageViews.add(imagePhone15);
-        imageViews.add(imagePhone16);
-        imageViews.add(imagePhone17);
-        imageViews.add(imagePhone18);
-        return imageViews;
     }
 
     private void clearList(List<ImageView> imageViews, List<Label> labels) {

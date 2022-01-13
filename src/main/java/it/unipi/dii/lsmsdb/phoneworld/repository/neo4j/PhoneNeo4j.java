@@ -23,13 +23,13 @@ public class PhoneNeo4j{
         this.graphNeo4j = graphNeo4j;
     }
 
-    public boolean addPhone(String id, String brand, String name, String picture) {
+    public boolean addPhone(String id, String brand, String name, String picture, int releaseYear) {
         boolean result = true;
         try {
             graphNeo4j.write("MERGE (p:Phone {id: $id, brand: $brand, name: $name, " +
-                            "picture: $picture})",
+                            "picture: $picture, releaseYear: $releaseYear})",
                     parameters("id", id, "brand", brand, "name", name,
-                            "picture", picture));
+                            "picture", picture, "releaseYear", releaseYear));
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
             result = false;
@@ -40,17 +40,19 @@ public class PhoneNeo4j{
     public List<Record> findPhoneById(String id) {
         return graphNeo4j.read("MATCH (p:Phone {id: $id})" +
                                      "RETURN p.id AS id, p.brand AS brand, p.name AS name, p.picture " +
-                        "AS picture",
+                        "AS picture, p.releaseYear AS releaseYear",
                 parameters("id", id));
     }
 
-    public boolean updatePhone(String id, String brand, String name, String picture) {
+    public boolean updatePhone(String id, String brand, String name, String picture, int releaseYear) {
         boolean result = true;
         try {
             graphNeo4j.write("MATCH (p:Phone {id: $id}) " +
-                            "SET p.brand = $brand, p.name = $name, p.picture = $picture " +
-                            "RETURN p.id AS id, p.brand AS brand, p.name AS name, p.picture AS picture",
-                    parameters("id", id, "brand", brand, "name", name, "picture", picture));
+                            "SET p.brand = $brand, p.name = $name, p.picture = $picture, p.releaseYear = $releaseYear " +
+                            "RETURN p.id AS id, p.brand AS brand, p.name AS name, p.picture AS picture, " +
+                            "p.releaseYear AS releaseYear",
+                    parameters("id", id, "brand", brand, "name", name, "picture", picture,
+                            "releaseYear", releaseYear));
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
             result = false;
@@ -88,6 +90,8 @@ public class PhoneNeo4j{
         try {
             return graphNeo4j.read("MATCH (u1:User{id:$id})-[:FOLLOWS]->(u2:User)-[:ADDS]->(p:Phone) " +
                     "WHERE u1.id <> u2.id AND NOT EXISTS ((u1)-[:ADDS]->(p)) " +
+                    "WITH p " +
+                    "ORDER BY p.releaseYear DESC " +
                     "RETURN DISTINCT p " +
                     "LIMIT 9", parameters("id",id));
         } catch (Exception e) {
@@ -105,8 +109,8 @@ public class PhoneNeo4j{
                     "LIMIT 1 " +
                     "MATCH (newPhone:Phone{brand:favBrand}) " +
                     "WHERE NOT EXISTS ((u1)-[:ADDS]->(newPhone)) " +
-                    "WITH rand() AS number, newPhone " +
-                    "ORDER BY number " +
+                    "WITH newPhone " +
+                    "ORDER BY newPhone.releaseYear DESC " +
                     "RETURN DISTINCT newPhone " +
                     "LIMIT 9", parameters("id",id));
         } catch (Exception e) {

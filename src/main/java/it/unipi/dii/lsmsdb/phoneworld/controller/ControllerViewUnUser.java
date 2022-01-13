@@ -1,6 +1,5 @@
 package it.unipi.dii.lsmsdb.phoneworld.controller;
 
-import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
@@ -125,19 +124,19 @@ public class ControllerViewUnUser implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        App.getInstance().getUserNeo4j().addUser("61de1530538b5a365a79ab5b", "PaoloYeah");
-        App.getInstance().getUserNeo4j().addUser("61df1a38bbbad21499ed0881", "Paolino");
-        App.getInstance().getUserNeo4j().addUser("61df1a56bbbad21499ed0882", "Paoletto");
-        App.getInstance().getPhoneNeo4j().addPhone("phoneid1", "Xiaomi", "Mi 11", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");
-        App.getInstance().getPhoneNeo4j().addPhone("phoneid2", "Xiaomi", "Mi 12", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");
-        App.getInstance().getPhoneNeo4j().addPhone("phoneid3", "Apple", "iPhone XS", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");
-        App.getInstance().getUserNeo4j().addRelationship("61de1530538b5a365a79ab5b", "phoneid2");
-        App.getInstance().getUserNeo4j().addRelationship("61df1a38bbbad21499ed0881", "phoneid3");
-        App.getInstance().getUserNeo4j().followRelationship("61de1530538b5a365a79ab5b", "61df1a38bbbad21499ed0881");
-        App.getInstance().getUserNeo4j().followRelationship("61df1a38bbbad21499ed0881", "61df1a56bbbad21499ed0882");
-        App.getInstance().getUserNeo4j().followRelationship("61de1530538b5a365a79ab5b", "3");
-        App.getInstance().getUserNeo4j().addRelationship("3", "phoneid2");
-        App.getInstance().getUserNeo4j().addRelationship("3", "phoneid3");
+//        App.getInstance().getUserNeo4j().addUser("61de1530538b5a365a79ab5b", "PaoloYeah");
+//        App.getInstance().getUserNeo4j().addUser("61df1a38bbbad21499ed0881", "Paolino");
+//        App.getInstance().getUserNeo4j().addUser("61df1a56bbbad21499ed0882", "Paoletto");
+//        App.getInstance().getPhoneNeo4j().addPhone("phoneid1", "Xiaomi", "Mi 11", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");
+//        App.getInstance().getPhoneNeo4j().addPhone("phoneid2", "Xiaomi", "Mi 12", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");
+//        App.getInstance().getPhoneNeo4j().addPhone("phoneid3", "Apple", "iPhone XS", "https://fdn2.gsmarena.com/vv/bigpic/philips-s616.jpg");
+//        App.getInstance().getUserNeo4j().addRelationship("61de1530538b5a365a79ab5b", "phoneid2");
+//        App.getInstance().getUserNeo4j().addRelationship("61df1a38bbbad21499ed0881", "phoneid3");
+//        App.getInstance().getUserNeo4j().followRelationship("61de1530538b5a365a79ab5b", "61df1a38bbbad21499ed0881");
+//        App.getInstance().getUserNeo4j().followRelationship("61df1a38bbbad21499ed0881", "61df1a56bbbad21499ed0882");
+//        App.getInstance().getUserNeo4j().followRelationship("61de1530538b5a365a79ab5b", "3");
+//        App.getInstance().getUserNeo4j().addRelationship("3", "phoneid2");
+//        App.getInstance().getUserNeo4j().addRelationship("3", "phoneid3");
 
         this.buttonPrevious.setDisable(true);
         this.buttonPhones.setDisable(true);

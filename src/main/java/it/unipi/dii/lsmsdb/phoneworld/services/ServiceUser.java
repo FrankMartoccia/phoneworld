@@ -23,7 +23,7 @@ public class ServiceUser {
             e.printStackTrace();
         }
         return generatedPassword;
-    }      //TODO add in Business Class
+    }
 
 
     public String getSalt() {

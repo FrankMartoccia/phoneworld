@@ -40,11 +40,11 @@ public class TestPhoneNeo4j {
             userNeo4j.addUser("userId1", "username1");
             userNeo4j.addUser("userId2", "username2");
             phoneNeo4j.addPhone("id1", "Nokia", "Nokia Lumia 900",
-                    "https://fdn2.gsmarena.com/vv/bigpic/nokia-800-ofic.jpg");
+                    "https://fdn2.gsmarena.com/vv/bigpic/nokia-800-ofic.jpg", 2012);
             phoneNeo4j.addPhone("id2", "Samsung", "Galaxy S20",
-                    "https://fdn2.gsmarena.com/vv/bigpic/nokia-800-ofic.jpg");
+                    "https://fdn2.gsmarena.com/vv/bigpic/nokia-800-ofic.jpg", 2020);
             phoneNeo4j.addPhone("id3", "Nokia", "Nokia 3210",
-                    "https://fdn2.gsmarena.com/vv/bigpic/nokia-800-ofic.jpg");
+                    "https://fdn2.gsmarena.com/vv/bigpic/nokia-800-ofic.jpg", 2000);
 
             userNeo4j.addRelationship("userId1", "id1");
             userNeo4j.addRelationship("userId2", "id2");
@@ -77,7 +77,7 @@ public class TestPhoneNeo4j {
     @Test
     public void testUpdatePhone() {
         phoneNeo4j.updatePhone("id1", "Nokia", "Nokia Lumia 700",
-                "https://fdn2.gsmarena.com/vv/bigpic/nokia-800-ofic.jpg");
+                "https://fdn2.gsmarena.com/vv/bigpic/nokia-800-ofic.jpg", 2013);
         List<Record> records = phoneNeo4j.findPhoneById("id1");
         String name = records.get(0).get("name").asString();
         Assertions.assertEquals("Nokia Lumia 700", name);

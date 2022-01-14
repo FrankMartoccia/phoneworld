@@ -107,10 +107,10 @@ public class ControllerViewUnUser implements Initializable {
             this.textFieldSearch.clear();
             return;
         }
+
         labelPhones.setText("'" + text + "'...");
         this.setListPhones(this.phones);
-        this.buttonNext.setDisable(false);
-        if (remainingElem < imageViews.size()) this.buttonNext.setDisable(true);
+
     }
 
     public void actionClickOnUsers() {
@@ -160,6 +160,7 @@ public class ControllerViewUnUser implements Initializable {
     }
 
     private void setListPhones(List<Phone> phones) {
+        stageManager.setNullList(this.imageViews, this.labels);
         this.textFieldSearch.clear();
         for (int i = 0; i< imageViews.size();i++) {
             this.labels.get(i).setText(phones.get(i + (counterPages*18)).getName());

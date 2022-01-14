@@ -204,6 +204,7 @@ public class ControllerViewRegisteredUser implements Initializable {
             this.separator.setVisible(false);
             this.phones = phoneMongo.findRecentPhones();
             this.labelDescription2.setText("LATEST PHONES...");
+            this.buttonNext.setDisable(false);
             //TODO modify setListPhones to handler arrows (view setListPhones of ControllerViewUnUser)
             this.setListPhones(this.phones);
             return;
@@ -218,7 +219,9 @@ public class ControllerViewRegisteredUser implements Initializable {
         }
         this.separator.setVisible(false);
         this.labelDescription2.setText("'" + text + "'...");
+        this.buttonNext.setDisable(false);
         this.setListPhones(this.phones);
+        if (remainingElem < imageViews.size()) this.buttonNext.setDisable(true);
     }
 
     private void searchUsers(String text) {
@@ -235,29 +238,33 @@ public class ControllerViewRegisteredUser implements Initializable {
         }
         this.separator.setVisible(false);
         this.labelDescription2.setText("'" + text + "'...");
+        this.buttonNext.setDisable(false);
         this.setListUsers(this.users);
+        if (remainingElem < imageViews.size()) this.buttonNext.setDisable(true);
     }
 
     private void setListUsers(List<GenericUser> users) {
         stageManager.setNullList(this.imageViews, this.labels);
         for (int i = 0;i < this.labels.size(); i++) {
                 this.imageViews.get(i).setImage(new Image("user.png"));
-                this.labels.get(i).setText(users.get(i).getUsername());
-                if (i+1 == phones.size()) {
+                this.labels.get(i).setText(users.get(i + (counterPages*18)).getUsername());
+                if (i+1 == users.size()) {
                     break;
                 }
         }
+        remainingElem = users.size() - (counterPages + 1)*18;
     }
 
     private void setListPhones(List<Phone> phones) {
         stageManager.setNullList(this.imageViews, this.labels);
         for (int i = 0;i < this.labels.size(); i++) {
-                this.imageViews.get(i).setImage(new Image(phones.get(i).getPicture()));
-                this.labels.get(i).setText(phones.get(i).getName());
-                if (i+1 == phones.size()) {
+            labels.get(i).setText(phones.get(i + (counterPages*18)).getName());
+            imageViews.get(i).setImage(new Image(phones.get(i + (counterPages*18)).getPicture()));
+            if (i+1 == phones.size()) {
                     break;
-                }
+            }
         }
+        remainingElem = phones.size() - (counterPages + 1)*18;
     }
 
     public void onCloseApp(ActionEvent actionEvent) {
@@ -268,6 +275,8 @@ public class ControllerViewRegisteredUser implements Initializable {
     public void onSuggestedPhones(ActionEvent actionEvent) {
         this.buttonPhones.setDisable(true);
         this.buttonUsers.setDisable(false);
+        this.buttonPrevious.setDisable(true);
+        this.buttonNext.setDisable(true);
         this.comboBoxFilter.setDisable(false);
         this.initScene(phonesByFriends, phonesByBrand, false);
     }
@@ -275,6 +284,8 @@ public class ControllerViewRegisteredUser implements Initializable {
     public void onSuggestedUsers(ActionEvent actionEvent) {
         this.buttonUsers.setDisable(true);
         this.buttonPhones.setDisable(false);
+        this.buttonPrevious.setDisable(true);
+        this.buttonNext.setDisable(true);
         this.comboBoxFilter.setDisable(true);
         this.initScene(usersByFollows, usersByBrand, true);
     }
@@ -286,6 +297,8 @@ public class ControllerViewRegisteredUser implements Initializable {
     public void actionClickOnUsers(ActionEvent actionEvent) {
         this.buttonUsers.setDisable(true);
         this.buttonPhones.setDisable(false);
+        this.buttonPrevious.setDisable(true);
+        this.buttonNext.setDisable(true);
         this.comboBoxFilter.setDisable(true);
         this.initScene(usersByFollows, usersByBrand, true);
     }
@@ -293,6 +306,8 @@ public class ControllerViewRegisteredUser implements Initializable {
     public void onClickPhones(ActionEvent actionEvent) {
         this.buttonPhones.setDisable(true);
         this.buttonUsers.setDisable(false);
+        this.buttonPrevious.setDisable(true);
+        this.buttonNext.setDisable(true);
         this.comboBoxFilter.setDisable(false);
         this.initScene(phonesByFriends, phonesByBrand, false);
     }
@@ -304,8 +319,24 @@ public class ControllerViewRegisteredUser implements Initializable {
     }
 
     public void actionClickOnNext(ActionEvent actionEvent) {
+        if (counterPages==0) this.buttonPrevious.setDisable(false);
+        this.counterPages++;
+        if (this.buttonPhones.isDisabled()) {
+            this.setListPhones(this.phones);
+        } else{
+            this.setListUsers(this.users);
+        }
+        if (remainingElem < imageViews.size()) this.buttonNext.setDisable(true);
     }
 
     public void actionClickOnPrevious(ActionEvent actionEvent) {
+        this.buttonNext.setDisable(false);
+        this.counterPages--;
+        if (counterPages == 0) this.buttonPrevious.setDisable(true);
+        if (this.buttonPhones.isDisabled()) {
+            this.setListPhones(this.phones);
+        } else{
+            this.setListUsers(this.users);
+        }
     }
 }

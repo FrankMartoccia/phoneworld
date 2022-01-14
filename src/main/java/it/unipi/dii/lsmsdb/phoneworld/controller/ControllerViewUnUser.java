@@ -98,7 +98,7 @@ public class ControllerViewUnUser implements Initializable {
         if (text.isEmpty()) {
             phones = phoneMongo.findRecentPhones();
             labelPhones.setText("LATEST PHONES...");
-            this.setListPhones(this.imageViews, this.labels, phones);
+            this.setListPhones(this.phones);
             return;
         }
         phones = phoneMongo.findPhones(text, "Name");
@@ -108,7 +108,7 @@ public class ControllerViewUnUser implements Initializable {
             return;
         }
         labelPhones.setText("'" + text + "'...");
-        this.setListPhones(this.imageViews, this.labels, phones);
+        this.setListPhones(this.phones);
         this.buttonNext.setDisable(false);
         if (remainingElem < imageViews.size()) this.buttonNext.setDisable(true);
     }
@@ -155,16 +155,15 @@ public class ControllerViewUnUser implements Initializable {
         stageManager.createLabelList(this.labels, labelPhone1, labelPhone2, labelPhone3, labelPhone4, labelPhone5, labelPhone6,
                 labelPhone7, labelPhone8, labelPhone9, labelPhone10, labelPhone11, labelPhone12, labelPhone13, labelPhone14,
                 labelPhone15, labelPhone16, labelPhone17, labelPhone18);
-        this.setListPhones(this.imageViews,this.labels, this.phones);
+        this.setListPhones(this.phones);
         if (remainingElem < imageViews.size()) this.buttonNext.setDisable(true);
     }
 
-    private void setListPhones(List<ImageView> imageViews, List<Label> labels, List<Phone> phones) {
+    private void setListPhones(List<Phone> phones) {
         this.textFieldSearch.clear();
         for (int i = 0; i< imageViews.size();i++) {
-            labels.get(i).setText(phones.get(i + (counterPages*18)).getName());
-            Image image = new Image(phones.get(i + (counterPages*18)).getPicture());
-            imageViews.get(i).setImage(image);
+            this.labels.get(i).setText(phones.get(i + (counterPages*18)).getName());
+            this.imageViews.get(i).setImage(new Image(phones.get(i + (counterPages*18)).getPicture()));
             if (i+1 == phones.size()) {
                 break;
             }
@@ -176,13 +175,13 @@ public class ControllerViewUnUser implements Initializable {
         this.buttonNext.setDisable(false);
         this.counterPages--;
         if (counterPages == 0) this.buttonPrevious.setDisable(true);
-        this.setListPhones(this.imageViews, this.labels, this.phones);
+        this.setListPhones(this.phones);
     }
 
     public void actionClickOnNext(ActionEvent actionEvent) {
         if (counterPages==0) this.buttonPrevious.setDisable(false);
         this.counterPages++;
-        this.setListPhones(this.imageViews, this.labels, this.phones);
+        this.setListPhones(this.phones);
         if (remainingElem < imageViews.size()) this.buttonNext.setDisable(true);
     }
 }

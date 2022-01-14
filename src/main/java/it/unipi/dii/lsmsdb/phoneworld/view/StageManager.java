@@ -149,4 +149,38 @@ public class StageManager {
             labels.get(i).setText("");
         }
     }
+
+    public String getErrors(String sbError) {
+        List<String> errors = List.of(sbError.split(" "));
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0;i < errors.size();i++) {
+            if (i == errors.size()-1) {
+                stringBuilder.append(errors.get(i));
+                break;
+            }
+            stringBuilder.append(errors.get(i) + ", ");
+        }
+        return stringBuilder.toString();
+    }
+
+    public String generateStringBuilderError(String firstName, String lastName, String gender, String country,
+                                              String city, String streetName, int streetNumber, int month,
+                                              int day, String email, String username, String password,
+                                              String repeatedPassword) {
+        StringBuilder sbError = new StringBuilder();
+        if (firstName.isEmpty()) sbError.append("First_Name ");
+        if (lastName.isEmpty()) sbError.append("Last_Name ");
+        if (gender == null) sbError.append("Gender ");
+        if (country.isEmpty()) sbError.append("Country ");
+        if (city.isEmpty()) sbError.append("City ");
+        if (streetName.isEmpty()) sbError.append("Street_Name ");
+        if (streetNumber == 0) sbError.append("Street_Number ");
+        if (month == 0) sbError.append("Month ");
+        if (day == 0) sbError.append("Day ");
+        if (email.isEmpty()) sbError.append("E-mail ");
+        if (username.isEmpty()) sbError.append("Username ");
+        if (password.isEmpty()) sbError.append("Password ");
+        if (repeatedPassword.isEmpty()) sbError.append("Repeated_password ");
+        return sbError.toString();
+    }
 }

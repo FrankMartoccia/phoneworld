@@ -81,6 +81,7 @@ public class ControllerViewDetails implements Initializable {
     }
 
     private void setListReviews(List<Review> reviews) {
+        this.listReviews.clear();
         for (Review review: reviews) {
             this.listReviews.add(review.toString());
         }
@@ -88,6 +89,7 @@ public class ControllerViewDetails implements Initializable {
     }
 
     private void setListPhones(List<Record> watchlist) {
+        this.listPhones.clear();
         for (Record record : watchlist) {
             this.listPhones.add(record.get("p").get("name").asString());
         }

@@ -14,12 +14,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <ScrollPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.dii.lsmsdb.phoneworld.controller.ControllerViewDetails">
    <content>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="917.0" prefWidth="1000.0">
          <top>
-            <HBox prefHeight="376.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+            <HBox prefHeight="432.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
                <children>
                   <VBox prefHeight="318.0" prefWidth="494.0">
                      <children>
@@ -69,15 +68,43 @@
                               <TableColumn fx:id="columnWatchList" prefWidth="456.0" text="YOUR WATCHLIST" />
                            </columns>
                         </TableView>
+                        <Button mnemonicParsing="false" prefHeight="52.0" prefWidth="180.0" text="Button">
+                           <VBox.margin>
+                              <Insets top="12.0" />
+                           </VBox.margin>
+                        </Button>
                      </children>
                   </VBox>
                </children>
             </HBox>
          </top>
          <bottom>
-            <VBox BorderPane.alignment="CENTER">
+            <VBox prefHeight="543.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
                <children>
-                  <TableView fx:id="tableReviews" prefHeight="426.0" prefWidth="940.0">
+                  <HBox prefHeight="150.0" prefWidth="1000.0">
+                     <children>
+                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="&lt;">
+                           <HBox.margin>
+                              <Insets left="30.0" top="16.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Button>
+                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="&gt;">
+                           <HBox.margin>
+                              <Insets left="840.0" right="30.0" top="16.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <TableView fx:id="tableReviews" prefHeight="376.0" prefWidth="940.0">
                     <columns>
                       <TableColumn fx:id="columnReviews" prefWidth="999.0" text="YOUR REVIEWS" />
                     </columns>
@@ -90,7 +117,7 @@
                         <Insets top="10.0" />
                      </padding>
                   </Separator>
-                  <HBox prefHeight="90.0" prefWidth="1000.0">
+                  <HBox prefHeight="55.0" prefWidth="1000.0">
                      <children>
                         <ImageView fitHeight="80.0" fitWidth="338.0" pickOnBounds="true" preserveRatio="true">
                            <HBox.margin>
@@ -102,10 +129,15 @@
                         </ImageView>
                         <Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="52.0" prefWidth="180.0" text="CANCEL">
                            <HBox.margin>
-                              <Insets left="250.0" right="50.0" top="20.0" />
+                              <Insets left="50.0" right="100.0" top="20.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="buttonViewMore" layoutX="210.0" layoutY="10.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="180.0" text="VIEW MORE">
+                        <Button fx:id="buttonCancel1" layoutX="488.0" layoutY="30.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="52.0" prefWidth="180.0" text="DELETE REVIEW">
+                           <HBox.margin>
+                              <Insets right="20.0" top="20.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="buttonCancel11" layoutX="852.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="52.0" prefWidth="180.0" text="UPDATE REVIEW">
                            <HBox.margin>
                               <Insets top="20.0" />
                            </HBox.margin>
@@ -113,8 +145,18 @@
                      </children>
                   </HBox>
                </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
             </VBox>
          </bottom>
+         <center>
+            <Separator prefHeight="0.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </Separator>
+         </center>
       </BorderPane>
    </content>
 </ScrollPane>

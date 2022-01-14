@@ -100,8 +100,7 @@ public class Review {
         this.body = body;
     }
 
-    @Override
-    public String toString() {
+    public String toStringTable() {
         StringBuilder sb = new StringBuilder();
         sb.append("Title: ").append(this.title).append("/n");
         Calendar calendar = new GregorianCalendar();
@@ -112,5 +111,20 @@ public class Review {
         sb.append("Vote: ").append(this.rating).append("/n");
         sb.append("Body: ").append(this.body);
         return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+                "id='" + id + '\'' +
+                ", userId='" + userId + '\'' +
+                ", phoneId='" + phoneId + '\'' +
+                ", rating=" + rating +
+                ", dateOfReview=" + dateOfReview +
+                ", title='" + title + '\'' +
+                ", body='" + body + '\'' +
+                ", username='" + username + '\'' +
+                ", phoneName='" + phoneName + '\'' +
+                '}';
     }
 }

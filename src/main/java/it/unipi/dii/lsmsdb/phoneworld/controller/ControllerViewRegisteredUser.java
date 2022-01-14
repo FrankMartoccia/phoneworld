@@ -87,6 +87,8 @@ public class ControllerViewRegisteredUser implements Initializable {
     private List<Phone> phones = new ArrayList<>();
     private User user;
     private List<GenericUser> users = new ArrayList<>();
+    private int counterPages = 0;
+    private int remainingElem;
 
     private final StageManager stageManager;
 
@@ -108,9 +110,11 @@ public class ControllerViewRegisteredUser implements Initializable {
                 label10, label11, label12, label13, label14, label15, label16, label17, label18);
         user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
         this.buttonLogin.setText("Hi, " + user.getUsername());
-        this.initComboBox();
         this.buttonPhones.setDisable(true);
         this.buttonUsers.setDisable(false);
+        this.buttonPrevious.setDisable(true);
+        this.buttonNext.setDisable(true);
+        this.initComboBox();
         phonesByFriends = App.getInstance().getPhoneNeo4j().findSuggestedPhonesByFriends(user.getId());
         phonesByBrand = App.getInstance().getPhoneNeo4j().findSuggestedPhonesByBrand(user.getId());
         usersByFollows = App.getInstance().getUserNeo4j().findSuggestedUsersByFriends(user.getId());
@@ -180,45 +184,58 @@ public class ControllerViewRegisteredUser implements Initializable {
     }
 
     public void actionSearch(ActionEvent actionEvent) {
+        this.buttonPrevious.setDisable(true);
         this.labelDescription1.setText("");
         this.labelDescription3.setText("");
         this.labelDescription4.setText("");
+        this.counterPages = 0;
         String text = this.textFieldSearch.getText().trim();
         this.textFieldSearch.clear();
-        if (text.isEmpty()) {
-            if (this.buttonPhones.isDisabled()) {
-                this.separator.setVisible(false);
-                this.phones = phoneMongo.findRecentPhones();
-                this.labelDescription2.setText("LATEST PHONES...");
-                this.setListPhones(this.phones);
-                return;
-            } else {
-                this.textFieldSearch.clear();
-                stageManager.showInfoMessage("ERROR", "You didn't type a username!");
-                return;
-            }
-            }
-        if (this.buttonPhones.isDisabled()) {
-            this.phones = phoneMongo.findPhones(text, this.comboBoxFilter.getValue());
-            if (phones.isEmpty()) {
-                this.textFieldSearch.clear();
-                stageManager.showInfoMessage("INFO", "There aren't phones with the parameter searched");
-                return;
-            }
-            this.separator.setVisible(false);
-            this.labelDescription2.setText("'" + text + "'...");
-            this.setListPhones(this.phones);
-        } else {
-             users = userMongo.findUsers(text, "user");
-             if (users.isEmpty()) {
-                 this.textFieldSearch.clear();
-                 stageManager.showInfoMessage("INFO", "There aren't users with the username searched");
-                 return;
-             }
-             this.separator.setVisible(false);
-             this.labelDescription2.setText("'" + text + "'...");
-             this.setListUsers(this.users);
+        if(this.buttonPhones.isDisabled()) {
+            this.searchPhones(text);
         }
+        else {
+            this.searchUsers(text);
+        }
+    }
+
+    private void searchPhones(String text) {
+        if (text.isEmpty() && this.comboBoxFilter.getValue().equalsIgnoreCase("Name")) {
+            this.separator.setVisible(false);
+            this.phones = phoneMongo.findRecentPhones();
+            this.labelDescription2.setText("LATEST PHONES...");
+            //TODO modify setListPhones to handler arrows (view setListPhones of ControllerViewUnUser)
+            this.setListPhones(this.phones);
+            return;
+        } else if (text.isEmpty()){
+            stageManager.showInfoMessage("ERROR", "You didn't type nothing!");
+            return;
+        }
+        this.phones = phoneMongo.findPhones(text, this.comboBoxFilter.getValue());
+        if (phones.isEmpty()) {
+            stageManager.showInfoMessage("INFO", "There aren't phones with the parameter searched");
+            return;
+        }
+        this.separator.setVisible(false);
+        this.labelDescription2.setText("'" + text + "'...");
+        this.setListPhones(this.phones);
+    }
+
+    private void searchUsers(String text) {
+        if (text.isEmpty()) {
+            this.textFieldSearch.clear();
+            stageManager.showInfoMessage("ERROR", "You didn't type a username!");
+            return;
+        }
+        users = userMongo.findUsers(text, "user");
+        if (users.isEmpty()) {
+            this.textFieldSearch.clear();
+            stageManager.showInfoMessage("INFO", "There aren't users with the username searched");
+            return;
+        }
+        this.separator.setVisible(false);
+        this.labelDescription2.setText("'" + text + "'...");
+        this.setListUsers(this.users);
     }
 
     private void setListUsers(List<GenericUser> users) {

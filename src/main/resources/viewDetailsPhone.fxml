@@ -24,15 +24,15 @@
                      <children>
                         <ImageView fx:id="imagePhone" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                            <VBox.margin>
-                              <Insets bottom="10.0" left="45.0" top="20.0" />
+                              <Insets bottom="10.0" left="68.0" top="20.0" />
                            </VBox.margin>
                         </ImageView>
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="180.0" text="ADD">
+                        <Button fx:id="buttonAddPhone" mnemonicParsing="false" onAction="#onClickAddPhone" prefHeight="50.0" prefWidth="180.0" text="ADD">
                            <VBox.margin>
                               <Insets left="55.0" top="10.0" />
                            </VBox.margin>
                         </Button>
-                        <Button layoutX="10.0" layoutY="160.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="180.0" text="REMOVE">
+                        <Button fx:id="buttonRemovePhone" layoutX="10.0" layoutY="160.0" mnemonicParsing="false" onAction="#onClickRemovePhone" prefHeight="50.0" prefWidth="180.0" text="REMOVE">
                            <VBox.margin>
                               <Insets left="55.0" top="20.0" />
                            </VBox.margin>
@@ -40,19 +40,27 @@
                      </children>
                   </VBox>
                   <Separator orientation="VERTICAL" prefHeight="200.0" />
-                  <VBox prefHeight="402.0" prefWidth="375.0">
+                  <VBox prefHeight="372.0" prefWidth="458.0">
                      <children>
-                        <Label fx:id="labelName" prefHeight="30.0" prefWidth="676.0" text="SPECS:">
+                        <Label prefHeight="30.0" prefWidth="676.0" text="SPECS:">
                            <VBox.margin>
                               <Insets bottom="10.0" left="30.0" top="20.0" />
                            </VBox.margin>
                            <font>
-                              <Font size="17.0" />
+                              <Font size="14.0" />
                            </font>
+                        </Label>
+                        <Label fx:id="labelName" layoutX="40.0" layoutY="30.0" prefHeight="30.0" prefWidth="676.0" text="Label">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="30.0" />
+                           </VBox.margin>
                         </Label>
                         <Label fx:id="labelBrand" layoutX="40.0" layoutY="30.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                            <font>
-                              <Font size="17.0" />
+                              <Font size="14.0" />
                            </font>
                            <VBox.margin>
                               <Insets bottom="10.0" left="30.0" />
@@ -60,7 +68,7 @@
                         </Label>
                         <Label fx:id="labelOs" layoutX="10.0" layoutY="80.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                            <font>
-                              <Font size="17.0" />
+                              <Font size="14.0" />
                            </font>
                            <VBox.margin>
                               <Insets bottom="10.0" left="30.0" />
@@ -68,7 +76,7 @@
                         </Label>
                         <Label fx:id="labelBody" layoutX="10.0" layoutY="110.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                            <font>
-                              <Font size="17.0" />
+                              <Font size="14.0" />
                            </font>
                            <VBox.margin>
                               <Insets bottom="10.0" left="30.0" />
@@ -76,7 +84,7 @@
                         </Label>
                         <Label fx:id="labelStorage" layoutX="10.0" layoutY="140.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                            <font>
-                              <Font size="17.0" />
+                              <Font size="14.0" />
                            </font>
                            <VBox.margin>
                               <Insets bottom="10.0" left="30.0" />
@@ -84,7 +92,7 @@
                         </Label>
                         <Label fx:id="labelDisplaySize" layoutX="10.0" layoutY="170.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                            <font>
-                              <Font size="17.0" />
+                              <Font size="14.0" />
                            </font>
                            <VBox.margin>
                               <Insets bottom="10.0" left="30.0" />
@@ -92,15 +100,7 @@
                         </Label>
                         <Label fx:id="labelDisplayResolution" layoutX="10.0" layoutY="200.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                            <font>
-                              <Font size="17.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets bottom="10.0" left="30.0" />
-                           </VBox.margin>
-                        </Label>
-                        <Label fx:id="labelName1" layoutX="40.0" layoutY="30.0" prefHeight="30.0" prefWidth="676.0" text="Label">
-                           <font>
-                              <Font size="17.0" />
+                              <Font size="14.0" />
                            </font>
                            <VBox.margin>
                               <Insets left="30.0" />
@@ -108,11 +108,11 @@
                         </Label>
                      </children>
                   </VBox>
-                  <VBox layoutX="10.0" layoutY="10.0" prefHeight="426.0" prefWidth="375.0">
+                  <VBox layoutX="10.0" layoutY="10.0" prefHeight="372.0" prefWidth="289.0">
                      <children>
                         <Label fx:id="labelVideoPixels" layoutX="40.0" layoutY="30.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                            <font>
-                              <Font size="17.0" />
+                              <Font size="14.0" />
                            </font>
                            <VBox.margin>
                               <Insets bottom="10.0" left="30.0" top="60.0" />
@@ -120,7 +120,7 @@
                         </Label>
                         <Label fx:id="labelRam" layoutX="10.0" layoutY="80.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                            <font>
-                              <Font size="17.0" />
+                              <Font size="14.0" />
                            </font>
                            <VBox.margin>
                               <Insets bottom="10.0" left="30.0" />
@@ -128,7 +128,7 @@
                         </Label>
                         <Label fx:id="labelChipset" layoutX="10.0" layoutY="110.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                            <font>
-                              <Font size="17.0" />
+                              <Font size="14.0" />
                            </font>
                            <VBox.margin>
                               <Insets bottom="10.0" left="30.0" />
@@ -136,7 +136,7 @@
                         </Label>
                         <Label fx:id="labelBatterySize" layoutX="10.0" layoutY="140.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                            <font>
-                              <Font size="17.0" />
+                              <Font size="14.0" />
                            </font>
                            <VBox.margin>
                               <Insets bottom="10.0" left="30.0" />
@@ -144,23 +144,23 @@
                         </Label>
                         <Label fx:id="labelBatteryType" layoutX="10.0" layoutY="170.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                            <font>
-                              <Font size="17.0" />
+                              <Font size="14.0" />
                            </font>
                            <VBox.margin>
                               <Insets bottom="10.0" left="30.0" />
                            </VBox.margin>
                         </Label>
                         <Label fx:id="labelReleaseYear" layoutX="10.0" layoutY="200.0" prefHeight="30.0" prefWidth="676.0" text="Label">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
                            <VBox.margin>
                               <Insets bottom="10.0" left="30.0" />
                            </VBox.margin>
-                        </Label>
-                        <Label fx:id="labelCameraPixel1" layoutX="40.0" layoutY="30.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                            <font>
-                              <Font size="17.0" />
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="labelCameraPixel" layoutX="40.0" layoutY="30.0" prefHeight="30.0" prefWidth="676.0" text="Label">
+                           <font>
+                              <Font size="14.0" />
                            </font>
                            <VBox.margin>
                               <Insets left="30.0" />
@@ -223,7 +223,7 @@
                               <Insets left="330.0" right="50.0" top="20.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="buttonViewMore" layoutX="210.0" layoutY="10.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="180.0" text="ADD REVIEW">
+                        <Button fx:id="buttonAddReview" layoutX="210.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickAddReview" prefHeight="52.0" prefWidth="180.0" text="ADD REVIEW">
                            <HBox.margin>
                               <Insets right="30.0" top="20.0" />
                            </HBox.margin>

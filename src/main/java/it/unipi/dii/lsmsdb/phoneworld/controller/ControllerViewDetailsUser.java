@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -31,22 +32,14 @@ import java.util.stream.IntStream;
 @Component
 public class ControllerViewDetailsUser implements Initializable {
 
-    @FXML
-    private Label labelUsername;
-    @FXML
-    private Label labelFirstName;
-    @FXML
-    private Label labelLastName;
-    @FXML
-    private TableView<String> tableWatchList;
-    @FXML
-    private TableView<String> tableReviews;
-    @FXML
-    private TableColumn<String, String> columnWatchList;
-    @FXML
-    private TableColumn<String, String> columnReviews;
-    @FXML
-    private ImageView imageViewPhoto;
+    @FXML private Label labelUsername;
+    @FXML private Label labelFirstName;
+    @FXML private Label labelLastName;
+    @FXML private TableView<String> tableWatchList;
+    @FXML private TableView<String> tableReviews;
+    @FXML private TableColumn<String, String> columnWatchList;
+    @FXML private TableColumn<String, String> columnReviews;
+    @FXML private ImageView imageViewPhoto;
 
     private final ObservableList<String> listPhones = FXCollections.observableArrayList();
     private final ObservableList<String> listReviews = FXCollections.observableArrayList();
@@ -60,18 +53,18 @@ public class ControllerViewDetailsUser implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        User user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        User user = (User) App.getInstance().getModelBean().getBean(Constants.SELECTED_USER);
         imageViewPhoto.setImage(new Image("user.png"));
-        this.labelUsername.setText(user.getUsername());
-        this.labelFirstName.setText(user.getFirstName());
-        this.labelLastName.setText(user.getLastName());
+        this.labelUsername.setText("Username: " + user.getUsername());
+        this.labelFirstName.setText("First Name: " + user.getFirstName());
+        this.labelLastName.setText("Last Name: " + user.getLastName());
         this.columnWatchList.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
         this.columnReviews.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
         IntStream.range(0, 10).mapToObj(Integer::toString).forEach(tableWatchList.getItems()::add);
         IntStream.range(0, 20).mapToObj(Integer::toString).forEach(tableReviews.getItems()::add);
 
         tableWatchList.setFixedCellSize(25);
-        tableWatchList.prefHeightProperty().bind(tableWatchList.fixedCellSizeProperty().multiply(Bindings.size(tableWatchList.getItems()).add(1.01)));
+        tableWatchList.prefHeightProperty().bind(tableWatchList.fixedCellSizeProperty().multiply(Bindings.size(tableWatchList.getItems()).add(1.10)));
         tableWatchList.minHeightProperty().bind(tableWatchList.prefHeightProperty());
         tableWatchList.maxHeightProperty().bind(tableWatchList.prefHeightProperty());
         this.setListPhones(App.getInstance().getUserNeo4j().getWatchlist(user.getId()));
@@ -81,7 +74,7 @@ public class ControllerViewDetailsUser implements Initializable {
     private void setListReviews(List<Review> reviews) {
         this.listReviews.clear();
         for (Review review: reviews) {
-            this.listReviews.add(review.toString());
+            this.listReviews.add(review.toStringTable());
         }
         tableReviews.setItems(listReviews);
     }
@@ -97,4 +90,20 @@ public class ControllerViewDetailsUser implements Initializable {
     public void onClickCancel(ActionEvent actionEvent) {
         stageManager.switchScene(FxmlView.USER);
     }
+
+    @FXML
+    void onClickDeleteReview(ActionEvent event) {
+
+    }
+
+    @FXML
+    void onClickRemovePhone(ActionEvent event) {
+
+    }
+
+    @FXML
+    void onClikUpdateReview(ActionEvent event) {
+
+    }
+
 }

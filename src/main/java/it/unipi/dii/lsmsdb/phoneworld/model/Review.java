@@ -102,14 +102,19 @@ public class Review {
 
     public String toStringTable() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Title: ").append(this.title).append("/n");
+        sb.append("Title: ").append(this.title).append("\n");
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(this.dateOfReview);
         sb.append("Date: ").append(calendar.get(Calendar.YEAR)).append("-").append(calendar.get(Calendar.MONTH)).
-                append("-").append(calendar.get(Calendar.DAY_OF_MONTH)).append("/n");
-        sb.append("Phone: ").append(this.phoneId).append("/n");
-        sb.append("Vote: ").append(this.rating).append("/n");
-        sb.append("Body: ").append(this.body);
+                append("-").append(calendar.get(Calendar.DAY_OF_MONTH)).append("\n");
+        sb.append("Phone: ").append(this.phoneName).append("\n");
+        sb.append("Vote: ").append(this.rating).append("\n");
+        StringBuilder sBody = new StringBuilder(this.body);
+        int i = 0;
+        while ((i = sBody.indexOf(" ", i + 120)) != -1) {
+            sBody.replace(i, i+1, "\n");
+        }
+        sb.append("Body: ").append(sBody);
         return sb.toString();
     }
 

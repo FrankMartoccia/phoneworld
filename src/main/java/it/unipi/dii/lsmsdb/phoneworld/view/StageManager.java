@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -151,9 +150,9 @@ public class StageManager {
         }
     }
 
-    public int getImageIndex(MouseEvent event) {
-        String imageId = event.getPickResult().getIntersectedNode().getId();
-        String value[] = imageId.split("image");
+    public int getElemIndex(MouseEvent event) {
+        String id = event.getPickResult().getIntersectedNode().getId();
+        String value[] = id.split("image");
         return Integer.parseInt(value[1]);
     }
 

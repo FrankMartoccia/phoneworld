@@ -28,7 +28,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.CompletionStage;
 
 @Component
 public class ControllerViewUnUser implements Initializable {
@@ -199,9 +198,9 @@ public class ControllerViewUnUser implements Initializable {
     }
 
     public void onClickImage(MouseEvent event) {
-        int imageIndex = stageManager.getImageIndex(event);
+        int imageIndex = stageManager.getElemIndex(event);
         Phone phone = this.phones.get((18*counterPages)+imageIndex-1);
-        App.getInstance().getModelBean().putBean(Constants.CURRENT_PHONE, phone);
+        App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, phone);
         stageManager.switchScene(FxmlView.DETAILS_PHONES);
     }
 }

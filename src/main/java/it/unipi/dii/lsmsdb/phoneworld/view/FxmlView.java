@@ -74,7 +74,7 @@ public enum FxmlView {
         public String getFxmlFile() {
             return "/viewUpdate.fxml";
         }
-    }, DETAILS {
+    }, DETAILS_USER {
         @Override
         public String getTitle() {
             return "USER DETAILS";
@@ -83,6 +83,16 @@ public enum FxmlView {
         @Override
         public String getFxmlFile() {
             return "/viewDetailsUser.fxml";
+        }
+    }, DETAILS_PHONES {
+        @Override
+        public String getTitle() {
+            return "PHONES DETAILS";
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/viewDetailsPhone.fxml";
         }
     };
 

@@ -1,5 +1,7 @@
 package it.unipi.dii.lsmsdb.phoneworld.controller;
 
+import it.unipi.dii.lsmsdb.phoneworld.App;
+import it.unipi.dii.lsmsdb.phoneworld.Constants;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
@@ -26,6 +28,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletionStage;
 
 @Component
 public class ControllerViewUnUser implements Initializable {
@@ -42,43 +45,44 @@ public class ControllerViewUnUser implements Initializable {
     @FXML private Button buttonSearch;
     @FXML private Button buttonPrevious;
     @FXML private Button buttonNext;
-    @FXML private Label labelPhone1;
-    @FXML private Label labelPhone2;
-    @FXML private Label labelPhone3;
-    @FXML private Label labelPhone4;
-    @FXML private Label labelPhone5;
-    @FXML private Label labelPhone6;
-    @FXML private Label labelPhone7;
-    @FXML private Label labelPhone8;
-    @FXML private Label labelPhone9;
-    @FXML private Label labelPhone10;
-    @FXML private Label labelPhone11;
-    @FXML private Label labelPhone12;
-    @FXML private Label labelPhone13;
-    @FXML private Label labelPhone14;
-    @FXML private Label labelPhone15;
-    @FXML private Label labelPhone16;
-    @FXML private Label labelPhone17;
-    @FXML private Label labelPhone18;
+    @FXML private ImageView image1;
+    @FXML private ImageView image10;
+    @FXML private ImageView image11;
+    @FXML private ImageView image12;
+    @FXML private ImageView image13;
+    @FXML private ImageView image14;
+    @FXML private ImageView image15;
+    @FXML private ImageView image16;
+    @FXML private ImageView image17;
+    @FXML private ImageView image18;
+    @FXML private ImageView image2;
+    @FXML private ImageView image3;
+    @FXML private ImageView image4;
+    @FXML private ImageView image5;
+    @FXML private ImageView image6;
+    @FXML private ImageView image7;
+    @FXML private ImageView image8;
+    @FXML private ImageView image9;
+    @FXML private Label label1;
+    @FXML private Label label10;
+    @FXML private Label label11;
+    @FXML private Label label12;
+    @FXML private Label label13;
+    @FXML private Label label14;
+    @FXML private Label label15;
+    @FXML private Label label16;
+    @FXML private Label label17;
+    @FXML private Label label18;
+    @FXML private Label label2;
+    @FXML private Label label3;
+    @FXML private Label label4;
+    @FXML private Label label5;
+    @FXML private Label label6;
+    @FXML private Label label7;
+    @FXML private Label label8;
+    @FXML private Label label9;
     @FXML private Label labelPhones;
-    @FXML private ImageView imagePhone1;
-    @FXML private ImageView imagePhone2;
-    @FXML private ImageView imagePhone3;
-    @FXML private ImageView imagePhone4;
-    @FXML private ImageView imagePhone5;
-    @FXML private ImageView imagePhone6;
-    @FXML private ImageView imagePhone7;
-    @FXML private ImageView imagePhone8;
-    @FXML private ImageView imagePhone9;
-    @FXML private ImageView imagePhone10;
-    @FXML private ImageView imagePhone11;
-    @FXML private ImageView imagePhone12;
-    @FXML private ImageView imagePhone13;
-    @FXML private ImageView imagePhone14;
-    @FXML private ImageView imagePhone15;
-    @FXML private ImageView imagePhone16;
-    @FXML private ImageView imagePhone17;
-    @FXML private ImageView imagePhone18;
+
     @FXML private TextField textFieldSearch;
 
     private final StageManager stageManager;
@@ -140,6 +144,7 @@ public class ControllerViewUnUser implements Initializable {
 //        App.getInstance().getUserNeo4j().followRelationship("61de1530538b5a365a79ab5b", "3");
 //        App.getInstance().getUserNeo4j().addRelationship("3", "phoneid2");
 //        App.getInstance().getUserNeo4j().addRelationship("3", "phoneid3");
+        this.counterPages = 0;
         this.buttonPrevious.setDisable(true);
         this.buttonPhones.setDisable(true);
         phones = phoneMongo.findRecentPhones();
@@ -152,12 +157,12 @@ public class ControllerViewUnUser implements Initializable {
                 logger.error("Exception occurred: " + e.getLocalizedMessage());
             }
         }
-        stageManager.createImageViewList(this.imageViews, imagePhone1, imagePhone2, imagePhone3, imagePhone4, imagePhone5,
-                imagePhone6, imagePhone7, imagePhone8, imagePhone9, imagePhone10, imagePhone11, imagePhone12, imagePhone13,
-                imagePhone14, imagePhone15, imagePhone16, imagePhone17, imagePhone18);
-        stageManager.createLabelList(this.labels, labelPhone1, labelPhone2, labelPhone3, labelPhone4, labelPhone5, labelPhone6,
-                labelPhone7, labelPhone8, labelPhone9, labelPhone10, labelPhone11, labelPhone12, labelPhone13, labelPhone14,
-                labelPhone15, labelPhone16, labelPhone17, labelPhone18);
+        stageManager.createImageViewList(this.imageViews, image1, image2, image3, image4, image5,
+                image6, image7, image8, image9, image10, image11, image12, image13,
+                image14, image15, image16, image17, image18);
+        stageManager.createLabelList(this.labels, label1, label2, label3, label4, label5, label6,
+                label7, label8, label9, label10, label11, label12, label13, label14,
+                label15, label16, label17, label18);
         this.setListPhones(this.phones);
         if (remainingElem < imageViews.size()) this.buttonNext.setDisable(true);
     }
@@ -191,5 +196,12 @@ public class ControllerViewUnUser implements Initializable {
 
     public void onClickEnter(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.ENTER) this.actionSearch();
+    }
+
+    public void onClickImage(MouseEvent event) {
+        int imageIndex = stageManager.getImageIndex(event);
+        Phone phone = this.phones.get((18*counterPages)+imageIndex-1);
+        App.getInstance().getModelBean().putBean(Constants.CURRENT_PHONE, phone);
+        stageManager.switchScene(FxmlView.DETAILS_PHONES);
     }
 }

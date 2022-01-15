@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -148,6 +149,12 @@ public class StageManager {
             imageViews.get(i).setImage(null);
             labels.get(i).setText("");
         }
+    }
+
+    public int getImageIndex(MouseEvent event) {
+        String imageId = event.getPickResult().getIntersectedNode().getId();
+        String value[] = imageId.split("image");
+        return Integer.parseInt(value[1]);
     }
 
     public String getErrors(String sbError) {

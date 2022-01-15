@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.dii.lsmsdb.phoneworld.controller.ControllerViewDetails">
+<ScrollPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.dii.lsmsdb.phoneworld.controller.ControllerViewDetailsPhone">
    <content>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="917.0" prefWidth="1000.0">
          <top>
@@ -22,7 +22,7 @@
                <children>
                   <VBox layoutX="510.0" layoutY="10.0" prefHeight="372.0" prefWidth="300.0">
                      <children>
-                        <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="imagePhone" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                            <VBox.margin>
                               <Insets bottom="10.0" left="45.0" top="20.0" />
                            </VBox.margin>
@@ -42,7 +42,7 @@
                   <Separator orientation="VERTICAL" prefHeight="200.0" />
                   <VBox prefHeight="402.0" prefWidth="375.0">
                      <children>
-                        <Label fx:id="labelName" prefHeight="30.0" prefWidth="676.0" text="Label">
+                        <Label fx:id="labelName" prefHeight="30.0" prefWidth="676.0" text="SPECS:">
                            <VBox.margin>
                               <Insets bottom="10.0" left="30.0" top="20.0" />
                            </VBox.margin>

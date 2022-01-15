@@ -16,7 +16,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.neo4j.driver.Record;
@@ -24,14 +23,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import java.awt.event.ItemEvent;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.IntStream;
 
 @Component
-public class ControllerViewDetails implements Initializable {
+public class ControllerViewDetailsUser implements Initializable {
 
     @FXML
     private Label labelUsername;
@@ -56,7 +54,7 @@ public class ControllerViewDetails implements Initializable {
     private final StageManager stageManager;
 
     @Autowired @Lazy
-    public ControllerViewDetails(StageManager stageManager) {
+    public ControllerViewDetailsUser(StageManager stageManager) {
         this.stageManager = stageManager;
     }
 

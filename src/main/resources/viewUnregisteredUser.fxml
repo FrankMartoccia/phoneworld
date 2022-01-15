@@ -132,12 +132,12 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="554.0" prefWidth="102.0">
                      <children>
-                        <ImageView fx:id="imagePhone1" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="image1" fitHeight="150.0" fitWidth="150.0" onMouseClicked="#onClickImage" pickOnBounds="true" preserveRatio="true">
                            <VBox.margin>
                               <Insets left="70.0" top="10.0" />
                            </VBox.margin>
                         </ImageView>
-                        <Label fx:id="labelPhone1" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
+                        <Label fx:id="label1" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" left="70.0" top="5.0" />
                            </VBox.margin>
@@ -145,20 +145,20 @@
                               <Insets />
                            </opaqueInsets>
                         </Label>
-                        <ImageView fx:id="imagePhone7" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="image7" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#onClickImage" pickOnBounds="true" preserveRatio="true">
                            <VBox.margin>
                               <Insets left="70.0" />
                            </VBox.margin></ImageView>
-                        <Label fx:id="labelPhone7" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="165.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
+                        <Label fx:id="label7" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="165.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" left="70.0" top="5.0" />
                            </VBox.margin>
                         </Label>
-                        <ImageView fx:id="imagePhone13" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="181.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="image13" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="181.0" onMouseClicked="#onClickImage" pickOnBounds="true" preserveRatio="true">
                            <VBox.margin>
                               <Insets left="70.0" />
                            </VBox.margin></ImageView>
-                        <Label fx:id="labelPhone13" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="331.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="156.0" text="Label">
+                        <Label fx:id="label13" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="331.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="156.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" left="70.0" top="5.0" />
                            </VBox.margin>
@@ -170,23 +170,23 @@
                   </VBox>
                   <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="181.0" prefWidth="151.0">
                      <children>
-                        <ImageView fx:id="imagePhone2" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="image2" fitHeight="150.0" fitWidth="150.0" onMouseClicked="#onClickImage" pickOnBounds="true" preserveRatio="true">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin></ImageView>
-                        <Label fx:id="labelPhone2" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
+                        <Label fx:id="label2" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
                         </Label>
-                        <ImageView fx:id="imagePhone8" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="labelPhone8" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="165.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
+                        <ImageView fx:id="image8" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#onClickImage" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="label8" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="165.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
                         </Label>
-                        <ImageView fx:id="imagePhone14" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="181.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="labelPhone14" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="331.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
+                        <ImageView fx:id="image14" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="181.0" onMouseClicked="#onClickImage" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="label14" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="331.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
@@ -198,23 +198,23 @@
                   </VBox>
                   <VBox alignment="CENTER" layoutX="161.0" layoutY="10.0" prefHeight="181.0" prefWidth="151.0">
                      <children>
-                        <ImageView fx:id="imagePhone3" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="image3" fitHeight="150.0" fitWidth="150.0" onMouseClicked="#onClickImage" pickOnBounds="true" preserveRatio="true">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin></ImageView>
-                        <Label fx:id="labelPhone3" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
+                        <Label fx:id="label3" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
                         </Label>
-                        <ImageView fx:id="imagePhone9" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="labelPhone9" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="165.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
+                        <ImageView fx:id="image9" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#onClickImage" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="label9" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="165.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
                         </Label>
-                        <ImageView fx:id="imagePhone15" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="181.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="labelPhone15" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="331.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
+                        <ImageView fx:id="image15" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="181.0" onMouseClicked="#onClickImage" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="label15" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="331.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
@@ -226,23 +226,23 @@
                   </VBox>
                   <VBox alignment="CENTER" layoutX="312.0" layoutY="10.0" prefHeight="554.0" prefWidth="151.0">
                      <children>
-                        <ImageView fx:id="imagePhone4" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="image4" fitHeight="150.0" fitWidth="150.0" onMouseClicked="#onClickImage" pickOnBounds="true" preserveRatio="true">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin></ImageView>
-                        <Label fx:id="labelPhone4" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
+                        <Label fx:id="label4" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
                         </Label>
-                        <ImageView fx:id="imagePhone10" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="labelPhone10" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="165.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
+                        <ImageView fx:id="image10" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#onClickImage" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="label10" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="165.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
                         </Label>
-                        <ImageView fx:id="imagePhone16" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="181.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="labelPhone16" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="331.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
+                        <ImageView fx:id="image16" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="181.0" onMouseClicked="#onClickImage" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="label16" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="331.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
@@ -254,23 +254,23 @@
                   </VBox>
                   <VBox alignment="CENTER" layoutX="463.0" layoutY="10.0" prefHeight="181.0" prefWidth="151.0">
                      <children>
-                        <ImageView fx:id="imagePhone5" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="image5" fitHeight="150.0" fitWidth="150.0" onMouseClicked="#onClickImage" pickOnBounds="true" preserveRatio="true">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin></ImageView>
-                        <Label fx:id="labelPhone5" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
+                        <Label fx:id="label5" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
                         </Label>
-                        <ImageView fx:id="imagePhone11" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="labelPhone11" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="165.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
+                        <ImageView fx:id="image11" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#onClickImage" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="label11" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="165.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
                         </Label>
-                        <ImageView fx:id="imagePhone17" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="181.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="labelPhone17" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="331.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
+                        <ImageView fx:id="image17" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="181.0" onMouseClicked="#onClickImage" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="label17" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="331.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
@@ -282,23 +282,23 @@
                   </VBox>
                   <VBox alignment="CENTER" layoutX="614.0" layoutY="10.0" prefHeight="181.0" prefWidth="151.0">
                      <children>
-                        <ImageView fx:id="imagePhone6" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="image6" fitHeight="150.0" fitWidth="150.0" onMouseClicked="#onClickImage" pickOnBounds="true" preserveRatio="true">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin></ImageView>
-                        <Label fx:id="labelPhone6" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
+                        <Label fx:id="label6" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
                         </Label>
-                        <ImageView fx:id="imagePhone12" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="labelPhone12" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="165.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
+                        <ImageView fx:id="image12" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#onClickImage" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="label12" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="165.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
                         </Label>
-                        <ImageView fx:id="imagePhone18" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="181.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="labelPhone18" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="331.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
+                        <ImageView fx:id="image18" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="181.0" onMouseClicked="#onClickImage" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="label18" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="331.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="151.0" text="Label">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>

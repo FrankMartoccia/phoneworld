@@ -9,7 +9,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ public class ReviewMongo {
         return reviewMongo;
     }
 
-    public boolean addReview(Review review) {
+    public boolean saveReview(Review review) {
         boolean result = true;
         try {
             reviewMongo.save(review);
@@ -56,20 +55,30 @@ public class ReviewMongo {
         return review;
     }
 
-    public List<Review> findReviewByUserId(String id) {
+    public Optional<Review> findByUsernameAndPhoneName(String username, String phoneName) {
+        Optional<Review> review = Optional.empty();
+        try {
+            review = reviewMongo.findByUsernameAndPhoneName(username, phoneName);
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+        return review;
+    }
+
+    public List<Review> findReviewByUsername(String username) {
         List<Review> reviews = null;
         try {
-            reviews = reviewMongo.findByUserId(id);
+            reviews = reviewMongo.findByUsername(username);
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
         }
         return reviews;
     }
 
-    public List<Review> findReviewByPhoneId(String id) {
+    public List<Review> findReviewByPhoneName(String phoneName) {
         List<Review> reviews = null;
         try {
-            reviews = reviewMongo.findByPhoneId(id);
+            reviews = reviewMongo.findByPhoneName(phoneName);
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
         }
@@ -81,11 +90,10 @@ public class ReviewMongo {
         try {
             Optional<Review> review = reviewMongo.findById(id);
             if (review.isPresent()) {
-                review.get().setTitle(newReview.getTitle());
-                review.get().setDateOfReview(newReview.getDateOfReview());
-                review.get().setBody(newReview.getBody());
-                review.get().setRating(newReview.getRating());
-                this.addReview(review.get());
+                Review resultReview = review.get();
+                Review.ReviewBuilder builder = new Review.ReviewBuilder(newReview);
+                builder.id(id).phoneName(resultReview.getPhoneName()).username(resultReview.getUsername());
+                this.saveReview(builder.build());
             }
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
@@ -116,10 +124,10 @@ public class ReviewMongo {
         return result;
     }
 
-    public boolean deleteReviewByUserId(String id) {
+    public boolean deleteReviewsByUsername(String id) {
         boolean result = true;
         try {
-            reviewMongo.deleteReviewByUserId(id);
+            reviewMongo.deleteReviewsByUsername(id);
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
             result = false;
@@ -127,44 +135,24 @@ public class ReviewMongo {
         return result;
     }
 
-    public boolean deleteReviewByPhoneId(String id) {
+    public boolean deleteReviewByPhoneName(String id) {
         boolean result = true;
         try {
-            reviewMongo.deleteReviewByPhoneId(id);
+            reviewMongo.deleteReviewByPhoneName(id);
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
             result = false;
         }
         return result;
     }
-
-//    public List<Review> findByWord(String word) {
-//        List<Review> reviews = new ArrayList<>();
-//        try {
-//            if (word.isEmpty()) {
-//                reviews.addAll(reviewMongo.findAll());
-//            } else {
-//                reviews.addAll(reviewMongo.findByTitleContainingOrBodyContaining(word, word));
-//            }
-//        } catch (Exception e) {
-//            logger.error("Exception occurred: " + e.getLocalizedMessage());
-//        }
-//        return reviews;
-//    }
 
     public List<Review> findByWord(String word) {
         List<Review> reviews = new ArrayList<>();
         try {
-            Query query = new Query();
             if (word.isEmpty()) {
-                query.with(Sort.by(Sort.Direction.DESC, "dateOfReview"));
-                query.limit(20);
-                reviews = mongoOperations.find(query, Review.class);
+                reviews.addAll(reviewMongo.findAll());
             } else {
-                query.addCriteria(new Criteria(""));
-                query.with(Sort.by(Sort.Direction.DESC, "dateOfReview"));
-                query.limit(20);
-                reviews = mongoOperations.find(query, Review.class);
+                reviews.addAll(reviewMongo.findByTitleContainingOrBodyContaining(word, word));
             }
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
@@ -172,19 +160,37 @@ public class ReviewMongo {
         return reviews;
     }
 
+//    public List<Review> findByWord(String word) {
+//        List<Review> reviews = new ArrayList<>();
+//        try {
+//            Query query = new Query();
+//            if (word.isEmpty()) {
+//                query.with(Sort.by(Sort.Direction.DESC, "dateOfReview"));
+//                query.limit(20);
+//                reviews = mongoOperations.find(query, Review.class);
+//            } else {
+//                query.addCriteria(new Criteria(""));
+//                query.with(Sort.by(Sort.Direction.DESC, "dateOfReview"));
+//                query.limit(20);
+//                reviews = mongoOperations.find(query, Review.class);
+//            }
+//        } catch (Exception e) {
+//            logger.error("Exception occurred: " + e.getLocalizedMessage());
+//        }
+//        return reviews;
+//    }
+
     public Document findTopPhonesByRating(int minReviews, int results) {
-        GroupOperation groupOperation = group("$phoneId").avg("$rating")
-                .as("avgRating").count().as("numReviews")
-                .first("$phoneName").as("phone");
+        GroupOperation groupOperation = group("$phoneName").avg("$rating")
+                .as("avgRating").count().as("numReviews");
         MatchOperation matchOperation = match(new Criteria("numReviews").gte(minReviews));
         SortOperation sortOperation = sort(Sort.by(Sort.Direction.DESC, "avgRating",
                 "numReviews"));
         LimitOperation limitOperation = limit(results);
         ProjectionOperation projectionOperation = project()
-                .andExpression("_id").as("phoneId")
+                .andExpression("_id").as("phoneName")
                 .andExpression("avgRating").as("rating").andExclude("_id")
-                .andExpression("numReviews").as("reviews")
-                .andExpression("phone").as("phoneName");
+                .andExpression("numReviews").as("reviews");
         Aggregation aggregation = newAggregation(groupOperation, matchOperation,
                 sortOperation, limitOperation, projectionOperation);
         AggregationResults<Review> result = mongoOperations
@@ -192,15 +198,15 @@ public class ReviewMongo {
         return result.getRawResults();
     }
 
-    public Document findMostActiveUsers(int number) {
-        GroupOperation groupOperation = group("$userId").count().
-                as("numReviews").first("$username").as("user");
+    public Document findMostActiveUsers(int results) {
+        GroupOperation groupOperation = group("$username").count().as("numReviews").
+                avg("$rating").as("ratingUser");
         SortOperation sortOperation = sort(Sort.by(Sort.Direction.DESC, "numReviews"));
-        LimitOperation limitOperation = limit(number);
+        LimitOperation limitOperation = limit(results);
         ProjectionOperation projectionOperation = project()
-                .andExpression("_id").as("userId")
-                .andExpression("numReviews").as("Reviews").andExclude("_id")
-                .andExpression("user").as("username");
+                .andExpression("_id").as("username")
+                .andExpression("numReviews").as("reviews").andExclude("_id")
+                .andExpression("ratingUser").as("rating");
         Aggregation aggregation = newAggregation(groupOperation, sortOperation, limitOperation,
                 projectionOperation);
         AggregationResults<Review> result = mongoOperations

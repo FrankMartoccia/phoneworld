@@ -2,17 +2,18 @@ package it.unipi.dii.lsmsdb.phoneworld.services;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
-import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.UserMongo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 
+@Component
 public class ServiceUser {
 
     @Autowired
@@ -47,7 +48,7 @@ public class ServiceUser {
 
     public boolean insertUser(User user) {
         boolean result = true;
-        if (!userMongo.addUser(user)) {
+        if (!userMongo.saveUser(user)) {
             logger.error("Error in adding the user to MongoDB");
             return false;
         }

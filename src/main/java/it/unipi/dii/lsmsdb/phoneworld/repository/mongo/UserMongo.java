@@ -36,7 +36,7 @@ public class UserMongo {
         return userMongo;
     }
 
-    public boolean addUser(GenericUser user) {
+    public boolean saveUser(GenericUser user) {
         boolean result = true;
         try {
             userMongo.save(user);
@@ -87,7 +87,7 @@ public class UserMongo {
                     administrator.setUsername(newGenericUser.getUsername());
                     administrator.setHashedPassword(newGenericUser.getHashedPassword());
                     administrator.setSalt(newGenericUser.getSalt());
-                    this.addUser(administrator);
+                    this.saveUser(administrator);
                 } else {
                     User user = (User) genericUser.get();
                     User newUser = (User)newGenericUser;
@@ -104,7 +104,8 @@ public class UserMongo {
                     user.setDateOfBirth(newUser.getDateOfBirth());
                     user.setStreetName(newUser.getStreetName());
                     user.setStreetNumber(newUser.getStreetNumber());
-                    this.addUser(user);
+
+                    userMongo.save(user);
                 } 
             } 
         } catch (Exception e) {

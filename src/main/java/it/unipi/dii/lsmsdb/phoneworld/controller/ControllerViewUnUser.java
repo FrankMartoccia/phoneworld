@@ -13,6 +13,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -184,5 +187,9 @@ public class ControllerViewUnUser implements Initializable {
         this.counterPages++;
         this.setListPhones(this.phones);
         if (remainingElem < imageViews.size()) this.buttonNext.setDisable(true);
+    }
+
+    public void onClickEnter(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.ENTER) this.actionSearch();
     }
 }

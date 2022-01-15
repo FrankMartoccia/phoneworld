@@ -65,12 +65,12 @@
                               <Insets right="30.0" top="30.0" />
                            </VBox.margin>
                            <columns>
-                              <TableColumn fx:id="columnWatchList" prefWidth="456.0" text="YOUR WATCHLIST" />
+                              <TableColumn fx:id="columnWatchList" prefWidth="456.0" text="WATCHLIST" />
                            </columns>
                         </TableView>
-                        <Button mnemonicParsing="false" prefHeight="52.0" prefWidth="180.0" text="Button">
+                        <Button mnemonicParsing="false" prefHeight="52.0" prefWidth="180.0" text="REMOVE PHONE">
                            <VBox.margin>
-                              <Insets top="12.0" />
+                              <Insets left="275.0" top="12.0" />
                            </VBox.margin>
                         </Button>
                      </children>
@@ -106,7 +106,7 @@
                   </HBox>
                   <TableView fx:id="tableReviews" prefHeight="376.0" prefWidth="940.0">
                     <columns>
-                      <TableColumn fx:id="columnReviews" prefWidth="999.0" text="YOUR REVIEWS" />
+                      <TableColumn fx:id="columnReviews" prefWidth="945.0" text="REVIEWS" />
                     </columns>
                      <VBox.margin>
                         <Insets left="30.0" right="30.0" />
@@ -134,7 +134,7 @@
                         </Button>
                         <Button fx:id="buttonCancel1" layoutX="488.0" layoutY="30.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="52.0" prefWidth="180.0" text="DELETE REVIEW">
                            <HBox.margin>
-                              <Insets right="20.0" top="20.0" />
+                              <Insets left="30.0" right="20.0" top="20.0" />
                            </HBox.margin>
                         </Button>
                         <Button fx:id="buttonCancel11" layoutX="852.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="52.0" prefWidth="180.0" text="UPDATE REVIEW">

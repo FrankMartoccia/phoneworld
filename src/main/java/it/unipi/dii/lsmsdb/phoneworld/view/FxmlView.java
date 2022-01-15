@@ -77,7 +77,7 @@ public enum FxmlView {
     }, DETAILS {
         @Override
         public String getTitle() {
-            return "YOUR PROFILE DETAILS";
+            return "USER DETAILS";
         }
 
         @Override

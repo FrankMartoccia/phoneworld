@@ -21,7 +21,10 @@
                      <children>
                         <VBox prefWidth="300.0">
                            <children>
-                              <ImageView fx:id="imageViewProfile" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="imageViewProfile" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <VBox.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </VBox.margin></ImageView>
                               <Label layoutX="10.0" layoutY="441.0" prefHeight="39.0" prefWidth="424.0" text="Username">
                                  <VBox.margin>
                                     <Insets bottom="30.0" left="50.0" top="50.0" />
@@ -81,7 +84,7 @@
                               </ImageView>
                               <Label fx:id="labelUsername" prefHeight="39.0" prefWidth="424.0" text="Label">
                                  <VBox.margin>
-                                    <Insets bottom="30.0" right="50.0" top="89.0" />
+                                    <Insets bottom="30.0" right="50.0" top="99.0" />
                                  </VBox.margin>
                               </Label>
                               <Label fx:id="labelFirstName" layoutX="10.0" layoutY="60.0" prefHeight="39.0" prefWidth="424.0" text="Label">

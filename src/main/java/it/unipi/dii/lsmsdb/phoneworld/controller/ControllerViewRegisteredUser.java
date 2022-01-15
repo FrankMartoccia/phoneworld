@@ -16,6 +16,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import org.neo4j.driver.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -183,7 +185,7 @@ public class ControllerViewRegisteredUser implements Initializable {
         }
     }
 
-    public void actionSearch(ActionEvent actionEvent) {
+    public void actionSearch() {
         this.buttonPrevious.setDisable(true);
         this.labelDescription1.setText("");
         this.labelDescription3.setText("");
@@ -338,5 +340,10 @@ public class ControllerViewRegisteredUser implements Initializable {
         } else{
             this.setListUsers(this.users);
         }
+    }
+
+    public void onClickEnter(KeyEvent keyEvent) {
+        if(keyEvent.getCode() == KeyCode.ENTER) this.actionSearch();
+
     }
 }

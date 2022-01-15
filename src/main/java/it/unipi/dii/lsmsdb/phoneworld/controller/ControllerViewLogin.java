@@ -11,6 +11,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +44,7 @@ public class ControllerViewLogin {
         stageManager.switchScene(FxmlView.UNUSER);
     }
 
-    public void onClickLogin(ActionEvent actionEvent) {
+    public void onClickLogin() {
         String password = textFieldPassword.getText();
         String username = textFieldUsEm.getText().trim();
         if (password.isEmpty() && username.isEmpty()) {
@@ -91,4 +93,11 @@ public class ControllerViewLogin {
         stageManager.switchScene(FxmlView.SIGNUP);
     }
 
+    public void onClikEnterUsername(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.ENTER) this.onClickLogin();
+    }
+
+    public void onClickEnterPassword(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.ENTER) this.onClickLogin();
+    }
 }

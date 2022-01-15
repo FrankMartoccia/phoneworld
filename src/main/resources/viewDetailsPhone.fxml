@@ -14,14 +14,33 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <ScrollPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.dii.lsmsdb.phoneworld.controller.ControllerViewDetails">
    <content>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="917.0" prefWidth="1000.0">
          <top>
-            <HBox prefHeight="366.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+            <HBox prefHeight="372.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
                <children>
-                  <VBox prefHeight="426.0" prefWidth="375.0">
+                  <VBox layoutX="510.0" layoutY="10.0" prefHeight="372.0" prefWidth="300.0">
+                     <children>
+                        <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="45.0" top="20.0" />
+                           </VBox.margin>
+                        </ImageView>
+                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="180.0" text="ADD">
+                           <VBox.margin>
+                              <Insets left="55.0" top="10.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Button layoutX="10.0" layoutY="160.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="180.0" text="REMOVE">
+                           <VBox.margin>
+                              <Insets left="55.0" top="20.0" />
+                           </VBox.margin>
+                        </Button>
+                     </children>
+                  </VBox>
+                  <Separator orientation="VERTICAL" prefHeight="200.0" />
+                  <VBox prefHeight="402.0" prefWidth="375.0">
                      <children>
                         <Label fx:id="labelName" prefHeight="30.0" prefWidth="676.0" text="Label">
                            <VBox.margin>
@@ -79,24 +98,24 @@
                               <Insets bottom="10.0" left="30.0" />
                            </VBox.margin>
                         </Label>
+                        <Label fx:id="labelName1" layoutX="40.0" layoutY="30.0" prefHeight="30.0" prefWidth="676.0" text="Label">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="30.0" />
+                           </VBox.margin>
+                        </Label>
                      </children>
                   </VBox>
                   <VBox layoutX="10.0" layoutY="10.0" prefHeight="426.0" prefWidth="375.0">
                      <children>
-                        <Label fx:id="labelCameraPixel" prefHeight="30.0" prefWidth="676.0" text="Label">
-                           <VBox.margin>
-                              <Insets bottom="10.0" left="30.0" top="20.0" />
-                           </VBox.margin>
-                           <font>
-                              <Font size="17.0" />
-                           </font>
-                        </Label>
                         <Label fx:id="labelVideoPixels" layoutX="40.0" layoutY="30.0" prefHeight="30.0" prefWidth="676.0" text="Label">
                            <font>
                               <Font size="17.0" />
                            </font>
                            <VBox.margin>
-                              <Insets bottom="10.0" left="30.0" />
+                              <Insets bottom="10.0" left="30.0" top="60.0" />
                            </VBox.margin>
                         </Label>
                         <Label fx:id="labelRam" layoutX="10.0" layoutY="80.0" prefHeight="30.0" prefWidth="676.0" text="Label">
@@ -139,36 +158,46 @@
                               <Insets bottom="10.0" left="30.0" />
                            </VBox.margin>
                         </Label>
-                     </children>
-                  </VBox>
-                  <VBox layoutX="510.0" layoutY="10.0" prefHeight="376.0" prefWidth="250.0">
-                     <children>
-                        <ImageView fitHeight="150.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
+                        <Label fx:id="labelCameraPixel1" layoutX="40.0" layoutY="30.0" prefHeight="30.0" prefWidth="676.0" text="Label">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
                            <VBox.margin>
-                              <Insets bottom="10.0" left="30.0" top="20.0" />
+                              <Insets left="30.0" />
                            </VBox.margin>
-                        </ImageView>
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="180.0" text="Button">
-                           <VBox.margin>
-                              <Insets left="30.0" top="10.0" />
-                           </VBox.margin>
-                        </Button>
-                        <Button layoutX="10.0" layoutY="160.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="180.0" text="Button">
-                           <VBox.margin>
-                              <Insets left="30.0" top="20.0" />
-                           </VBox.margin>
-                        </Button>
+                        </Label>
                      </children>
                   </VBox>
                </children>
             </HBox>
          </top>
          <bottom>
-            <VBox BorderPane.alignment="CENTER">
+            <VBox prefHeight="597.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
                <children>
-                  <TableView fx:id="tableReviews" prefHeight="495.0" prefWidth="940.0">
+                  <Separator prefWidth="200.0" />
+                  <HBox>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="30.0" top="7.0" />
+                     </VBox.margin>
+                     <children>
+                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="&lt;">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Button>
+                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="&gt;">
+                           <HBox.margin>
+                              <Insets left="840.0" right="30.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <TableView fx:id="tableReviews" prefHeight="413.0" prefWidth="940.0">
                     <columns>
-                      <TableColumn fx:id="columnReviews" prefWidth="999.0" text="YOUR REVIEWS" />
+                      <TableColumn fx:id="columnReviews" prefWidth="945.0" text="REVIEWS" />
                     </columns>
                      <VBox.margin>
                         <Insets left="30.0" right="30.0" />
@@ -179,11 +208,11 @@
                         <Insets top="10.0" />
                      </padding>
                   </Separator>
-                  <HBox prefHeight="145.0" prefWidth="1000.0">
+                  <HBox prefHeight="44.0" prefWidth="1000.0">
                      <children>
                         <ImageView fitHeight="80.0" fitWidth="338.0" pickOnBounds="true" preserveRatio="true">
                            <HBox.margin>
-                              <Insets left="10.0" top="5.0" />
+                              <Insets bottom="5.0" left="10.0" top="5.0" />
                            </HBox.margin>
                            <image>
                               <Image url="@logo-3.png" />
@@ -191,15 +220,18 @@
                         </ImageView>
                         <Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="52.0" prefWidth="180.0" text="CANCEL">
                            <HBox.margin>
-                              <Insets left="250.0" right="50.0" top="20.0" />
+                              <Insets left="330.0" right="50.0" top="20.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="buttonViewMore" layoutX="210.0" layoutY="10.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="180.0" text="VIEW MORE">
+                        <Button fx:id="buttonViewMore" layoutX="210.0" layoutY="10.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="180.0" text="ADD REVIEW">
                            <HBox.margin>
-                              <Insets top="20.0" />
+                              <Insets right="30.0" top="20.0" />
                            </HBox.margin>
                         </Button>
                      </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                   </HBox>
                </children>
             </VBox>

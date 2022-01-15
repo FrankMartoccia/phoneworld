@@ -1,8 +1,7 @@
 package it.unipi.dii.lsmsdb.phoneworld;
 
-import it.unipi.dii.lsmsdb.phoneworld.model.Admin;
-import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
-import it.unipi.dii.lsmsdb.phoneworld.model.User;
+import it.unipi.dii.lsmsdb.phoneworld.model.*;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.ReviewMongo;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.UserMongo;
 import org.bson.Document;
 import org.junit.After;
@@ -23,6 +22,8 @@ public class TestUserMongo {
 
     @Autowired
     private UserMongo userMongo;
+    @Autowired
+    private ReviewMongo reviewMongo;
     private String id1;
     private String id2;
 
@@ -48,11 +49,18 @@ public class TestUserMongo {
                 "user", "male", "Paul", "Murray", 21,
                 "street", "Las Vegas", "Italy", "dnsak@gmail.com",
                 dateOfBirth, 23);
-        userMongo.addUser(admin);
-        userMongo.addUser(user1);
+
+        Date dateOfReview1 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
+        Review review1 = new Review.ReviewBuilder(1, dateOfReview1, "Nice phone",
+                "this phone is very nice").phoneName("Nokia 3210").build();
+        reviewMongo.saveReview(review1);
+        userMongo.saveUser(admin);
+        userMongo.saveUser(user1);
         id1 = userMongo.getUserMongo().findAll().get(0).getId();
         id2 = userMongo.getUserMongo().findAll().get(1).getId();
-        userMongo.addUser(user2);
+        userMongo.saveUser(user2);
+        user1.addReview(review1);
+        userMongo.updateUser(id2, user1, "user");
     }
 
     @Test

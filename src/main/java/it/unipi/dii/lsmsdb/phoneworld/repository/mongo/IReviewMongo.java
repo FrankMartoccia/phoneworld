@@ -5,17 +5,18 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface IReviewMongo extends MongoRepository<Review, String> {
 
-//    @Query(value = "{'title': {$regex : ?0, $options: 'i'}, " +
-//            "'body': {$regex : ?0, $options: 'i'}}")
-//    List<Review> findByTitleMatchesRegexOrBodyMatchesRegex(String word1, String word2);
+    Optional<Review> findByUsernameAndPhoneName(String username, String phoneName);
+    List<Review> findByUsername(String id);
+    List<Review> findByPhoneName(String id);
+    List<Review> findByTitleContainingOrBodyContaining(String word, String word1);
+    void deleteReviewsByUsername(String id);
+    void deleteReviewByPhoneName(String id);
+//    void deleteReviewByUsernameAndPhoneName(String username, String phoneName);
 
-    List<Review> findByTitleContainingOrBodyContaining(String word1, String word2);
-    void deleteReviewByUserId(String id);
-    void deleteReviewByPhoneId(String id);
-    List<Review> findByUserId(String id);
-    List<Review> findByPhoneId(String id);
+
 }

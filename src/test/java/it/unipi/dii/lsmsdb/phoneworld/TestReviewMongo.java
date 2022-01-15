@@ -35,21 +35,21 @@ public class TestReviewMongo {
 
     private void init() {
         Date dateOfReview1 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
-        Review review1 = new Review("1", "2", 5, dateOfReview1, "Nice phone",
-                "this phone is very nice", "user1", "phone1");
-        Date dateOfReview2 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
-        Review review2 = new Review("1", "3", 5, dateOfReview2, "Nice phone",
-                "this phone is very nice", "user2", "phone2");
-        Date dateOfReview3 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
-        Review review3 = new Review("2", "3", 2, dateOfReview3, "Bad phone",
-                "this phone is very nice", "user3", "phone3");
+        Review review1 = new Review.ReviewBuilder(1, dateOfReview1, "Nice phone",
+                "this phone is very nice").username("user1").phoneName("phone1").build();
+        Date dateOfReview2 = new GregorianCalendar(2008, Calendar.FEBRUARY, 11).getTime();
+        Review review2 = new Review.ReviewBuilder(4, dateOfReview2, "Nice phone",
+                "this phone is very nice").username("user2").phoneName("phone2").build();
+        Date dateOfReview3 = new GregorianCalendar(2004, Calendar.FEBRUARY, 11).getTime();
+        Review review3 = new Review.ReviewBuilder(3, dateOfReview3, "Nice phone",
+                "this phone is very nice").username("user3").phoneName("phone2").build();
         Date dateOfReview4 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
-        Review review4 = new Review("3", "3", 5, dateOfReview4, "Nice phone",
-                "this phone is very nice", "user4", "phone4");
-        reviewMongo.addReview(review1);
-        reviewMongo.addReview(review2);
-        reviewMongo.addReview(review3);
-        reviewMongo.addReview(review4);
+        Review review4 = new Review.ReviewBuilder(5, dateOfReview4, "Nice phone",
+                "this phone is very nice").username("user1").phoneName("phone4").build();
+        reviewMongo.saveReview(review1);
+        reviewMongo.saveReview(review2);
+        reviewMongo.saveReview(review3);
+        reviewMongo.saveReview(review4);
         id = reviewMongo.getReviewMongo().findAll().get(0).getId();
     }
 
@@ -61,14 +61,14 @@ public class TestReviewMongo {
         assertEquals(4, reviews.size());
     }
 
-//    @Test
-//    public void testFindReviews() {
-//        List<Review> reviews = reviewMongo.findByWord("iss");
-//        assertEquals(0, reviews.size());
-//        reviews = reviewMongo.findByWord("nice");
-//        reviews.forEach(System.out::println);
-//        assertEquals(4, reviews.size());
-//    }
+    @Test
+    public void testFindReviews() {
+        List<Review> reviews = reviewMongo.findByWord("iss");
+        assertEquals(0, reviews.size());
+        reviews = reviewMongo.findByWord("nice");
+        reviews.forEach(System.out::println);
+        assertEquals(4, reviews.size());
+    }
 
     @Test
     public void testFindReviewById() {
@@ -84,11 +84,11 @@ public class TestReviewMongo {
     @Test
     public void testUpdateReview() {
         Date dateOfReview = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
-        Review newReview = new Review("1", "3", 2, dateOfReview, "Bad phone",
-                "this phone is very bad", "username", "phoneName");
+        Review review = new Review.ReviewBuilder(1, dateOfReview, "Bad phone",
+                "this phone is very bad").build();
         List<Review> reviews = reviewMongo.getReviewMongo().findAll();
         reviews.forEach(System.out::println);
-        reviewMongo.updateReview(id, newReview);
+        reviewMongo.updateReview(id, review);
         reviews = reviewMongo.getReviewMongo().findAll();
         reviews.forEach(System.out::println);
         assertEquals(4, reviews.size());
@@ -116,21 +116,19 @@ public class TestReviewMongo {
     }
 
     @Test
-    public void testDeleteReviewByUserId() {
+    public void testDeleteReviewsByUsername() {
+        reviewMongo.deleteReviewsByUsername("user1");
         List<Review> reviews = reviewMongo.getReviewMongo().findAll();
-        reviews.forEach(System.out::println);
-        reviewMongo.deleteReviewByUserId("1");
-        reviews = reviewMongo.getReviewMongo().findAll();
         assertEquals(2, reviews.size());
     }
 
     @Test
-    public void testDeleteReviewByPhoneId() {
+    public void testDeleteReviewByPhoneName() {
         List<Review> reviews = reviewMongo.getReviewMongo().findAll();
         reviews.forEach(System.out::println);
-        reviewMongo.deleteReviewByPhoneId("3");
+        reviewMongo.deleteReviewByPhoneName("phone2");
         reviews = reviewMongo.getReviewMongo().findAll();
-        assertEquals(1, reviews.size());
+        assertEquals(2, reviews.size());
     }
 
     @Test
@@ -138,15 +136,15 @@ public class TestReviewMongo {
         Document users = reviewMongo.findMostActiveUsers(5);
         List<Document> results = (List<Document>) users.get("results");
         System.out.println(results);
-        assertEquals(2, results.get(0).get("Reviews"));
+        assertEquals(2, results.get(0).get("reviews"));
     }
 
     @Test
     public void testFindTopPhonesByRating() {
-        Document phones = reviewMongo.findTopPhonesByRating(3, 2);
+        Document phones = reviewMongo.findTopPhonesByRating(2, 2);
         List<Document> results = (List<Document>) phones.get("results");
         System.out.println(results);
-        assertEquals(4.0,results.get(0).get("rating"));
+        assertEquals(3.5,results.get(0).get("rating"));
 //        assertEquals(0, results.size());
     }
 

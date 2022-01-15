@@ -11,6 +11,8 @@ import java.util.List;
 @Repository
 public interface IPhoneMongo extends MongoRepository<Phone, String> {
 
+    List<Phone> findByReleaseYear(int releaseYear);
+
     @Query(value = "{'name': {$regex : ?0, $options: 'i'}}")
     List<Phone> findByNameRegexOrderByReleaseYearDesc(String name, Sort sort);
 

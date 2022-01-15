@@ -35,7 +35,7 @@ public class PhoneMongo {
         return phoneMongo;
     }
 
-    public boolean addPhone(Phone phone) {
+    public boolean savePhone(Phone phone) {
         boolean result = true;
         try {
             phoneMongo.save(phone);
@@ -69,6 +69,8 @@ public class PhoneMongo {
             } else if (parameter.equals("Camera Pixels (MP)")){
                 phones.addAll(phoneMongo.findByCameraPixelsRegexOrderByReleaseYearDesc(name,
                         Sort.by(Sort.Direction.DESC, "releaseYear")));
+            } else if (parameter.equals("Release Year")){
+                phones.addAll(phoneMongo.findByReleaseYear(Integer.parseInt(name)));
             }
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
@@ -107,7 +109,7 @@ public class PhoneMongo {
                 phone.get().setBatterySize(newPhone.getBatterySize());
                 phone.get().setBatteryType(newPhone.getBatteryType());
 
-                this.addPhone(phone.get());
+                phoneMongo.save(phone.get());
             }
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());

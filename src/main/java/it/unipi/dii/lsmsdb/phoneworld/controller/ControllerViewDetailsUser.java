@@ -130,7 +130,7 @@ public class ControllerViewDetailsUser implements Initializable {
 
     @FXML
     void onClickRemovePhone(ActionEvent event) {
-
+        this.tableWatchList.getSelectionModel().getSelectedItems();
     }
 
     @FXML

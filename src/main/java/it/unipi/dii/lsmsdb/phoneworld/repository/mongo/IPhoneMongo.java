@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface IPhoneMongo extends MongoRepository<Phone, String> {
@@ -30,5 +31,7 @@ public interface IPhoneMongo extends MongoRepository<Phone, String> {
 
     @Query(value = "{'cameraPixels': {$regex : /^?0 MP.*/, $options: 'i'}}")
     List<Phone> findByCameraPixelsRegexOrderByReleaseYearDesc(String cameraPixels, Sort sort);
+
+    Optional<Phone> findByName(String name);
 
 }

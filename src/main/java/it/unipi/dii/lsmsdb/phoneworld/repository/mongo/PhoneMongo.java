@@ -88,6 +88,16 @@ public class PhoneMongo {
         return phone;
     }
 
+    public Optional<Phone> findPhoneByName(String name) {
+        Optional<Phone> phone = Optional.empty();
+        try {
+            phone = phoneMongo.findByName(name);
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+        return phone;
+    }
+
     public boolean updatePhone(String id, Phone newPhone) {
         boolean result = true;
         try {

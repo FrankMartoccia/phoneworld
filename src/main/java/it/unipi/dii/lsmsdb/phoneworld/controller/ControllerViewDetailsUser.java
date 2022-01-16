@@ -2,8 +2,10 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
+import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.beans.binding.Bindings;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.IntStream;
 
@@ -45,6 +48,7 @@ public class ControllerViewDetailsUser implements Initializable {
     @FXML private Button buttonRemovePhone;
     @FXML private Button buttonDeleteReview;
     @FXML private Button buttonUpdateReview;
+    @FXML private Button buttonDetails;
 
     private int counterPages = 0;
     private int remainingElem;
@@ -54,6 +58,9 @@ public class ControllerViewDetailsUser implements Initializable {
 
     private final StageManager stageManager;
     private User user;
+
+    @Autowired
+    private PhoneMongo phoneMongo;
 
 
     @Autowired @Lazy
@@ -129,11 +136,6 @@ public class ControllerViewDetailsUser implements Initializable {
     }
 
     @FXML
-    void onClickRemovePhone(ActionEvent event) {
-
-    }
-
-    @FXML
     void onClikUpdateReview(ActionEvent event) {
 
     }
@@ -154,4 +156,22 @@ public class ControllerViewDetailsUser implements Initializable {
         this.setListReviews(user.getReviews());
     }
 
+    public void onClickDetails(ActionEvent actionEvent) {
+        String phoneNameComplete = String.valueOf(this.tableWatchList.getSelectionModel().getSelectedItems());
+        System.out.println(phoneNameComplete);
+        String phoneName = phoneNameComplete.substring(1, phoneNameComplete.length()-1);
+        System.out.println(phoneName);
+        Optional<Phone> phone = phoneMongo.findPhoneByName(phoneName);
+        if (phone.isEmpty()) {
+            stageManager.showInfoMessage("ERROR", "Phone not found!");
+            return;
+        }
+        App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, phone.get());
+        stageManager.switchScene(FxmlView.DETAILS_PHONES);
+    }
+
+    @FXML
+    void onClickRemovePhone(ActionEvent event) {
+
+    }
 }

@@ -98,18 +98,22 @@ public class Review {
         this.phoneName = phoneName;
     }
 
-    public String toStringTable() {
+    public String toStringTable(boolean isPhone) {
         StringBuilder sb = new StringBuilder();
+        if (isPhone) {
+            sb.append("Username: ").append(this.username).append("\n");
+        } else {
+            sb.append("Phone: ").append(this.phoneName).append("\n");
+        }
         sb.append("Title: ").append(this.title).append("\n");
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(this.dateOfReview);
         sb.append("Date: ").append(calendar.get(Calendar.YEAR)).append("-").append(calendar.get(Calendar.MONTH)).
                 append("-").append(calendar.get(Calendar.DAY_OF_MONTH)).append("\n");
-        sb.append("Phone: ").append(this.phoneName).append("\n");
         sb.append("Vote: ").append(this.rating).append("\n");
         StringBuilder sBody = new StringBuilder(this.body);
         int i = 0;
-        while ((i = sBody.indexOf(" ", i + 120)) != -1) {
+        while ((i = sBody.indexOf(" ", i + 125)) != -1) {
             sBody.replace(i, i+1, "\n");
         }
         sb.append("Body: ").append(sBody);

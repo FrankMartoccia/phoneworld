@@ -51,6 +51,10 @@ public abstract class GenericUser {
         this.hashedPassword = hashedPassword;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String get_class() {
         return _class;
     }

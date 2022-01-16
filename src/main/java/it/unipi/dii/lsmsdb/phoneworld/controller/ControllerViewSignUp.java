@@ -22,9 +22,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 @Component
 public class ControllerViewSignUp implements Initializable {
@@ -78,6 +78,13 @@ public class ControllerViewSignUp implements Initializable {
         String username = this.textFieldUsername.getText();
         String password = this.textFieldPassword.getText();
         String repeatedPassword = this.textFieldRepeatPassword.getText();
+        String sbError = stageManager.generateStringBuilderError(firstName,lastName,gender,country,city,
+                streetName, streetNumber, month, day, email,username,password,repeatedPassword, false);
+        if (!sbError.isEmpty()) {
+            stageManager.showInfoMessage("ERROR", "You have to insert the following fields: "
+                    + stageManager.getErrors(sbError));
+            return;
+        }
         Optional<GenericUser> users = userMongo.findByUsername(username);
         if (users.isPresent()) {
             stageManager.showInfoMessage("INFO", "Username already taken!");
@@ -87,15 +94,8 @@ public class ControllerViewSignUp implements Initializable {
             stageManager.showInfoMessage("ERROR", "Password and repeated password must be the same!");
             return;
         }
-        String sbError = stageManager.generateStringBuilderError(firstName,lastName,gender,country,city,streetName,
-                streetNumber, month, day, email,username,password,repeatedPassword);
-        if (!sbError.isEmpty()) {
-            stageManager.showInfoMessage("ERROR", "You have to insert the following fields: "
-                    + stageManager.getErrors(sbError));
-            return;
-        }
         try {
-            User user = this.createUser(firstName,lastName,gender,country,city,streetName,
+            User user = serviceUser.createUser(firstName,lastName,gender,country,city,streetName,
                     streetNumber, email,username,password, year, month, day);
             if (!serviceUser.insertUser(user)) {
                 stageManager.showInfoMessage("ERROR", "Error in adding new user, " +
@@ -109,19 +109,6 @@ public class ControllerViewSignUp implements Initializable {
             e.printStackTrace();
         }
 
-    }
-
-    private User createUser(String firstName, String lastName, String gender, String country, String city,
-                            String streetName, int streetNumber, String email, String username, String password,
-                            int year, int month, int day) {
-        LocalDate localDate = LocalDate.now();
-        LocalDate birthday = LocalDate.of(year,month,day);
-        int age = Period.between(birthday,localDate).getYears();
-        Date dateOfBirth = new GregorianCalendar(year, month-1, day+1).getTime();
-        String salt = serviceUser.getSalt();
-        String hashedPassword = serviceUser.getHashedPassword(password, salt);
-        return new User(username,salt,hashedPassword,"user",gender,firstName,lastName,streetNumber,streetName,
-                city,country, email,dateOfBirth,age);
     }
 
     @Override

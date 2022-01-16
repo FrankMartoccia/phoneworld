@@ -69,9 +69,9 @@ public class TestPhoneMongo {
         phone2.addReview(review2);
         phone3.addReview(review3);
         phone3.addReview(review4);
-        phoneMongo.savePhone(phone);
-        phoneMongo.savePhone(phone2);
-        phoneMongo.savePhone(phone3);
+        phoneMongo.addPhone(phone);
+        phoneMongo.addPhone(phone2);
+        phoneMongo.addPhone(phone3);
         id = phoneMongo.getPhoneMongo().findAll().get(0).getId();
     }
 

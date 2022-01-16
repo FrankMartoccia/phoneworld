@@ -35,7 +35,7 @@ public class PhoneMongo {
         return phoneMongo;
     }
 
-    public boolean savePhone(Phone phone) {
+    public boolean addPhone(Phone phone) {
         boolean result = true;
         try {
             phoneMongo.save(phone);

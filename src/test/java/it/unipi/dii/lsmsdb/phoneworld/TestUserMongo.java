@@ -53,12 +53,12 @@ public class TestUserMongo {
         Date dateOfReview1 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
         Review review1 = new Review.ReviewBuilder(1, dateOfReview1, "Nice phone",
                 "this phone is very nice").phoneName("Nokia 3210").build();
-        reviewMongo.saveReview(review1);
-        userMongo.saveUser(admin);
-        userMongo.saveUser(user1);
+        reviewMongo.addReview(review1);
+        userMongo.addUser(admin);
+        userMongo.addUser(user1);
         id1 = userMongo.getUserMongo().findAll().get(0).getId();
         id2 = userMongo.getUserMongo().findAll().get(1).getId();
-        userMongo.saveUser(user2);
+        userMongo.addUser(user2);
         user1.addReview(review1);
         userMongo.updateUser(id2, user1, "user");
     }

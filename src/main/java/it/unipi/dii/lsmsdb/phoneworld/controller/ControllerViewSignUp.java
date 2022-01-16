@@ -5,6 +5,7 @@ import it.unipi.dii.lsmsdb.phoneworld.Constants;
 import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.UserMongo;
+import it.unipi.dii.lsmsdb.phoneworld.services.ServiceUser;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.event.ActionEvent;
@@ -55,6 +56,9 @@ public class ControllerViewSignUp implements Initializable {
     @Autowired
     private UserMongo userMongo;
 
+    @Autowired
+    private ServiceUser serviceUser;
+
     public void onClickCancel(ActionEvent actionEvent) {
         stageManager.switchScene(FxmlView.AUTORIZATION);
     }
@@ -93,7 +97,7 @@ public class ControllerViewSignUp implements Initializable {
         try {
             User user = this.createUser(firstName,lastName,gender,country,city,streetName,
                     streetNumber, email,username,password, year, month, day);
-            if (!App.getInstance().getServiceUser().insertUser(user)) {
+            if (!serviceUser.insertUser(user)) {
                 stageManager.showInfoMessage("ERROR", "Error in adding new user, " +
                         "please try again");
                 return;
@@ -114,8 +118,8 @@ public class ControllerViewSignUp implements Initializable {
         LocalDate birthday = LocalDate.of(year,month,day);
         int age = Period.between(birthday,localDate).getYears();
         Date dateOfBirth = new GregorianCalendar(year, month-1, day+1).getTime();
-        String salt = App.getInstance().getServiceUser().getSalt();
-        String hashedPassword = App.getInstance().getServiceUser().getHashedPassword(password, salt);
+        String salt = serviceUser.getSalt();
+        String hashedPassword = serviceUser.getHashedPassword(password, salt);
         return new User(username,salt,hashedPassword,"user",gender,firstName,lastName,streetNumber,streetName,
                 city,country, email,dateOfBirth,age);
     }

@@ -180,12 +180,12 @@
                         <Insets bottom="10.0" left="30.0" top="7.0" />
                      </VBox.margin>
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="&lt;">
+                        <Button fx:id="buttonPrevious" mnemonicParsing="false" onAction="#onClickPrevious" prefHeight="50.0" prefWidth="50.0" text="&lt;">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Button>
-                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="&gt;">
+                        <Button fx:id="buttonNext" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickNext" prefHeight="50.0" prefWidth="50.0" text="&gt;">
                            <HBox.margin>
                               <Insets left="840.0" right="30.0" />
                            </HBox.margin>

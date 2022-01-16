@@ -118,6 +118,7 @@ public class ControllerViewRegisteredUser implements Initializable {
         this.buttonPrevious.setDisable(true);
         this.buttonNext.setDisable(true);
         this.initComboBox();
+        this.isSearch = false;
         this.counterPages = 0;
         phonesByFriends = App.getInstance().getPhoneNeo4j().findSuggestedPhonesByFriends(user.getId());
         phonesByBrand = App.getInstance().getPhoneNeo4j().findSuggestedPhonesByBrand(user.getId());
@@ -372,7 +373,7 @@ public class ControllerViewRegisteredUser implements Initializable {
             if (imageIndex < 9) {
                 userId = this.usersByFollows.get(imageIndex-1).get("id").asString();
             } else {
-                userId = this.usersByBrand.get(imageIndex-9).get("id").asString();
+                userId = this.usersByBrand.get((imageIndex-1)-9).get("id").asString();
             }
             if (userMongo.findUserById(userId).isPresent()) {
                 user = (User) userMongo.findUserById(userId).get();

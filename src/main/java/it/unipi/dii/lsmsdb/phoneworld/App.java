@@ -36,9 +36,6 @@ public class App extends Application {
     private UserNeo4j userNeo4j = new UserNeo4j(graphNeo4j);
     private PhoneNeo4j phoneNeo4j = new PhoneNeo4j(graphNeo4j);
     private ModelBean modelBean = new ModelBean();
-    private ServiceUser serviceUser = new ServiceUser();
-    private ServicePhone servicePhone = new ServicePhone();
-    private ServiceReview serviceReview = new ServiceReview();
     protected ConfigurableApplicationContext springContext;
     protected StageManager stageManager;
 
@@ -58,18 +55,6 @@ public class App extends Application {
 
     public PhoneNeo4j getPhoneNeo4j() {
         return phoneNeo4j;
-    }
-
-    public ServiceUser getServiceUser() {
-        return serviceUser;
-    }
-
-    public ServicePhone getServicePhone() {
-        return servicePhone;
-    }
-
-    public ServiceReview getServiceReview() {
-        return serviceReview;
     }
 
     @Override

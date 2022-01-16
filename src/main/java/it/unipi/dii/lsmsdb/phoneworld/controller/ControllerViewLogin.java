@@ -5,6 +5,7 @@ import it.unipi.dii.lsmsdb.phoneworld.Constants;
 import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.UserMongo;
+import it.unipi.dii.lsmsdb.phoneworld.services.ServiceUser;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.event.ActionEvent;
@@ -26,6 +27,9 @@ public class ControllerViewLogin {
 
     @Autowired
     private UserMongo userMongo;
+
+    @Autowired
+    private ServiceUser serviceUser;
 
     @FXML
     private TextField textFieldUsEm;
@@ -68,7 +72,7 @@ public class ControllerViewLogin {
                 return;
             }
             String salt = genericUser.get().getSalt();
-            String hashedPassword = App.getInstance().getServiceUser().getHashedPassword(password, salt);
+            String hashedPassword = serviceUser.getHashedPassword(password, salt);
             if (!genericUser.get().getHashedPassword().equals(hashedPassword)) {
                 stageManager.showInfoMessage("ERROR", "Wrong username or password");
                 this.clearFields();

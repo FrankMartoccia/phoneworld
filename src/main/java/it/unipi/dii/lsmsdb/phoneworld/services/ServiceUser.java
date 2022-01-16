@@ -7,16 +7,19 @@ import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.UserMongo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 
+@Component
 public class ServiceUser {
 
     @Autowired
-    private UserMongo userMongo;
+    private UserMongo userMongo = new UserMongo();
 
     private final static Logger logger = LoggerFactory.getLogger(ServiceUser.class);
 
@@ -44,6 +47,7 @@ public class ServiceUser {
         sr.nextBytes(salt);
         return Base64.getEncoder().encodeToString(salt);
     }
+
 
     public boolean insertUser(User user) {
         boolean result = true;

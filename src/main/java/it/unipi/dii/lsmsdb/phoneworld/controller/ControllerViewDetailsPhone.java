@@ -32,7 +32,6 @@ import java.util.stream.IntStream;
 @Component
 public class ControllerViewDetailsPhone implements Initializable {
 
-    @FXML private Button buttonCancel;
     @FXML private TableColumn<String, String> columnReviews;
     @FXML private Label labelBatterySize;
     @FXML private Label labelBatteryType;
@@ -50,10 +49,15 @@ public class ControllerViewDetailsPhone implements Initializable {
     @FXML private Label labelVideoPixels;
     @FXML private TableView<String> tableReviews;
     @FXML private ImageView imagePhone;
+    @FXML private Button buttonNext;
+    @FXML private Button buttonPrevious;
 
     private final ObservableList<String> listReviews = FXCollections.observableArrayList();
 
     private final StageManager stageManager;
+    private int counterPages = 0;
+    private int remainingElem;
+    private Phone phone;
 
     @Autowired @Lazy
     public ControllerViewDetailsPhone(StageManager stageManager) {
@@ -70,7 +74,7 @@ public class ControllerViewDetailsPhone implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Phone phone = (Phone) App.getInstance().getModelBean().getBean(Constants.SELECTED_PHONE);
+        phone = (Phone) App.getInstance().getModelBean().getBean(Constants.SELECTED_PHONE);
         System.out.println(phone.getReviews());
         this.imagePhone.setImage(new Image(phone.getPicture()));
         this.labelName.setText("Name: " + phone.getName());
@@ -88,16 +92,26 @@ public class ControllerViewDetailsPhone implements Initializable {
         this.labelStorage.setText("Storage: " + phone.getStorage());
         this.labelVideoPixels.setText("Video Pixels: " + phone.getVideoPixels());
         this.columnReviews.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
-        IntStream.range(0, 20).mapToObj(Integer::toString).forEach(tableReviews.getItems()::add);
+        this.counterPages = 0;
+        this.buttonPrevious.setDisable(true);
         this.setListReviews(phone.getReviews());
+        if (remainingElem < 10) this.buttonNext.setDisable(true);
     }
 
     private void setListReviews(List<Review> reviews) {
+        if (reviews.isEmpty()) {
+            remainingElem = reviews.size()-(counterPages+1)*10;
+            return;
+        }
         this.listReviews.clear();
-        for (Review review: reviews) {
-            this.listReviews.add(review.toStringTable());
+        for (int i = 0;i < 10;i++) {
+            this.listReviews.add(reviews.get(i + (counterPages*10)).toStringTable());
+            if (i+1 == reviews.size()){
+                break;
+            }
         }
         tableReviews.setItems(listReviews);
+        remainingElem = reviews.size()-(counterPages+1)*10;
     }
 
     public void onClickAddReview(ActionEvent actionEvent) {
@@ -107,5 +121,21 @@ public class ControllerViewDetailsPhone implements Initializable {
     }
 
     public void onClickRemovePhone(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    void onClickNext(ActionEvent event) {
+        if (counterPages==0) this.buttonPrevious.setDisable(false);
+        this.counterPages++;
+        this.setListReviews(phone.getReviews());
+        if (remainingElem < 10) this.buttonNext.setDisable(true);
+    }
+
+    @FXML
+    void onClickPrevious(ActionEvent event) {
+        this.buttonNext.setDisable(false);
+        this.counterPages--;
+        if (counterPages == 0) this.buttonPrevious.setDisable(true);
+        this.setListReviews(phone.getReviews());
     }
 }

@@ -1,5 +1,6 @@
 package it.unipi.dii.lsmsdb.phoneworld.controller;
 
+import com.sun.javafx.menu.MenuItemBase;
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
@@ -40,11 +41,18 @@ public class ControllerViewDetailsUser implements Initializable {
     @FXML private TableColumn<String, String> columnWatchList;
     @FXML private TableColumn<String, String> columnReviews;
     @FXML private ImageView imageViewPhoto;
+    @FXML private Button buttonNext;
+    @FXML private Button buttonPrevious;
+
+    private int counterPages = 0;
+    private int remainingElem;
 
     private final ObservableList<String> listPhones = FXCollections.observableArrayList();
     private final ObservableList<String> listReviews = FXCollections.observableArrayList();
 
     private final StageManager stageManager;
+    private User user;
+
 
     @Autowired @Lazy
     public ControllerViewDetailsUser(StageManager stageManager) {
@@ -53,7 +61,7 @@ public class ControllerViewDetailsUser implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        User user = (User) App.getInstance().getModelBean().getBean(Constants.SELECTED_USER);
+        this.user = (User) App.getInstance().getModelBean().getBean(Constants.SELECTED_USER);
         imageViewPhoto.setImage(new Image("user.png"));
         this.labelUsername.setText("Username: " + user.getUsername());
         this.labelFirstName.setText("First Name: " + user.getFirstName());
@@ -61,22 +69,32 @@ public class ControllerViewDetailsUser implements Initializable {
         this.columnWatchList.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
         this.columnReviews.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
         IntStream.range(0, 10).mapToObj(Integer::toString).forEach(tableWatchList.getItems()::add);
-        IntStream.range(0, 20).mapToObj(Integer::toString).forEach(tableReviews.getItems()::add);
 
         tableWatchList.setFixedCellSize(25);
         tableWatchList.prefHeightProperty().bind(tableWatchList.fixedCellSizeProperty().multiply(Bindings.size(tableWatchList.getItems()).add(1.10)));
         tableWatchList.minHeightProperty().bind(tableWatchList.prefHeightProperty());
         tableWatchList.maxHeightProperty().bind(tableWatchList.prefHeightProperty());
         this.setListPhones(App.getInstance().getUserNeo4j().getWatchlist(user.getId()));
+        this.counterPages = 0;
+        this.buttonPrevious.setDisable(true);
         this.setListReviews(user.getReviews());
+        if (remainingElem < 10) this.buttonNext.setDisable(true);
     }
 
     private void setListReviews(List<Review> reviews) {
+        if (reviews.isEmpty()) {
+            remainingElem = reviews.size()-(counterPages+1)*10;
+            return;
+        }
         this.listReviews.clear();
-        for (Review review: reviews) {
-            this.listReviews.add(review.toStringTable());
+        for (int i = 0;i < 10;i++) {
+            this.listReviews.add(reviews.get(i + (counterPages*10)).toStringTable());
+            if (i+1 == reviews.size()){
+                break;
+            }
         }
         tableReviews.setItems(listReviews);
+        remainingElem = reviews.size()-(counterPages+1)*10;
     }
 
     private void setListPhones(List<Record> watchlist) {
@@ -104,6 +122,22 @@ public class ControllerViewDetailsUser implements Initializable {
     @FXML
     void onClikUpdateReview(ActionEvent event) {
 
+    }
+
+    @FXML
+    void onClickNext(ActionEvent event) {
+        if (counterPages==0) this.buttonPrevious.setDisable(false);
+        this.counterPages++;
+        this.setListReviews(user.getReviews());
+        if (remainingElem < 10) this.buttonNext.setDisable(true);
+    }
+
+    @FXML
+    void onClickPrevious(ActionEvent event) {
+        this.buttonNext.setDisable(false);
+        this.counterPages--;
+        if (counterPages == 0) this.buttonPrevious.setDisable(true);
+        this.setListReviews(user.getReviews());
     }
 
 }

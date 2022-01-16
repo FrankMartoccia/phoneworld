@@ -168,8 +168,14 @@ public class ControllerViewRegisteredUser implements Initializable {
         List<Record> genericList = listFriends;
         int j = 0;
         for (int i = 0;i< this.imageViews.size();i++) {
+            if (genericList.isEmpty()){
+                i = 9;
+            }
             if (i == 9) {
                 genericList = listBrand;
+                if (genericList.isEmpty()) {
+                    return;
+                }
                 j = 0;
             }
             if (isUser) {
@@ -215,7 +221,7 @@ public class ControllerViewRegisteredUser implements Initializable {
             this.setListPhones(this.phones);
             return;
         } else if (text.isEmpty()){
-            stageManager.showInfoMessage("ERROR", "You didn't type nothing!");
+            stageManager.showInfoMessage("ERROR", "You didn't type anything!");
             return;
         }
         this.phones = phoneMongo.findPhones(text, this.comboBoxFilter.getValue());

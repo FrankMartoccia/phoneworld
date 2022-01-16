@@ -172,7 +172,7 @@ public class StageManager {
     public String generateStringBuilderError(String firstName, String lastName, String gender, String country,
                                               String city, String streetName, int streetNumber, int month,
                                               int day, String email, String username, String password,
-                                              String repeatedPassword) {
+                                              String repeatedPassword, boolean update) {
         StringBuilder sbError = new StringBuilder();
         if (firstName.isEmpty()) sbError.append("First_Name ");
         if (lastName.isEmpty()) sbError.append("Last_Name ");
@@ -184,7 +184,9 @@ public class StageManager {
         if (month == 0) sbError.append("Month ");
         if (day == 0) sbError.append("Day ");
         if (email.isEmpty()) sbError.append("E-mail ");
-        if (username.isEmpty()) sbError.append("Username ");
+        if (!update) {
+            if (username.isEmpty()) sbError.append("Username ");
+        }
         if (password.isEmpty()) sbError.append("Password ");
         if (repeatedPassword.isEmpty()) sbError.append("Repeated_password ");
         return sbError.toString();

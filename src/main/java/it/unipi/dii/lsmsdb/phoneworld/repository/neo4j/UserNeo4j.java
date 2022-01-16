@@ -119,6 +119,18 @@ public class UserNeo4j {
         return result;
     }
 
+    public List<Record> getRelationship(String userId, String phoneId) {
+        List<Record> result = new ArrayList<>();
+        try {
+            return graphNeo4j.read("MATCH (u1:User {id: $userId})-[:ADDS]->(p:Phone {id: $phoneId})" +
+                            "RETURN u1",
+                    parameters("userId", userId, "phoneId", phoneId));
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+        return result;
+    }
+
     public List<Record> getWatchlist(String id) {
         List<Record> result = new ArrayList<>();
         try {

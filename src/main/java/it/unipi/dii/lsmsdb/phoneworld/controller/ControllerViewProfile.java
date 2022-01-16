@@ -75,7 +75,8 @@ public class ControllerViewProfile implements Initializable {
     }
 
     public void onClickDetails() {
-        App.getInstance().getModelBean().putBean(Constants.SELECTED_USER, App.getInstance().getModelBean().getBean(Constants.CURRENT_USER));
+        User user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        App.getInstance().getModelBean().putBean(Constants.SELECTED_USER, user);
         stageManager.switchScene(FxmlView.DETAILS_USER);
     }
     public void onClickCancel() {

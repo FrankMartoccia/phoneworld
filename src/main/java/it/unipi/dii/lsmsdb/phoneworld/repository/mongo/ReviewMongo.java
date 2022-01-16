@@ -34,7 +34,7 @@ public class ReviewMongo {
         return reviewMongo;
     }
 
-    public boolean saveReview(Review review) {
+    public boolean addReview(Review review) {
         boolean result = true;
         try {
             reviewMongo.save(review);
@@ -93,7 +93,7 @@ public class ReviewMongo {
                 Review resultReview = review.get();
                 Review.ReviewBuilder builder = new Review.ReviewBuilder(newReview);
                 builder.id(id).phoneName(resultReview.getPhoneName()).username(resultReview.getUsername());
-                this.saveReview(builder.build());
+                this.addReview(builder.build());
             }
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());

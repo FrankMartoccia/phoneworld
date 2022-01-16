@@ -4,9 +4,9 @@ import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
+import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,15 +19,15 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.IntStream;
 
 @Component
 public class ControllerViewDetailsPhone implements Initializable {
@@ -53,11 +53,13 @@ public class ControllerViewDetailsPhone implements Initializable {
     @FXML private Button buttonPrevious;
 
     private final ObservableList<String> listReviews = FXCollections.observableArrayList();
+    private final static Logger logger = LoggerFactory.getLogger(ControllerViewDetailsPhone.class);
 
     private final StageManager stageManager;
     private int counterPages = 0;
     private int remainingElem;
     private Phone phone;
+    private User user;
 
     @Autowired @Lazy
     public ControllerViewDetailsPhone(StageManager stageManager) {
@@ -105,7 +107,7 @@ public class ControllerViewDetailsPhone implements Initializable {
         }
         this.listReviews.clear();
         for (int i = 0;i < 10;i++) {
-            this.listReviews.add(reviews.get(i + (counterPages*10)).toStringTable());
+            this.listReviews.add(reviews.get(i + (counterPages*10)).toStringTable(true));
             if (i+1 == reviews.size()){
                 break;
             }
@@ -118,9 +120,28 @@ public class ControllerViewDetailsPhone implements Initializable {
     }
 
     public void onClickAddPhone(ActionEvent actionEvent) {
+        if (App.getInstance().getModelBean().getBean(Constants.CURRENT_USER) == null) {
+            stageManager.switchScene(FxmlView.LOGIN);
+            return;
+        }
+        user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        String userId = user.getId();
+        String phoneId = phone.getId();
+        try {
+            if (!App.getInstance().getUserNeo4j().getRelationship(userId, phoneId).isEmpty()) {
+                stageManager.showInfoMessage("ERROR", "You have already added this phone to your " +
+                        "watchlist!");
+                return;
+            }
+            App.getInstance().getUserNeo4j().addRelationship(userId, phoneId);
+        } catch (Exception e) {
+            logger.error("Error in adding the phone to the watchlist: " + e.getLocalizedMessage());
+            e.printStackTrace();
+        }
     }
 
     public void onClickRemovePhone(ActionEvent actionEvent) {
+
     }
 
     @FXML

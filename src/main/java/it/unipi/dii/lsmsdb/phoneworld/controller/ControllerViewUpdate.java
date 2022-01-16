@@ -3,6 +3,8 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.UserMongo;
+import it.unipi.dii.lsmsdb.phoneworld.services.ServiceUser;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.event.ActionEvent;
@@ -12,6 +14,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -42,6 +46,13 @@ public class ControllerViewUpdate implements Initializable {
     private final StageManager stageManager;
     private User user;
 
+    @Autowired
+    private ServiceUser serviceUser;
+    @Autowired
+    private UserMongo userMongo;
+
+    private final static Logger logger = LoggerFactory.getLogger(ControllerViewUpdate.class);
+
     @Autowired @Lazy
     public ControllerViewUpdate(StageManager stageManager) {
         this.stageManager = stageManager;
@@ -53,7 +64,46 @@ public class ControllerViewUpdate implements Initializable {
     }
 
     public void onClickUpdate(ActionEvent actionEvent) {
-
+        String firstName = this.textFieldFirstName.getText();
+        String lastName = this.textFieldLastName.getText();
+        String gender = this.comboBoxGender.getValue();
+        String country = this.textFieldCountry.getText();
+        String city = this.textFieldCity.getText();
+        String streetName = this.textFieldStreetName.getText();
+        int streetNumber = this.spinnerStreetNumber.getValue();
+        int month = this.spinnerMonth.getValue();
+        int day = this.spinnerDay.getValue();
+        int year = this.spinnerYear.getValue();
+        String email = this.textFieldEmail.getText();
+        String password = this.textFieldPassword.getText();
+        String repeatedPassword = this.textFieldRepeatPassword.getText();
+        String errors = stageManager.generateStringBuilderError(firstName, lastName, gender, country, city,
+                streetName, streetNumber, month, day, email, "", password, repeatedPassword, true);
+        if (!errors.isEmpty()) {
+            stageManager.showInfoMessage("ERROR", "You have to insert the following fields: "
+            + stageManager.getErrors(errors));
+            return;
+        }
+        if (!password.equals(repeatedPassword)){
+            stageManager.showInfoMessage("ERROR", "Password and repeated password must be the same!");
+            return;
+        }
+        try {
+            User newUser = serviceUser.createUser(firstName,lastName,gender,country,city,streetName,
+                    streetNumber, email, user.getUsername(),password, year, month, day);
+            newUser.setId(user.getId());
+            if (!userMongo.updateUser(user.getId(),newUser, "user")) {
+                logger.error("Error in adding the user to MongoDB");
+                stageManager.showInfoMessage("ERROR", "Error in updating the user, " +
+                        "please try again");
+                return;
+            }
+            App.getInstance().getModelBean().putBean(Constants.CURRENT_USER, newUser);
+            stageManager.switchScene(FxmlView.USER);
+        } catch (Exception e) {
+            logger.error("Error in adding new user: " + e.getLocalizedMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override

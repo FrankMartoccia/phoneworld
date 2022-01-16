@@ -170,6 +170,9 @@ public class ControllerViewRegisteredUser implements Initializable {
         for (int i = 0;i< this.imageViews.size();i++) {
             if (i == 9) {
                 genericList = listBrand;
+                if (genericList.isEmpty()) {
+                    return;
+                }
                 j = 0;
             }
             if (isUser) {

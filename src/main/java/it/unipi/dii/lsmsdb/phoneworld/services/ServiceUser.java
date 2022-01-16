@@ -19,7 +19,7 @@ import java.util.Base64;
 public class ServiceUser {
 
     @Autowired
-    private UserMongo userMongo = new UserMongo();
+    private UserMongo userMongo;
 
     private final static Logger logger = LoggerFactory.getLogger(ServiceUser.class);
 
@@ -51,7 +51,7 @@ public class ServiceUser {
 
     public boolean insertUser(User user) {
         boolean result = true;
-        if (!userMongo.addUser(user)) {
+        if (!userMongo.saveUser(user)) {
             logger.error("Error in adding the user to MongoDB");
             return false;
         }

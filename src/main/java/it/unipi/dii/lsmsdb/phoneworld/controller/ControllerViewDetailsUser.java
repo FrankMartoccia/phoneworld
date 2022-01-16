@@ -43,6 +43,9 @@ public class ControllerViewDetailsUser implements Initializable {
     @FXML private ImageView imageViewPhoto;
     @FXML private Button buttonNext;
     @FXML private Button buttonPrevious;
+    @FXML private Button buttonRemovePhone;
+    @FXML private Button buttonDeleteReview;
+    @FXML private Button buttonUpdateReview;
 
     private int counterPages = 0;
     private int remainingElem;
@@ -61,7 +64,19 @@ public class ControllerViewDetailsUser implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.user = (User) App.getInstance().getModelBean().getBean(Constants.SELECTED_USER);
+        this.buttonRemovePhone.setVisible(false);
+        this.buttonUpdateReview.setVisible(false);
+        this.buttonDeleteReview.setVisible(false);
+        User selectedUser = (User) App.getInstance().getModelBean().getBean(Constants.SELECTED_USER);
+        User currentUser = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        if (selectedUser.getId().equals(currentUser.getId())) {
+            user = currentUser;
+            this.buttonRemovePhone.setVisible(true);
+            this.buttonUpdateReview.setVisible(true);
+            this.buttonDeleteReview.setVisible(true);
+        } else {
+            user = selectedUser;
+        }
         imageViewPhoto.setImage(new Image("user.png"));
         this.labelUsername.setText("Username: " + user.getUsername());
         this.labelFirstName.setText("First Name: " + user.getFirstName());
@@ -83,7 +98,7 @@ public class ControllerViewDetailsUser implements Initializable {
 
     private void setListReviews(List<Review> reviews) {
         if (reviews.isEmpty()) {
-            remainingElem = reviews.size()-(counterPages+1)*10;
+            remainingElem = 0;
             return;
         }
         this.listReviews.clear();

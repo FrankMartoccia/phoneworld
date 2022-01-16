@@ -1,6 +1,5 @@
 package it.unipi.dii.lsmsdb.phoneworld.controller;
 
-import com.sun.javafx.menu.MenuItemBase;
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
@@ -103,7 +102,7 @@ public class ControllerViewDetailsUser implements Initializable {
         }
         this.listReviews.clear();
         for (int i = 0;i < 10;i++) {
-            this.listReviews.add(reviews.get(i + (counterPages*10)).toStringTable());
+            this.listReviews.add(reviews.get(i + (counterPages*10)).toStringTable(false));
             if (i+1 == reviews.size()){
                 break;
             }

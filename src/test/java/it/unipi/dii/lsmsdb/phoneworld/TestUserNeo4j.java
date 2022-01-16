@@ -154,7 +154,7 @@ public class TestUserNeo4j {
         List<Record> records = userNeo4j.findSuggestedUsersByBrand("id1");
         System.out.println(records);
         int phones = records.get(0).get("phones").asInt();
-        Assertions.assertEquals(4, phones);
+        Assertions.assertEquals(3, phones);
     }
 
     @Test
@@ -163,6 +163,19 @@ public class TestUserNeo4j {
         System.out.println(records);
         String name = records.get(0).get("p").get("name").asString();
         Assertions.assertEquals("Mi 11", name);
+    }
+
+    @Test
+    public void testGetRelationship() {
+        List<Record> records = userNeo4j.getRelationship("id1", "phoneid1");
+        System.out.println(records);
+        List<Record> record = userNeo4j.getGraphNeo4j().read(
+                "MATCH (u1:User {id: 'id1'})-[:ADDS]->(p:Phone {id: 'phoneid1'})" +
+                        "RETURN u1");
+        System.out.println(record);
+//        String name = records.get(0).get("p").get("name").asString();
+//        Assertions.assertEquals("Mi 11", name);
+        Assertions.assertEquals(1,1);
     }
 
 }

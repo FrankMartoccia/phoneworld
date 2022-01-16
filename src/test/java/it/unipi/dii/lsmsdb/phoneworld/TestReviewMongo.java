@@ -46,10 +46,10 @@ public class TestReviewMongo {
         Date dateOfReview4 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
         Review review4 = new Review.ReviewBuilder(5, dateOfReview4, "Nice phone",
                 "this phone is very nice").username("user1").phoneName("phone4").build();
-        reviewMongo.saveReview(review1);
-        reviewMongo.saveReview(review2);
-        reviewMongo.saveReview(review3);
-        reviewMongo.saveReview(review4);
+        reviewMongo.addReview(review1);
+        reviewMongo.addReview(review2);
+        reviewMongo.addReview(review3);
+        reviewMongo.addReview(review4);
         id = reviewMongo.getReviewMongo().findAll().get(0).getId();
     }
 

@@ -32,7 +32,7 @@ public class ControllerViewLogin {
     private ServiceUser serviceUser;
 
     @FXML
-    private TextField textFieldUsEm;
+    private TextField textFieldUsername;
     @FXML
     private PasswordField textFieldPassword;
 
@@ -50,7 +50,7 @@ public class ControllerViewLogin {
 
     public void onClickLogin() {
         String password = textFieldPassword.getText();
-        String username = textFieldUsEm.getText().trim();
+        String username = textFieldUsername.getText().trim();
         if (password.isEmpty() && username.isEmpty()) {
             stageManager.showInfoMessage("ERROR", "You have to insert your " +
                     "username and your password");
@@ -89,7 +89,7 @@ public class ControllerViewLogin {
     }
 
     private void clearFields() {
-        this.textFieldUsEm.clear();
+        this.textFieldUsername.clear();
         this.textFieldPassword.clear();
     }
 

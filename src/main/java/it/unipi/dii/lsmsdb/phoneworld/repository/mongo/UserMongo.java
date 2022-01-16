@@ -36,7 +36,7 @@ public class UserMongo {
         return userMongo;
     }
 
-    public boolean saveUser(GenericUser user) {
+    public boolean addUser(GenericUser user) {
         boolean result = true;
         try {
             userMongo.save(user);
@@ -87,7 +87,7 @@ public class UserMongo {
                     administrator.setUsername(newGenericUser.getUsername());
                     administrator.setHashedPassword(newGenericUser.getHashedPassword());
                     administrator.setSalt(newGenericUser.getSalt());
-                    this.saveUser(administrator);
+                    this.addUser(administrator);
                 } else {
                     User user = (User) genericUser.get();
                     User newUser = (User)newGenericUser;

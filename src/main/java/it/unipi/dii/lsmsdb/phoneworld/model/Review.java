@@ -1,6 +1,7 @@
 package it.unipi.dii.lsmsdb.phoneworld.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Calendar;
@@ -12,8 +13,6 @@ public class Review {
 
     @Id
     private String id;
-    private String userId;
-    private String phoneId;
     private int rating;
     private Date dateOfReview;
     private String title;
@@ -21,13 +20,10 @@ public class Review {
     private String username;
     private String phoneName;
 
-    public Review() {
-    }
-
-    public Review(String userId, String phoneId, int rating, Date dateOfReview, String title,
-                  String body, String username, String phoneName) {
-        this.userId = userId;
-        this.phoneId = phoneId;
+    @PersistenceConstructor
+    public Review(String id, int rating, Date dateOfReview, String title, String body, String username,
+                  String phoneName) {
+        this.id = id;
         this.rating = rating;
         this.dateOfReview = dateOfReview;
         this.title = title;
@@ -36,20 +32,18 @@ public class Review {
         this.phoneName = phoneName;
     }
 
+    public Review(ReviewBuilder builder) {
+        this.id = builder.id;
+        this.rating = builder.rating;
+        this.dateOfReview = builder.dateOfReview;
+        this.title = builder.title;
+        this.body = builder.body;
+        this.username = builder.username;
+        this.phoneName = builder.phoneName;
+    }
+
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getPhoneId() {
-        return phoneId;
     }
 
     public int getRating() {
@@ -68,6 +62,18 @@ public class Review {
         return body;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPhoneName() {
+        return phoneName;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public void setRating(int rating) {
         this.rating = rating;
     }
@@ -76,28 +82,20 @@ public class Review {
         this.dateOfReview = dateOfReview;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPhoneName() {
-        return phoneName;
-    }
-
-    public void setPhoneName(String phoneName) {
-        this.phoneName = phoneName;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPhoneName(String phoneName) {
+        this.phoneName = phoneName;
     }
 
     public String toStringTable() {
@@ -122,8 +120,6 @@ public class Review {
     public String toString() {
         return "Review{" +
                 "id='" + id + '\'' +
-                ", userId='" + userId + '\'' +
-                ", phoneId='" + phoneId + '\'' +
                 ", rating=" + rating +
                 ", dateOfReview=" + dateOfReview +
                 ", title='" + title + '\'' +
@@ -132,4 +128,49 @@ public class Review {
                 ", phoneName='" + phoneName + '\'' +
                 '}';
     }
+
+    public static class ReviewBuilder {
+        private String id;
+        private int rating;
+        private Date dateOfReview;
+        private String title;
+        private String body;
+        private String username;
+        private String phoneName;
+
+        public ReviewBuilder(int rating, Date dateOfReview, String title, String body) {
+            this.rating = rating;
+            this.dateOfReview = dateOfReview;
+            this.title = title;
+            this.body = body;
+        }
+
+        public ReviewBuilder(Review review) {
+            this.rating = review.rating;
+            this.dateOfReview = review.dateOfReview;
+            this.title = review.title;
+            this.body = review.body;
+        }
+        public ReviewBuilder id (String id) {
+            this.id = id;
+            return this;
+        }
+
+        public ReviewBuilder username (String username) {
+            this.username = username;
+            return this;
+        }
+
+        public ReviewBuilder phoneName (String phoneName) {
+            this.phoneName = phoneName;
+            return this;
+        }
+
+        public Review build() {
+            return new Review(this);
+        }
+
+    }
 }
+
+

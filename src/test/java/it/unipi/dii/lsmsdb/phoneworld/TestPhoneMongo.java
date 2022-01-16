@@ -35,14 +35,12 @@ public class TestPhoneMongo {
     }
 
     private void init() {
-//        Date dateOfRelease = new GregorianCalendar(2005, Calendar.FEBRUARY, 11).getTime();
         int dateOfRelease = 2000;
         Phone phone = new Phone("Nokia", "Nokia Lumia 800", "url", "body", "os",
                 "storage", "display", "resolution", "camera",
                 "video", "ram", "chipset", "batterySize",
                 "batteryType", dateOfRelease);
 
-//        Date dateOfRelease2 = new GregorianCalendar(2000, Calendar.MAY, 11).getTime();
         int dateOfRelease2 = 2006;
         Phone phone2 = new Phone("Apple", "Apple iPhone 11", "url", "body", "os",
                 "storage", "display", "resolution", "camera",
@@ -56,24 +54,24 @@ public class TestPhoneMongo {
                 "batteryType", dateOfRelease3);
 
         Date dateOfReview1 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
-        Review review1 = new Review("1", "2", 4, dateOfReview1, "Nice phone",
-                "this phone is very nice", "user1", "phone1");
-        Date dateOfReview2 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
-        Review review2 = new Review("1", "3", 1, dateOfReview2, "Nice phone",
-                "this phone is very nice", "user2", "phone2");
-        Date dateOfReview3 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
-        Review review3 = new Review("2", "3", 2, dateOfReview3, "Bad phone",
-                "this phone is very nice", "user3", "phone3");
+        Review review1 = new Review.ReviewBuilder(1, dateOfReview1, "Nice phone",
+                "this phone is very nice").username("user1").build();
+        Date dateOfReview2 = new GregorianCalendar(2008, Calendar.FEBRUARY, 11).getTime();
+        Review review2 = new Review.ReviewBuilder(4, dateOfReview2, "Nice phone",
+                "this phone is very nice").username("user2").build();
+        Date dateOfReview3 = new GregorianCalendar(2004, Calendar.FEBRUARY, 11).getTime();
+        Review review3 = new Review.ReviewBuilder(3, dateOfReview3, "Nice phone",
+                "this phone is very nice").username("user3").build();
         Date dateOfReview4 = new GregorianCalendar(2007, Calendar.FEBRUARY, 11).getTime();
-        Review review4 = new Review("3", "3", 5, dateOfReview4, "Nice phone",
-                "this phone is very nice", "user4", "phone4");
+        Review review4 = new Review.ReviewBuilder(5, dateOfReview4, "Nice phone",
+                "this phone is very nice").username("user4").build();
         phone.addReview(review1);
         phone2.addReview(review2);
         phone3.addReview(review3);
         phone3.addReview(review4);
-        phoneMongo.addPhone(phone);
-        phoneMongo.addPhone(phone2);
-        phoneMongo.addPhone(phone3);
+        phoneMongo.savePhone(phone);
+        phoneMongo.savePhone(phone2);
+        phoneMongo.savePhone(phone3);
         id = phoneMongo.getPhoneMongo().findAll().get(0).getId();
     }
 
@@ -152,6 +150,7 @@ public class TestPhoneMongo {
     @Test
     public void testTopRatedBrands() {
         Document phones = phoneMongo.findTopRatedBrands(2,3);
+        phoneMongo.getPhoneMongo().findAll().forEach(System.out::println);
         List<Document> results = (List<Document>) phones.get("results");
         System.out.println(results);
         assertEquals("Samsung",results.get(0).get("brand"));

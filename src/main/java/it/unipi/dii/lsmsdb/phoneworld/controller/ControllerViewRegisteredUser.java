@@ -158,7 +158,8 @@ public class ControllerViewRegisteredUser implements Initializable {
     }
 
     private void initComboBox() {
-        this.comboBoxFilter.getItems().addAll("Name", "Ram (GB)", "Storage (GB)", "Chipset", "Battery Size (mAh)", "Camera Pixels (MP)");
+        this.comboBoxFilter.getItems().addAll("Name", "Ram (GB)", "Storage (GB)", "Chipset",
+                "Battery Size (mAh)", "Camera Pixels (MP)", "Release Year");
         this.comboBoxFilter.setValue("Name");
     }
 

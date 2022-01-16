@@ -134,6 +134,7 @@ public class ControllerViewDetailsPhone implements Initializable {
                 return;
             }
             App.getInstance().getUserNeo4j().addRelationship(userId, phoneId);
+            stageManager.showInfoMessage("INFO", "You have added this phone to your watchlist");
         } catch (Exception e) {
             logger.error("Error in adding the phone to the watchlist: " + e.getLocalizedMessage());
             e.printStackTrace();
@@ -141,7 +142,23 @@ public class ControllerViewDetailsPhone implements Initializable {
     }
 
     public void onClickRemovePhone(ActionEvent actionEvent) {
-
+        if (App.getInstance().getModelBean().getBean(Constants.CURRENT_USER) == null) {
+            stageManager.switchScene(FxmlView.LOGIN);
+            return;
+        }
+        user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        String userId = user.getId();
+        String phoneId = phone.getId();
+        try {
+            if (App.getInstance().getUserNeo4j().getRelationship(userId, phoneId).isEmpty()) {
+                stageManager.showInfoMessage("ERROR", "This phone is not in your watchlist!");
+                return;
+            }
+            App.getInstance().getUserNeo4j().removeRelationship(userId, phoneId);
+            stageManager.showInfoMessage("INFO", "You have removed this phone from your watchlist");
+        } catch (Exception e) {
+            logger.error("Error in adding the phone to the watchlist: " + e.getLocalizedMessage());
+        }
     }
 
     @FXML

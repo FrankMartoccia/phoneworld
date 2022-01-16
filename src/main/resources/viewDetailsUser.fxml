@@ -68,11 +68,19 @@
                               <TableColumn fx:id="columnWatchList" prefWidth="456.0" text="WATCHLIST" />
                            </columns>
                         </TableView>
-                        <Button fx:id="buttonRemovePhone" mnemonicParsing="false" onAction="#onClickRemovePhone" prefHeight="52.0" prefWidth="180.0" text="REMOVE PHONE">
+                        <HBox prefHeight="52.0" prefWidth="379.0">
                            <VBox.margin>
-                              <Insets left="275.0" top="12.0" />
+                              <Insets top="12.0" />
                            </VBox.margin>
-                        </Button>
+                           <children>
+                              <Button fx:id="buttonDetails" mnemonicParsing="false" onAction="#onClickDetails" prefHeight="52.0" prefWidth="180.0" text="PHONE DETAILS" />
+                              <Button fx:id="buttonRemovePhone" mnemonicParsing="false" onAction="#onClickRemovePhone" prefHeight="52.0" prefWidth="180.0" text="REMOVE PHONE">
+                                 <HBox.margin>
+                                    <Insets left="95.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                </children>

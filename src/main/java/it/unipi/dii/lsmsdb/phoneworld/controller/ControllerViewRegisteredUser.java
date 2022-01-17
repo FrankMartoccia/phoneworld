@@ -305,7 +305,7 @@ public class ControllerViewRegisteredUser implements Initializable {
     }
 
     public void actionProfile(ActionEvent actionEvent) {
-        stageManager.switchScene(FxmlView.PROFILE);
+        stageManager.showWindow(FxmlView.PROFILE);
     }
 
     public void actionClickOnUsers(ActionEvent actionEvent) {
@@ -389,11 +389,11 @@ public class ControllerViewRegisteredUser implements Initializable {
                 return;
             }
             App.getInstance().getModelBean().putBean(Constants.SELECTED_USER, user);
-            stageManager.switchScene(FxmlView.DETAILS_USER);
+            stageManager.showWindow(FxmlView.DETAILS_USER);
         } else {
             user = (User) this.users.get((18*counterPages) + imageIndex-1);
             App.getInstance().getModelBean().putBean(Constants.SELECTED_USER, user);
-            stageManager.switchScene(FxmlView.DETAILS_USER);
+            stageManager.showWindow(FxmlView.DETAILS_USER);
         }
     }
 
@@ -413,11 +413,11 @@ public class ControllerViewRegisteredUser implements Initializable {
                 return;
             }
             App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, phone);
-            stageManager.switchScene(FxmlView.DETAILS_PHONES);
+            stageManager.showWindow(FxmlView.DETAILS_PHONES);
         } else {
             phone = this.phones.get((18*counterPages)+imageIndex-1);
             App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, phone);
-            stageManager.switchScene(FxmlView.DETAILS_PHONES);
+            stageManager.showWindow(FxmlView.DETAILS_PHONES);
         }
     }
 }

@@ -7,6 +7,7 @@ import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,26 +23,19 @@ import java.util.ResourceBundle;
 @Component
 public class ControllerViewProfile implements Initializable {
 
-    @FXML
-    private Label labelUsername;
-    @FXML
-    private Label labelFirstName;
-    @FXML
-    private Label labelLastName;
-    @FXML
-    private Label labelGender;
-    @FXML
-    private Label labelCountry;
-    @FXML
-    private Label labelCity;
-    @FXML
-    private Label labelStreet;
-    @FXML
-    private Label labelBirthday;
-    @FXML
-    private Label labelEmail;
-    @FXML
-    private ImageView imageViewProfile;
+    @FXML private Button buttonDetails;
+    @FXML private Button buttonUpdate;
+    @FXML private Button buttonCancel;
+    @FXML private Label labelUsername;
+    @FXML private Label labelFirstName;
+    @FXML private Label labelLastName;
+    @FXML private Label labelGender;
+    @FXML private Label labelCountry;
+    @FXML private Label labelCity;
+    @FXML private Label labelStreet;
+    @FXML private Label labelBirthday;
+    @FXML private Label labelEmail;
+    @FXML private ImageView imageViewProfile;
 
     private final StageManager stageManager;
 
@@ -71,15 +65,17 @@ public class ControllerViewProfile implements Initializable {
     }
 
     public void onClickUpdate() {
-        stageManager.switchScene(FxmlView.UPDATE);
+        stageManager.closeStage(this.buttonUpdate);
+        stageManager.showWindow(FxmlView.UPDATE);
     }
 
     public void onClickDetails() {
         User user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
         App.getInstance().getModelBean().putBean(Constants.SELECTED_USER, user);
-        stageManager.switchScene(FxmlView.DETAILS_USER);
+        stageManager.closeStage(this.buttonDetails);
+        stageManager.showWindow(FxmlView.DETAILS_USER);
     }
     public void onClickCancel() {
-        stageManager.switchScene(FxmlView.USER);
+        stageManager.closeStage(this.buttonCancel);
     }
 }

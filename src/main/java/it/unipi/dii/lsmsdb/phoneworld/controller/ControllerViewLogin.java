@@ -10,6 +10,7 @@ import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -24,6 +25,10 @@ import java.util.Optional;
 
 @Component
 public class ControllerViewLogin {
+
+    @FXML private Button buttonCancel;
+    @FXML private Button buttonLogin;
+    @FXML private Button buttonRegister;
 
     @Autowired
     private UserMongo userMongo;
@@ -45,7 +50,7 @@ public class ControllerViewLogin {
     }
 
     public void onClickCancel(ActionEvent actionEvent) {
-        stageManager.switchScene(FxmlView.UNUSER);
+        stageManager.closeStage(this.buttonCancel);
     }
 
     public void onClickLogin() {
@@ -81,6 +86,7 @@ public class ControllerViewLogin {
             GenericUser user = new User();
             user = genericUser.get();
             App.getInstance().getModelBean().putBean(Constants.CURRENT_USER, user);
+            stageManager.closeStage(this.buttonLogin);
             stageManager.switchScene(FxmlView.USER);
         } catch (Exception e) {
             logger.error("Exception occurred: ");
@@ -94,7 +100,8 @@ public class ControllerViewLogin {
     }
 
     public void onClickSignUp(ActionEvent actionEvent) {
-        stageManager.switchScene(FxmlView.SIGNUP);
+        stageManager.closeStage(this.buttonRegister);
+        stageManager.showWindow(FxmlView.SIGNUP);
     }
 
     public void onClikEnterUsername(KeyEvent keyEvent) {

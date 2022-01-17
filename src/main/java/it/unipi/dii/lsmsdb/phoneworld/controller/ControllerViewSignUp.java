@@ -11,10 +11,7 @@ import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +26,8 @@ import java.util.ResourceBundle;
 @Component
 public class ControllerViewSignUp implements Initializable {
 
+    @FXML private Button buttonSignUp;
+    @FXML private Button buttonCancel;
     @FXML private TextField textFieldFirstName;
     @FXML private TextField textFieldLastName;
     @FXML private TextField textFieldCountry;
@@ -60,7 +59,8 @@ public class ControllerViewSignUp implements Initializable {
     private ServiceUser serviceUser;
 
     public void onClickCancel(ActionEvent actionEvent) {
-        stageManager.switchScene(FxmlView.AUTORIZATION);
+        stageManager.closeStage(this.buttonCancel);
+        stageManager.showWindow(FxmlView.AUTORIZATION);
     }
 
     public void onClickSignUp(ActionEvent actionEvent) {
@@ -103,6 +103,7 @@ public class ControllerViewSignUp implements Initializable {
                 return;
             }
             App.getInstance().getModelBean().putBean(Constants.CURRENT_USER, user);
+            stageManager.closeStage(this.buttonSignUp);
             stageManager.switchScene(FxmlView.USER);
         } catch (Exception e) {
             logger.error("Error in adding new user: " + e.getLocalizedMessage());

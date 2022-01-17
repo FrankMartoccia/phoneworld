@@ -51,6 +51,7 @@ public class ControllerViewDetailsPhone implements Initializable {
     @FXML private ImageView imagePhone;
     @FXML private Button buttonNext;
     @FXML private Button buttonPrevious;
+    @FXML private Button buttonCancel;
 
     private final ObservableList<String> listReviews = FXCollections.observableArrayList();
     private final static Logger logger = LoggerFactory.getLogger(ControllerViewDetailsPhone.class);
@@ -67,12 +68,7 @@ public class ControllerViewDetailsPhone implements Initializable {
     }
 
     public void onClickCancel(ActionEvent actionEvent) {
-        User user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
-        if (user == null) {
-            stageManager.switchScene(FxmlView.UNUSER);
-        } else {
-            stageManager.switchScene(FxmlView.USER);
-        }
+        stageManager.closeStage(this.buttonCancel);
     }
 
     @Override

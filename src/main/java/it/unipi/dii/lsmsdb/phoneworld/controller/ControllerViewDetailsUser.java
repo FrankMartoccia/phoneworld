@@ -35,6 +35,7 @@ import java.util.stream.IntStream;
 @Component
 public class ControllerViewDetailsUser implements Initializable {
 
+    @FXML private Button buttonCancel;
     @FXML private Label labelUsername;
     @FXML private Label labelFirstName;
     @FXML private Label labelLastName;
@@ -134,7 +135,7 @@ public class ControllerViewDetailsUser implements Initializable {
     }
 
     public void onClickCancel(ActionEvent actionEvent) {
-        stageManager.switchScene(FxmlView.USER);
+        stageManager.closeStage(this.buttonCancel);
     }
 
     @FXML

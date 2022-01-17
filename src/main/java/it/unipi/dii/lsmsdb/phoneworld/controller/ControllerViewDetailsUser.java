@@ -158,9 +158,13 @@ public class ControllerViewDetailsUser implements Initializable {
 
     public void onClickDetails(ActionEvent actionEvent) {
         String phoneNameComplete = String.valueOf(this.tableWatchList.getSelectionModel().getSelectedItems());
-        System.out.println(phoneNameComplete);
+        System.out.println(phoneNameComplete
+        );
         String phoneName = phoneNameComplete.substring(1, phoneNameComplete.length()-1);
-        System.out.println(phoneName);
+        if (phoneName.isEmpty()) {
+            stageManager.showInfoMessage("INFO", "You must select a phone");
+            return;
+        }
         Optional<Phone> phone = phoneMongo.findPhoneByName(phoneName);
         if (phone.isEmpty()) {
             stageManager.showInfoMessage("ERROR", "Phone not found!");

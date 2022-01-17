@@ -68,7 +68,7 @@ public class ControllerViewDetailsPhone implements Initializable {
 
     public void onClickCancel(ActionEvent actionEvent) {
         if (App.getInstance().getModelBean().getBean(Constants.CURRENT_USER) != null) {
-            stageManager.switchScene(FxmlView.USER);
+            stageManager.switchScene(FxmlView.DETAILS_USER);
         } else {
             stageManager.switchScene(FxmlView.UNUSER);
         }
@@ -128,6 +128,10 @@ public class ControllerViewDetailsPhone implements Initializable {
         String userId = user.getId();
         String phoneId = phone.getId();
         try {
+            if (App.getInstance().getUserNeo4j().getWatchlist(userId).size() == 10) {
+                stageManager.showInfoMessage("INFO", "You have already 10 phones in your watchlist!");
+                return;
+            }
             if (!App.getInstance().getUserNeo4j().getRelationship(userId, phoneId).isEmpty()) {
                 stageManager.showInfoMessage("ERROR", "You have already added this phone to your " +
                         "watchlist!");

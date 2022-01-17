@@ -420,4 +420,10 @@ public class ControllerViewRegisteredUser implements Initializable {
             stageManager.showWindow(FxmlView.DETAILS_PHONES);
         }
     }
+
+    public void onTopRatedBrands(ActionEvent actionEvent) {
+    }
+
+    public void onTopPhonesByRating(ActionEvent actionEvent) {
+    }
 }

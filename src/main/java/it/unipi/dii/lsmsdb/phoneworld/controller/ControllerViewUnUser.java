@@ -203,4 +203,9 @@ public class ControllerViewUnUser implements Initializable {
         App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, phone);
         stageManager.showWindow(FxmlView.DETAILS_PHONES);
     }
+
+    public void onClickClose(ActionEvent actionEvent) {
+        Platform.exit();
+        System.exit(0);
+    }
 }

@@ -23,10 +23,12 @@
          <top>
             <MenuBar BorderPane.alignment="CENTER">
               <menus>
-                <Menu mnemonicParsing="false" text="File">
+                <Menu mnemonicParsing="false" text="Options">
                   <items>
                     <MenuItem fx:id="menuItemSuggestedUsers" mnemonicParsing="false" onAction="#onSuggestedUsers" text="Show suggested users" />
                         <MenuItem fx:id="menuItemSuggestedPhones" mnemonicParsing="false" onAction="#onSuggestedPhones" text="Show suggested phones" />
+                        <MenuItem fx:id="menuItemTopRatedBrands" mnemonicParsing="false" onAction="#onTopRatedBrands" text="Find Top Rated Brands" />
+                        <MenuItem fx:id="menuItemTopPhonesByRating" mnemonicParsing="false" onAction="#onTopPhonesByRating" text="Find Top Phones By Rating" />
                         <MenuItem fx:id="menuItemClose" mnemonicParsing="false" onAction="#onCloseApp" text="Close" />
                   </items>
                 </Menu>

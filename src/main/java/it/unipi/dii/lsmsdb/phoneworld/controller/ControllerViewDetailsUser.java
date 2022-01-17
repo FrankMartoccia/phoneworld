@@ -180,15 +180,6 @@ public class ControllerViewDetailsUser implements Initializable {
 
     @FXML
     void onClickRemovePhone(ActionEvent event) {
-        int index = this.tableWatchList.getSelectionModel().getSelectedIndex();
-        if (index == -1) {
-            stageManager.showInfoMessage("ERROR", "You have to select a phone!");
-            return;
-        }
-        String phoneId = watchlist.get(index).get("p").get("id").asString();
-        App.getInstance().getUserNeo4j().removeRelationship(user.getId(), phoneId);
-        stageManager.showInfoMessage("INFO", "You have removed the phone from your watchlist");
-        this.watchlist = App.getInstance().getUserNeo4j().getWatchlist(user.getId());
-        setListPhones(watchlist);
+
     }
 }

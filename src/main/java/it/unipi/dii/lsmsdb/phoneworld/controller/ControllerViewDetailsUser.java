@@ -196,9 +196,43 @@ public class ControllerViewDetailsUser implements Initializable {
     }
 
     public void onClickFollow(ActionEvent actionEvent) {
-
+        User curentUser = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        User selectedUser = (User) App.getInstance().getModelBean().getBean(Constants.SELECTED_USER);
+        if (curentUser == null || selectedUser == null) {
+            stageManager.showInfoMessage("ERROR", "Error in adding the follow relationship!");
+            return;
+        }
+        String idCurrentUser = curentUser.getId();
+        String idSelectedUser = selectedUser.getId();
+        if (!App.getInstance().getUserNeo4j().getFollowRelationship(idCurrentUser, idSelectedUser).isEmpty()) {
+            stageManager.showInfoMessage("INFO", "You already follow this user");
+            return;
+        }
+        if (App.getInstance().getUserNeo4j().followRelationship(idCurrentUser, idSelectedUser)) {
+            stageManager.showInfoMessage("INFO", "Now you follow this user");
+            return;
+        }
+        stageManager.showInfoMessage("ERROR", "Error in adding the follow relationship!");
     }
 
     public void onClickUnfollow(ActionEvent actionEvent) {
+        User curentUser = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        User selectedUser = (User) App.getInstance().getModelBean().getBean(Constants.SELECTED_USER);
+        System.out.println(curentUser.get_class());
+        if (curentUser == null || selectedUser == null) {
+            stageManager.showInfoMessage("ERROR", "Error in unfollowing relationship!");
+            return;
+        }
+        String idCurrentUser = curentUser.getId();
+        String idSelectedUser = selectedUser.getId();
+        if (App.getInstance().getUserNeo4j().getFollowRelationship(idCurrentUser, idSelectedUser).isEmpty()) {
+            stageManager.showInfoMessage("INFO", "You are not following this user");
+            return;
+        }
+        if (App.getInstance().getUserNeo4j().unfollowRelationship(idCurrentUser, idSelectedUser)) {
+            stageManager.showInfoMessage("INFO", "Now you are not following this user");
+            return;
+        }
+        stageManager.showInfoMessage("ERROR","Error in unfollowing relationship!");
     }
 }

@@ -133,7 +133,7 @@ public class ControllerViewDetailsPhone implements Initializable {
                 stageManager.showInfoMessage("INFO", "You have already 10 phones in your watchlist!");
                 return;
             }
-            if (!App.getInstance().getUserNeo4j().getRelationship(userId, phoneId).isEmpty()) {
+            if (!App.getInstance().getUserNeo4j().getAddRelationship(userId, phoneId).isEmpty()) {
                 stageManager.showInfoMessage("ERROR", "You have already added this phone to your " +
                         "watchlist!");
                 return;
@@ -155,7 +155,7 @@ public class ControllerViewDetailsPhone implements Initializable {
         String userId = user.getId();
         String phoneId = phone.getId();
         try {
-            if (App.getInstance().getUserNeo4j().getRelationship(userId, phoneId).isEmpty()) {
+            if (App.getInstance().getUserNeo4j().getAddRelationship(userId, phoneId).isEmpty()) {
                 stageManager.showInfoMessage("ERROR", "This phone is not in your watchlist!");
                 return;
             }

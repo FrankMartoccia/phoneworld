@@ -48,7 +48,8 @@ public class ControllerViewDetailsUser implements Initializable {
     @FXML private Button buttonRemovePhone;
     @FXML private Button buttonDeleteReview;
     @FXML private Button buttonUpdateReview;
-    @FXML private Button buttonDetails;
+    @FXML private Button buttonFollow;
+    @FXML private Button buttonUnfollow;
 
     private int counterPages = 0;
     private int remainingElem;
@@ -82,6 +83,8 @@ public class ControllerViewDetailsUser implements Initializable {
             this.buttonRemovePhone.setVisible(true);
             this.buttonUpdateReview.setVisible(true);
             this.buttonDeleteReview.setVisible(true);
+            this.buttonUnfollow.setVisible(false);
+            this.buttonFollow.setVisible(false);
         } else {
             user = selectedUser;
         }
@@ -179,5 +182,12 @@ public class ControllerViewDetailsUser implements Initializable {
     @FXML
     void onClickRemovePhone(ActionEvent event) {
 
+    }
+
+    public void onClickFollow(ActionEvent actionEvent) {
+
+    }
+
+    public void onClickUnfollow(ActionEvent actionEvent) {
     }
 }

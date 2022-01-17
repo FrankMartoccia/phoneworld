@@ -75,7 +75,9 @@ public class ControllerViewDetailsUser implements Initializable {
         this.buttonDeleteReview.setVisible(false);
         User selectedUser = (User) App.getInstance().getModelBean().getBean(Constants.SELECTED_USER);
         User currentUser = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
-        if (selectedUser.getId().equals(currentUser.getId())) {
+        if(selectedUser == null) {
+            user = currentUser;
+        } else if (selectedUser.getId().equals(currentUser.getId())) {
             user = currentUser;
             this.buttonRemovePhone.setVisible(true);
             this.buttonUpdateReview.setVisible(true);

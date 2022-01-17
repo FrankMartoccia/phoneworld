@@ -67,11 +67,7 @@ public class ControllerViewDetailsPhone implements Initializable {
     }
 
     public void onClickCancel(ActionEvent actionEvent) {
-        if (App.getInstance().getModelBean().getBean(Constants.CURRENT_USER) != null) {
-            stageManager.switchScene(FxmlView.DETAILS_USER);
-        } else {
-            stageManager.switchScene(FxmlView.UNUSER);
-        }
+        stageManager.switchScene(FxmlView.USER);
     }
 
     @Override

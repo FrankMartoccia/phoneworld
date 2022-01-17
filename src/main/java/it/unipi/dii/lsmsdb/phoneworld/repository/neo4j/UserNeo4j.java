@@ -117,12 +117,24 @@ public class UserNeo4j {
         return result;
     }
 
-    public List<Record> getRelationship(String userId, String phoneId) {
+    public List<Record> getAddRelationship(String userId, String phoneId) {
         List<Record> result = new ArrayList<>();
         try {
-            return graphNeo4j.read("MATCH (u1:User {id: $userId})-[:ADDS]->(p:Phone {id: $phoneId})" +
-                            "RETURN u1",
+            return graphNeo4j.read("MATCH (u1:User {id: $userId})-[r:ADDS]->(p:Phone {id: $phoneId})" +
+                            "RETURN r",
                     parameters("userId", userId, "phoneId", phoneId));
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+        return result;
+    }
+
+    public List<Record> getFollowRelationship(String userId1, String userId2) {
+        List<Record> result = new ArrayList<>();
+        try {
+            return graphNeo4j.read("MATCH (u1:User {id: $userId1})-[r:FOLLOWS]->(u2:User {id: $userId2})" +
+                            "RETURN r",
+                    parameters("userId1", userId1, "userId2", userId2));
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
         }

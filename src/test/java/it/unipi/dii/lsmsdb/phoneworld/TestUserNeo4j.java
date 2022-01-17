@@ -167,15 +167,12 @@ public class TestUserNeo4j {
 
     @Test
     public void testGetRelationship() {
-        List<Record> records = userNeo4j.getRelationship("id1", "phoneid1");
-        System.out.println(records);
-        List<Record> record = userNeo4j.getGraphNeo4j().read(
-                "MATCH (u1:User {id: 'id1'})-[:ADDS]->(p:Phone {id: 'phoneid1'})" +
-                        "RETURN u1");
-        System.out.println(record);
-//        String name = records.get(0).get("p").get("name").asString();
-//        Assertions.assertEquals("Mi 11", name);
-        Assertions.assertEquals(1,1);
+        List<Record> recordsAdd = userNeo4j.getAddRelationship("id1", "phoneid1");
+        System.out.println(recordsAdd);
+        List<Record> recordsFollow = userNeo4j.getFollowRelationship("id1", "id2");
+        System.out.println(recordsFollow);
+        Assertions.assertEquals(1, recordsAdd.size());
+        Assertions.assertEquals(1, recordsFollow.size());
     }
 
 }

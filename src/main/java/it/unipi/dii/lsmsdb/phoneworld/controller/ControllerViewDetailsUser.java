@@ -59,6 +59,7 @@ public class ControllerViewDetailsUser implements Initializable {
 
     private final StageManager stageManager;
     private User user;
+    private List<Record> watchlist;
 
     @Autowired
     private PhoneMongo phoneMongo;
@@ -100,7 +101,8 @@ public class ControllerViewDetailsUser implements Initializable {
         tableWatchList.prefHeightProperty().bind(tableWatchList.fixedCellSizeProperty().multiply(Bindings.size(tableWatchList.getItems()).add(1.10)));
         tableWatchList.minHeightProperty().bind(tableWatchList.prefHeightProperty());
         tableWatchList.maxHeightProperty().bind(tableWatchList.prefHeightProperty());
-        this.setListPhones(App.getInstance().getUserNeo4j().getWatchlist(user.getId()));
+        watchlist = App.getInstance().getUserNeo4j().getWatchlist(user.getId());
+        this.setListPhones(watchlist);
         this.counterPages = 0;
         this.buttonPrevious.setDisable(true);
         this.setListReviews(user.getReviews());
@@ -181,7 +183,16 @@ public class ControllerViewDetailsUser implements Initializable {
 
     @FXML
     void onClickRemovePhone(ActionEvent event) {
-
+        int index = this.tableWatchList.getSelectionModel().getSelectedIndex();
+        if (index == -1) {
+            stageManager.showInfoMessage("ERROR", "You have to select a phone!");
+            return;
+        }
+        String phoneId = watchlist.get(index).get("p").get("id").asString();
+        App.getInstance().getUserNeo4j().removeRelationship(user.getId(), phoneId);
+        stageManager.showInfoMessage("INFO", "You have removed the phone from your watchlist");
+        this.watchlist = App.getInstance().getUserNeo4j().getWatchlist(user.getId());
+        setListPhones(watchlist);
     }
 
     public void onClickFollow(ActionEvent actionEvent) {

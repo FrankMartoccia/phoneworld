@@ -17,7 +17,7 @@ public enum FxmlView {
     }, AUTORIZATION {
         @Override
         public String getTitle() {
-            return "LOGIN/SIGN IN";
+            return "LOGIN/SIGN UP";
         }
 
         @Override
@@ -37,7 +37,7 @@ public enum FxmlView {
     }, SIGNUP {
         @Override
         public String getTitle() {
-            return "SIGN IN";
+            return "SIGN UP";
         }
 
         @Override

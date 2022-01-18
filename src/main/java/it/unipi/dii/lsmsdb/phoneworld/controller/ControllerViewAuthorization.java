@@ -5,6 +5,7 @@ import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ControllerViewAuthorization {
+
+    @FXML private Button buttonRegistration;
+    @FXML private Button buttonAccess;
+    @FXML private Button buttonBack;
 
     private final StageManager stageManager;
 
@@ -21,14 +26,16 @@ public class ControllerViewAuthorization {
     }
 
     public void actionOnClickLog(ActionEvent actionEvent) {
-        stageManager.switchScene(FxmlView.LOGIN);
+        stageManager.closeStage(this.buttonAccess);
+        stageManager.showWindow(FxmlView.LOGIN);
     }
 
     public void actionOnClickSignUp(ActionEvent actionEvent) {
-        stageManager.switchScene(FxmlView.SIGNUP);
+        stageManager.closeStage(this.buttonRegistration);
+        stageManager.showWindow(FxmlView.SIGNUP);
     }
 
     public void actionOnClickCancel(ActionEvent actionEvent) {
-        stageManager.switchScene(FxmlView.UNUSER);
+        stageManager.closeStage(this.buttonBack);
     }
 }

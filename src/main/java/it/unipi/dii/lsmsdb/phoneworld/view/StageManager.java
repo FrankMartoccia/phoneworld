@@ -33,6 +33,19 @@ public class StageManager {
         show(viewRoot, view.getTitle());
     }
 
+    public void showWindow(final FxmlView window) {
+        try {
+            Parent viewRoot = loadViewNode(window.getFxmlFile());
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle(window.getTitle());
+            stage.setScene(new Scene(viewRoot));
+            stage.show();
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+    }
+
     private Parent loadViewNode(String fxmlFilePath) {
         Parent rootNode = null;
         try {
@@ -154,6 +167,11 @@ public class StageManager {
         String id = event.getPickResult().getIntersectedNode().getId();
         String[] value = id.split("image");
         return Integer.parseInt(value[1]);
+    }
+
+    public void closeStage(Button button) {
+        Stage stage = (Stage) button.getScene().getWindow();
+        stage.close();
     }
 
     public String getErrors(String sbError) {

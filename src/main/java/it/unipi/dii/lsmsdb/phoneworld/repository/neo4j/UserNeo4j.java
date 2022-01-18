@@ -77,8 +77,6 @@ public class UserNeo4j {
             result = false;
         }
         return result;
-
-
     }
 
     public boolean unfollowRelationship(String id1, String id2) {

@@ -83,12 +83,13 @@ public class ControllerViewRegisteredUser implements Initializable {
 
     private List<ImageView> imageViews = new ArrayList<>();
     private List<Label> labels = new ArrayList<>();
-    private List<Record> phonesByFriends = new ArrayList<>();
-    private List<Record> phonesByBrand = new ArrayList<>();
-    private List<Record> usersByFollows = new ArrayList<>();
-    private List<Record> usersByBrand = new ArrayList<>();
     private List<Phone> phones = new ArrayList<>();
     private List<GenericUser> users = new ArrayList<>();
+    private List<Record> phonesByFriends = new ArrayList<>();
+    private List<Record> usersByFollows = new ArrayList<>();
+    private List<Record> phonesByBrand = new ArrayList<>();
+    private List<Record> usersByBrand = new ArrayList<>();
+    private User user;
     private int counterPages = 0;
     private int remainingElem;
     private boolean isSearch = false;
@@ -111,7 +112,7 @@ public class ControllerViewRegisteredUser implements Initializable {
                 image9, image10, image11, image12, image13, image14, image15, image16, image17, image18);
         stageManager.createLabelList(this.labels, label1, label2, label3, label4, label5, label6, label7, label8, label9,
                 label10, label11, label12, label13, label14, label15, label16, label17, label18);
-        User user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
         this.buttonLogin.setText("Hi, " + user.getUsername());
         this.buttonPhones.setDisable(true);
         this.buttonUsers.setDisable(false);
@@ -215,16 +216,16 @@ public class ControllerViewRegisteredUser implements Initializable {
     private void searchPhones(String text) {
         if (text.isEmpty() && this.comboBoxFilter.getValue().equalsIgnoreCase("Name")) {
             this.separator.setVisible(false);
-            this.phones = phoneMongo.findRecentPhones();
+            phones = phoneMongo.findRecentPhones();
             this.labelDescription2.setText("LATEST PHONES...");
             this.buttonNext.setDisable(false);
-            this.setListPhones(this.phones);
+            this.setListPhones(phones);
             return;
         } else if (text.isEmpty()){
             stageManager.showInfoMessage("ERROR", "You didn't type anything!");
             return;
         }
-        this.phones = phoneMongo.findPhones(text, this.comboBoxFilter.getValue());
+        phones = phoneMongo.findPhones(text, this.comboBoxFilter.getValue());
         if (phones.isEmpty()) {
             stageManager.showInfoMessage("INFO", "There aren't phones with the parameter searched");
             return;
@@ -232,7 +233,7 @@ public class ControllerViewRegisteredUser implements Initializable {
         this.separator.setVisible(false);
         this.labelDescription2.setText("'" + text + "'...");
         this.buttonNext.setDisable(false);
-        this.setListPhones(this.phones);
+        this.setListPhones(phones);
         if (remainingElem < imageViews.size()) this.buttonNext.setDisable(true);
     }
 
@@ -285,46 +286,38 @@ public class ControllerViewRegisteredUser implements Initializable {
     }
 
     public void onSuggestedPhones(ActionEvent actionEvent) {
-        this.isSearch = false;
-        this.buttonPhones.setDisable(true);
-        this.buttonUsers.setDisable(false);
-        this.buttonPrevious.setDisable(true);
-        this.buttonNext.setDisable(true);
-        this.comboBoxFilter.setDisable(false);
-        this.initScene(phonesByFriends, phonesByBrand, false);
+        this.onClickPhones();
     }
 
     public void onSuggestedUsers(ActionEvent actionEvent) {
-        this.isSearch = false;
-        this.buttonUsers.setDisable(true);
-        this.buttonPhones.setDisable(false);
-        this.buttonPrevious.setDisable(true);
-        this.buttonNext.setDisable(true);
-        this.comboBoxFilter.setDisable(true);
-        this.initScene(usersByFollows, usersByBrand, true);
+        this.actionClickOnUsers();
     }
 
     public void actionProfile(ActionEvent actionEvent) {
-        stageManager.switchScene(FxmlView.PROFILE);
+        stageManager.showWindow(FxmlView.PROFILE);
     }
 
-    public void actionClickOnUsers(ActionEvent actionEvent) {
+    public void actionClickOnUsers() {
         this.isSearch = false;
         this.buttonUsers.setDisable(true);
         this.buttonPhones.setDisable(false);
         this.buttonPrevious.setDisable(true);
         this.buttonNext.setDisable(true);
         this.comboBoxFilter.setDisable(true);
+        this.usersByFollows = App.getInstance().getUserNeo4j().findSuggestedUsersByFriends(user.getId());
+        this.usersByBrand = App.getInstance().getUserNeo4j().findSuggestedUsersByBrand(user.getId());
         this.initScene(usersByFollows, usersByBrand, true);
     }
 
-    public void onClickPhones(ActionEvent actionEvent) {
+    public void onClickPhones() {
         this.isSearch = false;
         this.buttonPhones.setDisable(true);
         this.buttonUsers.setDisable(false);
         this.buttonPrevious.setDisable(true);
         this.buttonNext.setDisable(true);
         this.comboBoxFilter.setDisable(false);
+        this.phonesByFriends = App.getInstance().getPhoneNeo4j().findSuggestedPhonesByFriends(user.getId());
+        this.phonesByBrand = App.getInstance().getPhoneNeo4j().findSuggestedPhonesByBrand(user.getId());
         this.initScene(phonesByFriends, phonesByBrand, false);
     }
 
@@ -389,11 +382,11 @@ public class ControllerViewRegisteredUser implements Initializable {
                 return;
             }
             App.getInstance().getModelBean().putBean(Constants.SELECTED_USER, user);
-            stageManager.switchScene(FxmlView.DETAILS_USER);
+            stageManager.showWindow(FxmlView.DETAILS_USER);
         } else {
             user = (User) this.users.get((18*counterPages) + imageIndex-1);
             App.getInstance().getModelBean().putBean(Constants.SELECTED_USER, user);
-            stageManager.switchScene(FxmlView.DETAILS_USER);
+            stageManager.showWindow(FxmlView.DETAILS_USER);
         }
     }
 
@@ -413,11 +406,21 @@ public class ControllerViewRegisteredUser implements Initializable {
                 return;
             }
             App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, phone);
-            stageManager.switchScene(FxmlView.DETAILS_PHONES);
+            stageManager.showWindow(FxmlView.DETAILS_PHONES);
         } else {
             phone = this.phones.get((18*counterPages)+imageIndex-1);
             App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, phone);
-            stageManager.switchScene(FxmlView.DETAILS_PHONES);
+            stageManager.showWindow(FxmlView.DETAILS_PHONES);
         }
+    }
+
+    public void onTopRatedBrands(ActionEvent actionEvent) {
+        App.getInstance().getModelBean().putBean(Constants.SELECTED_STATISTIC, "Top Rated Brands:");
+        stageManager.showWindow(FxmlView.STATISTISCS);
+    }
+
+    public void onTopPhonesByRating(ActionEvent actionEvent) {
+        App.getInstance().getModelBean().putBean(Constants.SELECTED_STATISTIC, "Top Phones By Rating:");
+        stageManager.showWindow(FxmlView.STATISTISCS);
     }
 }

@@ -120,12 +120,12 @@ public class ControllerViewUnUser implements Initializable {
     }
 
     public void actionClickOnUsers() {
-        stageManager.switchScene(FxmlView.AUTORIZATION);
+        stageManager.showWindow(FxmlView.AUTORIZATION);
     }
 
 
     public void actionLogin() {
-        stageManager.switchScene(FxmlView.LOGIN);
+        stageManager.showWindow(FxmlView.LOGIN);
     }
 
     @Override
@@ -201,6 +201,11 @@ public class ControllerViewUnUser implements Initializable {
         int imageIndex = stageManager.getElemIndex(event);
         Phone phone = this.phones.get((18*counterPages)+imageIndex-1);
         App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, phone);
-        stageManager.switchScene(FxmlView.DETAILS_PHONES);
+        stageManager.showWindow(FxmlView.DETAILS_PHONES);
+    }
+
+    public void onClickClose(ActionEvent actionEvent) {
+        Platform.exit();
+        System.exit(0);
     }
 }

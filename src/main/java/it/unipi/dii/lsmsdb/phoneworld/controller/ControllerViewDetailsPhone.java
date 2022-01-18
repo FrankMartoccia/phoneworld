@@ -33,6 +33,8 @@ import java.util.ResourceBundle;
 @Component
 public class ControllerViewDetailsPhone implements Initializable {
 
+    @FXML private Button buttonAddPhone;
+    @FXML private Button buttonRemovePhone;
     @FXML private TableColumn<String, String> columnReviews;
     @FXML private Label labelBatterySize;
     @FXML private Label labelBatteryType;
@@ -52,6 +54,7 @@ public class ControllerViewDetailsPhone implements Initializable {
     @FXML private ImageView imagePhone;
     @FXML private Button buttonNext;
     @FXML private Button buttonPrevious;
+    @FXML private Button buttonCancel;
 
     private final ObservableList<String> listReviews = FXCollections.observableArrayList();
     private final static Logger logger = LoggerFactory.getLogger(ControllerViewDetailsPhone.class);
@@ -72,12 +75,7 @@ public class ControllerViewDetailsPhone implements Initializable {
     }
 
     public void onClickCancel(ActionEvent actionEvent) {
-        user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
-        if (user == null) {
-            stageManager.switchScene(FxmlView.UNUSER);
-        } else {
-            stageManager.switchScene(FxmlView.USER);
-        }
+        stageManager.closeStage(this.buttonCancel);
     }
 
     @Override
@@ -113,7 +111,7 @@ public class ControllerViewDetailsPhone implements Initializable {
 
     public void onClickAddPhone(ActionEvent actionEvent) {
         if (App.getInstance().getModelBean().getBean(Constants.CURRENT_USER) == null) {
-            stageManager.switchScene(FxmlView.LOGIN);
+            stageManager.showWindow(FxmlView.LOGIN);
             return;
         }
         user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
@@ -139,7 +137,7 @@ public class ControllerViewDetailsPhone implements Initializable {
 
     public void onClickRemovePhone(ActionEvent actionEvent) {
         if (App.getInstance().getModelBean().getBean(Constants.CURRENT_USER) == null) {
-            stageManager.switchScene(FxmlView.LOGIN);
+            stageManager.showWindow(FxmlView.LOGIN);
             return;
         }
         user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
@@ -181,7 +179,7 @@ public class ControllerViewDetailsPhone implements Initializable {
     }
 
     @FXML
-    void onClickPrevious(ActionEvent event) {
+    public void onClickPrevious(ActionEvent event) {
         this.buttonNext.setDisable(false);
         this.counterPages--;
         if (counterPages == 0) this.buttonPrevious.setDisable(true);

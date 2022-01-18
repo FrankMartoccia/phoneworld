@@ -36,6 +36,8 @@ import java.util.stream.IntStream;
 @Component
 public class ControllerViewDetailsUser implements Initializable {
 
+    @FXML private Button buttonDetails;
+    @FXML private Button buttonCancel;
     @FXML private Label labelUsername;
     @FXML private Label labelFirstName;
     @FXML private Label labelLastName;
@@ -49,7 +51,8 @@ public class ControllerViewDetailsUser implements Initializable {
     @FXML private Button buttonRemovePhone;
     @FXML private Button buttonDeleteReview;
     @FXML private Button buttonUpdateReview;
-    @FXML private Button buttonDetails;
+    @FXML private Button buttonFollow;
+    @FXML private Button buttonUnfollow;
 
     private int counterPages = 0;
     private int remainingElem;
@@ -88,6 +91,8 @@ public class ControllerViewDetailsUser implements Initializable {
             this.buttonRemovePhone.setVisible(true);
             this.buttonUpdateReview.setVisible(true);
             this.buttonDeleteReview.setVisible(true);
+            this.buttonUnfollow.setVisible(false);
+            this.buttonFollow.setVisible(false);
         } else {
             user = selectedUser;
         }
@@ -109,8 +114,7 @@ public class ControllerViewDetailsUser implements Initializable {
         this.buttonPrevious.setDisable(true);
         this.setListReviews(user.getReviews());
         if (this.tableReviews.getItems().size() != 10) {
-            this.buttonNext.setDisable(true);
-        }
+            this.buttonNext.setDisable(true);}
     }
 
     private void setListPhones(List<Record> watchlist) {
@@ -122,7 +126,7 @@ public class ControllerViewDetailsUser implements Initializable {
     }
 
     public void onClickCancel(ActionEvent actionEvent) {
-        stageManager.switchScene(FxmlView.USER);
+        stageManager.closeStage(this.buttonCancel);
     }
 
     @FXML
@@ -195,8 +199,7 @@ public class ControllerViewDetailsUser implements Initializable {
 
     public void onClickDetails(ActionEvent actionEvent) {
         String phoneNameComplete = String.valueOf(this.tableWatchList.getSelectionModel().getSelectedItems());
-        System.out.println(phoneNameComplete
-        );
+        System.out.println(phoneNameComplete);
         String phoneName = phoneNameComplete.substring(1, phoneNameComplete.length()-1);
         if (phoneName.isEmpty()) {
             stageManager.showInfoMessage("INFO", "You must select a phone");
@@ -208,7 +211,7 @@ public class ControllerViewDetailsUser implements Initializable {
             return;
         }
         App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, phone.get());
-        stageManager.switchScene(FxmlView.DETAILS_PHONES);
+        stageManager.showWindow(FxmlView.DETAILS_PHONES);
     }
 
     @FXML
@@ -223,5 +226,46 @@ public class ControllerViewDetailsUser implements Initializable {
         stageManager.showInfoMessage("INFO", "You have removed the phone from your watchlist");
         this.watchlist = App.getInstance().getUserNeo4j().getWatchlist(user.getId());
         setListPhones(watchlist);
+    }
+
+    public void onClickFollow(ActionEvent actionEvent) {
+        User curentUser = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        User selectedUser = (User) App.getInstance().getModelBean().getBean(Constants.SELECTED_USER);
+        if (curentUser == null || selectedUser == null) {
+            stageManager.showInfoMessage("ERROR", "Error in adding the follow relationship!");
+            return;
+        }
+        String idCurrentUser = curentUser.getId();
+        String idSelectedUser = selectedUser.getId();
+        if (!App.getInstance().getUserNeo4j().getFollowRelationship(idCurrentUser, idSelectedUser).isEmpty()) {
+            stageManager.showInfoMessage("INFO", "You already follow this user");
+            return;
+        }
+        if (App.getInstance().getUserNeo4j().followRelationship(idCurrentUser, idSelectedUser)) {
+            stageManager.showInfoMessage("INFO", "Now you follow this user");
+            return;
+        }
+        stageManager.showInfoMessage("ERROR", "Error in adding the follow relationship!");
+    }
+
+    public void onClickUnfollow(ActionEvent actionEvent) {
+        User curentUser = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        User selectedUser = (User) App.getInstance().getModelBean().getBean(Constants.SELECTED_USER);
+        System.out.println(curentUser.get_class());
+        if (curentUser == null || selectedUser == null) {
+            stageManager.showInfoMessage("ERROR", "Error in unfollowing relationship!");
+            return;
+        }
+        String idCurrentUser = curentUser.getId();
+        String idSelectedUser = selectedUser.getId();
+        if (App.getInstance().getUserNeo4j().getFollowRelationship(idCurrentUser, idSelectedUser).isEmpty()) {
+            stageManager.showInfoMessage("INFO", "You are not following this user");
+            return;
+        }
+        if (App.getInstance().getUserNeo4j().unfollowRelationship(idCurrentUser, idSelectedUser)) {
+            stageManager.showInfoMessage("INFO", "Now you are not following this user");
+            return;
+        }
+        stageManager.showInfoMessage("ERROR","Error in unfollowing relationship!");
     }
 }

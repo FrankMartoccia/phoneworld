@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class ServiceReview {
 
@@ -29,6 +31,10 @@ public class ServiceReview {
             logger.error("Error in adding the review to the collection of reviews");
             return false;
         }
+        String reviewId = this.getReviewId(review);
+        review.setId(reviewId);
+        phone.addReview(review);
+        user.addReview(review);
         if (!userMongo.updateUser(user.getId(), user, "user")) {
             logger.error("Error in adding the review to the collection of users");
             if (!reviewMongo.deleteReview(review)) {
@@ -44,6 +50,17 @@ public class ServiceReview {
             return false;
         }
         return result;
+    }
+
+    private String getReviewId(Review review) {
+        Optional<Review> reviewResult = reviewMongo.findByUsernameAndPhoneName(review.getUsername(),
+                review.getPhoneName());
+        if (reviewResult.isPresent()) {
+            return reviewResult.get().getId();
+        } else {
+            logger.error("Review not found");
+        }
+        return "";
     }
 
 }

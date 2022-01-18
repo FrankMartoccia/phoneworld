@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface IPhoneMongo extends MongoRepository<Phone, String> {
 
     List<Phone> findByReleaseYear(int releaseYear);
+    List<Phone> findByBrandOrderByReleaseYearDesc(String brand);
 
     @Query(value = "{'name': {$regex : ?0, $options: 'i'}}")
     List<Phone> findByNameRegexOrderByReleaseYearDesc(String name, Sort sort);

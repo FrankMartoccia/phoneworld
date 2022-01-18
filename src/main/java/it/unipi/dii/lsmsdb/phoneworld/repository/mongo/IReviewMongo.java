@@ -16,6 +16,7 @@ public interface IReviewMongo extends MongoRepository<Review, String> {
     List<Review> findByTitleContainingOrBodyContaining(String word, String word1);
     void deleteReviewsByUsername(String id);
     void deleteReviewByPhoneName(String id);
+
 //    void deleteReviewByUsernameAndPhoneName(String username, String phoneName);
 
 

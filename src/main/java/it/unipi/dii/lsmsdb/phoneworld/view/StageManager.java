@@ -152,7 +152,7 @@ public class StageManager {
 
     public int getElemIndex(MouseEvent event) {
         String id = event.getPickResult().getIntersectedNode().getId();
-        String value[] = id.split("image");
+        String[] value = id.split("image");
         return Integer.parseInt(value[1]);
     }
 
@@ -164,7 +164,7 @@ public class StageManager {
                 stringBuilder.append(errors.get(i));
                 break;
             }
-            stringBuilder.append(errors.get(i) + ", ");
+            stringBuilder.append(errors.get(i)).append(", ");
         }
         return stringBuilder.toString();
     }
@@ -191,4 +191,7 @@ public class StageManager {
         if (repeatedPassword.isEmpty()) sbError.append("Repeated_password ");
         return sbError.toString();
     }
+
+
+
 }

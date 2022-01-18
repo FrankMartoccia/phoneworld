@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -154,6 +155,24 @@ public class ReviewMongo {
             } else {
                 reviews.addAll(reviewMongo.findByTitleContainingOrBodyContaining(word, word));
             }
+        } catch (Exception e) {
+            logger.error("Exception occurred: " + e.getLocalizedMessage());
+        }
+        return reviews;
+    }
+
+    public List<Review> findOldReviews(String parameter, boolean isPhone) {
+        List<Review> reviews = new ArrayList<>();
+        try {
+            Query query = new Query();
+            if (isPhone) {
+                query.addCriteria(new Criteria("phoneName").is(parameter));
+            } else {
+                query.addCriteria(new Criteria("username").is(parameter));
+            }
+            query.with(Sort.by(Sort.Direction.DESC, "dateOfReview"));
+            query.skip(50);
+            reviews = mongoOperations.find(query, Review.class);
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
         }

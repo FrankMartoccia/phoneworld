@@ -5,6 +5,7 @@ import it.unipi.dii.lsmsdb.phoneworld.Constants;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.ReviewMongo;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -60,6 +61,10 @@ public class ControllerViewDetailsPhone implements Initializable {
     private int remainingElem;
     private Phone phone;
     private User user;
+    private List<Review> reviews;
+
+    @Autowired
+    private ReviewMongo reviewMongo;
 
     @Autowired @Lazy
     public ControllerViewDetailsPhone(StageManager stageManager) {
@@ -67,7 +72,7 @@ public class ControllerViewDetailsPhone implements Initializable {
     }
 
     public void onClickCancel(ActionEvent actionEvent) {
-        User user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
         if (user == null) {
             stageManager.switchScene(FxmlView.UNUSER);
         } else {
@@ -98,23 +103,9 @@ public class ControllerViewDetailsPhone implements Initializable {
         this.counterPages = 0;
         this.buttonPrevious.setDisable(true);
         this.setListReviews(phone.getReviews());
-        if (remainingElem < 10) this.buttonNext.setDisable(true);
-    }
-
-    private void setListReviews(List<Review> reviews) {
-        if (reviews.isEmpty()) {
-            remainingElem = reviews.size()-(counterPages+1)*10;
-            return;
+        if (this.tableReviews.getItems().size() != 10) {
+            this.buttonNext.setDisable(true);
         }
-        this.listReviews.clear();
-        for (int i = 0;i < 10;i++) {
-            this.listReviews.add(reviews.get(i + (counterPages*10)).toStringTable(true));
-            if (i+1 == reviews.size()){
-                break;
-            }
-        }
-        tableReviews.setItems(listReviews);
-        remainingElem = reviews.size()-(counterPages+1)*10;
     }
 
     public void onClickAddReview(ActionEvent actionEvent) {
@@ -168,10 +159,25 @@ public class ControllerViewDetailsPhone implements Initializable {
 
     @FXML
     void onClickNext(ActionEvent event) {
+        phone = (Phone) App.getInstance().getModelBean().getBean(Constants.SELECTED_PHONE);
         if (counterPages==0) this.buttonPrevious.setDisable(false);
         this.counterPages++;
-        this.setListReviews(phone.getReviews());
-        if (remainingElem < 10) this.buttonNext.setDisable(true);
+        if (counterPages <= 4 ) {
+            this.setListReviews(phone.getReviews());
+        }
+        if (counterPages == 4) {
+            String phoneName = phone.getName();
+            reviews = reviewMongo.findOldReviews(phoneName, true);
+            if (reviews.isEmpty()) {
+                this.buttonNext.setDisable(true);
+            }
+        }
+        if (counterPages > 4) {
+            this.setListReviews(reviews);
+        }
+        if (this.tableReviews.getItems().size() != 10) {
+            this.buttonNext.setDisable(true);
+        }
     }
 
     @FXML
@@ -179,6 +185,34 @@ public class ControllerViewDetailsPhone implements Initializable {
         this.buttonNext.setDisable(false);
         this.counterPages--;
         if (counterPages == 0) this.buttonPrevious.setDisable(true);
-        this.setListReviews(phone.getReviews());
+        if (counterPages > 4) {
+            this.setListReviews(reviews);
+        } else {
+            this.setListReviews(phone.getReviews());
+        }
     }
+
+    private void setListReviews(List<Review> reviews) {
+        if (reviews.isEmpty()) {
+            return;
+        }
+        this.listReviews.clear();
+        if (counterPages > 4) {
+            for (int i = 0;i < 10;i++) {
+                this.listReviews.add(reviews.get(i + (counterPages*10)-50).toStringTable(true));
+                if (i+1 == reviews.size()-(counterPages*10-50)){
+                    break;
+                }
+            }
+        } else {
+            for (int i = 0;i < 10;i++) {
+                this.listReviews.add(reviews.get(i + (counterPages*10)).toStringTable(true));
+                if (i+1 == reviews.size()-counterPages*10){
+                    break;
+                }
+            }
+        }
+        tableReviews.setItems(listReviews);
+    }
+
 }

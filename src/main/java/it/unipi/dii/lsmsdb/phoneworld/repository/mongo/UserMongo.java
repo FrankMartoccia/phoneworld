@@ -104,7 +104,7 @@ public class UserMongo {
                     user.setDateOfBirth(newUser.getDateOfBirth());
                     user.setStreetName(newUser.getStreetName());
                     user.setStreetNumber(newUser.getStreetNumber());
-
+                    user.setReviews(newUser.getReviews());
                     userMongo.save(user);
                 } 
             } 

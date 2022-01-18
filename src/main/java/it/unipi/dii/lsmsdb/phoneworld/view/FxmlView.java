@@ -104,6 +104,16 @@ public enum FxmlView {
         public String getFxmlFile() {
             return "/viewStatistics.fxml";
         }
+    }, REVIEW {
+        @Override
+        public String getTitle() {
+            return "REVIEW";
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/viewReview.fxml";
+        }
     };
 
     public abstract String getTitle();

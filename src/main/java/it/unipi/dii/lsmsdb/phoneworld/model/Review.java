@@ -108,7 +108,7 @@ public class Review {
         sb.append("Title: ").append(this.title).append("\n");
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(this.dateOfReview);
-        sb.append("Date: ").append(calendar.get(Calendar.YEAR)).append("-").append(calendar.get(Calendar.MONTH)).
+        sb.append("Date: ").append(calendar.get(Calendar.YEAR)).append("-").append((calendar.get(Calendar.MONTH))+1).
                 append("-").append(calendar.get(Calendar.DAY_OF_MONTH)).append("\n");
         sb.append("Vote: ").append(this.rating).append("\n");
         StringBuilder sBody = new StringBuilder(this.body);

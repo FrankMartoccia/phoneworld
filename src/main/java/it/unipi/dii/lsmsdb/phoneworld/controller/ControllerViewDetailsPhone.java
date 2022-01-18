@@ -55,6 +55,7 @@ public class ControllerViewDetailsPhone implements Initializable {
     @FXML private Button buttonNext;
     @FXML private Button buttonPrevious;
     @FXML private Button buttonCancel;
+    @FXML private Button buttonAddReview;
 
     private final ObservableList<String> listReviews = FXCollections.observableArrayList();
     private final static Logger logger = LoggerFactory.getLogger(ControllerViewDetailsPhone.class);
@@ -106,6 +107,19 @@ public class ControllerViewDetailsPhone implements Initializable {
     }
 
     public void onClickAddReview(ActionEvent actionEvent) {
+        if (App.getInstance().getModelBean().getBean(Constants.CURRENT_USER) == null) {
+            stageManager.showWindow(FxmlView.LOGIN);
+            return;
+        }
+        user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        phone = (Phone) App.getInstance().getModelBean().getBean(Constants.SELECTED_PHONE);
+        if (reviewMongo.findByUsernameAndPhoneName(user.getUsername(), phone.getName()).isPresent()) {
+            stageManager.showInfoMessage("INFO", "You already reviewed this phone");
+            return;
+        }
+        App.getInstance().getModelBean().putBean(Constants.IS_UPDATE_REVIEW, false);
+        stageManager.closeStage(this.buttonAddReview);
+        stageManager.showWindow(FxmlView.REVIEW);
     }
 
     public void onClickAddPhone(ActionEvent actionEvent) {

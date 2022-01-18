@@ -26,7 +26,6 @@ public class ServiceReview {
     private final static Logger logger = LoggerFactory.getLogger(ServiceUser.class);
 
     public boolean insertReview(Review review, Phone phone, User user) {
-        boolean result = true;
         if (!reviewMongo.addReview(review)) {
             logger.error("Error in adding the review to the collection of reviews");
             return false;
@@ -35,6 +34,8 @@ public class ServiceReview {
         review.setId(reviewId);
         phone.addReview(review);
         user.addReview(review);
+        System.out.println(phone);
+        System.out.println(user);
         if (!userMongo.updateUser(user.getId(), user, "user")) {
             logger.error("Error in adding the review to the collection of users");
             if (!reviewMongo.deleteReview(review)) {
@@ -49,7 +50,7 @@ public class ServiceReview {
             }
             return false;
         }
-        return result;
+        return true;
     }
 
     private String getReviewId(Review review) {

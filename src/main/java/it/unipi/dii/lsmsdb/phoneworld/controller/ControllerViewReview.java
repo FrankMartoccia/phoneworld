@@ -7,6 +7,8 @@ import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.ReviewMongo;
+import it.unipi.dii.lsmsdb.phoneworld.services.ServiceReview;
+import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,6 +39,9 @@ public class ControllerViewReview implements Initializable {
     @Autowired
     private ReviewMongo reviewMongo;
 
+    @Autowired
+    private ServiceReview serviceReview;
+
     @Autowired @Lazy
     public ControllerViewReview(StageManager stageManager) {
         this.stageManager = stageManager;
@@ -59,14 +64,29 @@ public class ControllerViewReview implements Initializable {
         String title = this.textFieldTitle.getText();
         int rating = this.spinnerRating.getValue();
         String body = this.textAreabody.getText();
+        if (title.isEmpty() && body.isEmpty()) {
+            stageManager.showInfoMessage("ERROR", "You have to insert title and body!");
+            return;
+        }
+        if (title.isEmpty()) {
+            stageManager.showInfoMessage("ERROR", "You have to insert the title!");
+            return;
+        }
+        if (body.isEmpty()) {
+            stageManager.showInfoMessage("ERROR", "You have to insert the body!");
+            return;
+        }
         Date dateOfReview = new Date();
-        Review reviewGeneric = new Review.ReviewBuilder(rating, dateOfReview, title, body).username(user.getUsername()).
+        Review review = new Review.ReviewBuilder(rating, dateOfReview, title, body).username(user.getUsername()).
                 phoneName(phone.getName()).build();
         if (!isUpdate) {
-            if (reviewMongo.findByUsernameAndPhoneName(user.getUsername(), phone.getName()).isPresent()) {
-                stageManager.showInfoMessage("INFO", "You already reviewed this phone");
+            if (!serviceReview.insertReview(review,phone, user)) {
+                stageManager.showInfoMessage("ERROR", "Error in adding the review for this phone!");
                 return;
             }
+            stageManager.closeStage(this.buttonServiceReview);
+            stageManager.showWindow(FxmlView.DETAILS_PHONES);
+            stageManager.showInfoMessage("INFO", "You added a review to this phone");
         } else {
 
         }

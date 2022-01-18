@@ -67,7 +67,7 @@
                         <Insets left="30.0" top="18.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="buttonSearchOrDetails" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickDetailsOrSearch" prefHeight="52.0" prefWidth="180.0" text="Button">
+                  <Button fx:id="buttonDetails" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickDetails" prefHeight="52.0" prefWidth="180.0" text="VIEW DETAILS">
                      <HBox.margin>
                         <Insets left="145.0" top="18.0" />
                      </HBox.margin>

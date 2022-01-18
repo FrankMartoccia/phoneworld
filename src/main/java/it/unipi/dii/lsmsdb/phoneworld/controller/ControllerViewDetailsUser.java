@@ -167,8 +167,7 @@ public class ControllerViewDetailsUser implements Initializable {
 
     public void onClickDetails(ActionEvent actionEvent) {
         String phoneNameComplete = String.valueOf(this.tableWatchList.getSelectionModel().getSelectedItems());
-        System.out.println(phoneNameComplete
-        );
+        System.out.println(phoneNameComplete);
         String phoneName = phoneNameComplete.substring(1, phoneNameComplete.length()-1);
         if (phoneName.isEmpty()) {
             stageManager.showInfoMessage("INFO", "You must select a phone");
@@ -180,7 +179,6 @@ public class ControllerViewDetailsUser implements Initializable {
             return;
         }
         App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, phone.get());
-        stageManager.closeStage(this.buttonDetails);
         stageManager.showWindow(FxmlView.DETAILS_PHONES);
     }
 

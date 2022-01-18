@@ -2,7 +2,11 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
+import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
+import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.ReviewMongo;
+import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -17,9 +21,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import javax.print.Doc;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.IntStream;
 
@@ -27,7 +33,7 @@ import java.util.stream.IntStream;
 public class ControllerViewStatistics implements Initializable {
 
     @FXML private Button buttonCancel;
-    @FXML private Button buttonSearchOrDetails;
+    @FXML private Button buttonDetails;
     @FXML private TableColumn<String, String> columnStatistics;
     @FXML private Label labelStatistics;
     @FXML private Spinner<Integer> spinnerFilter;
@@ -35,6 +41,9 @@ public class ControllerViewStatistics implements Initializable {
 
     @Autowired
     private PhoneMongo phoneMongo;
+
+    @Autowired
+    private ReviewMongo reviewMongo;
 
     private final ObservableList<String> listStatistics = FXCollections.observableArrayList();
 
@@ -67,6 +76,7 @@ public class ControllerViewStatistics implements Initializable {
     private void showStatistics(String statisticName) {
         List<Document> statistics = new ArrayList<>();
         if (statisticName.equalsIgnoreCase("Top Rated Brands:")) {
+            this.buttonDetails.setVisible(false);
             this.columnStatistics.setText("BRANDS");
             Document result = phoneMongo.findTopRatedBrands(20, this.spinnerFilter.getValue());
             System.out.println(spinnerFilter.getValue());
@@ -76,6 +86,16 @@ public class ControllerViewStatistics implements Initializable {
             }
             statistics = (List<Document>) result.get("results");
             this.setTable(statistics, "brand");
+        }
+        if (statisticName.equalsIgnoreCase("Top Phones By Rating:")) {
+            this.columnStatistics.setText("PHONES");
+            Document result = reviewMongo.findTopPhonesByRating(20, this.spinnerFilter.getValue());
+            if (result.isEmpty()) {
+                stageManager.showInfoMessage("ERROR", "Statistic not found!");
+                return;
+            }
+            statistics = (List<Document>) result.get("results");
+            this.setTable(statistics, "phoneName");
         }
     }
 
@@ -93,8 +113,20 @@ public class ControllerViewStatistics implements Initializable {
     }
 
     @FXML
-    void onClickDetailsOrSearch(ActionEvent event) {
-
+    void onClickDetails(ActionEvent event) {
+        String phoneNameComplete = String.valueOf(this.tableViewStatistics.getSelectionModel().getSelectedItems());
+        String phoneName = phoneNameComplete.substring(1, phoneNameComplete.length()-1);
+        if (phoneName.isEmpty()) {
+            stageManager.showInfoMessage("INFO", "You must select a phone");
+            return;
+        }
+        Optional<Phone> phone = phoneMongo.findPhoneByName(phoneName);
+        if (phone.isEmpty()) {
+            stageManager.showInfoMessage("ERROR", "Phone not found!");
+            return;
+        }
+        App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, phone.get());
+        stageManager.showWindow(FxmlView.DETAILS_PHONES);
     }
 
     public void onClickFind(ActionEvent actionEvent) {

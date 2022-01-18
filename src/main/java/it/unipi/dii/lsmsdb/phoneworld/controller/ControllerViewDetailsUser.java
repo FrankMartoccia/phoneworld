@@ -35,6 +35,7 @@ import java.util.stream.IntStream;
 @Component
 public class ControllerViewDetailsUser implements Initializable {
 
+    @FXML private Button buttonDetails;
     @FXML private Button buttonCancel;
     @FXML private Label labelUsername;
     @FXML private Label labelFirstName;
@@ -107,7 +108,7 @@ public class ControllerViewDetailsUser implements Initializable {
         this.counterPages = 0;
         this.buttonPrevious.setDisable(true);
         this.setListReviews(user.getReviews());
-        if (remainingElem < 10) this.buttonNext.setDisable(true);
+        if (remainingElem == 0) this.buttonNext.setDisable(true);
     }
 
     private void setListReviews(List<Review> reviews) {
@@ -153,7 +154,7 @@ public class ControllerViewDetailsUser implements Initializable {
         if (counterPages==0) this.buttonPrevious.setDisable(false);
         this.counterPages++;
         this.setListReviews(user.getReviews());
-        if (remainingElem < 10) this.buttonNext.setDisable(true);
+        if (remainingElem == 0) this.buttonNext.setDisable(true);
     }
 
     @FXML
@@ -179,7 +180,8 @@ public class ControllerViewDetailsUser implements Initializable {
             return;
         }
         App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, phone.get());
-        stageManager.switchScene(FxmlView.DETAILS_PHONES);
+        stageManager.closeStage(this.buttonDetails);
+        stageManager.showWindow(FxmlView.DETAILS_PHONES);
     }
 
     @FXML

@@ -422,8 +422,12 @@ public class ControllerViewRegisteredUser implements Initializable {
     }
 
     public void onTopRatedBrands(ActionEvent actionEvent) {
+        App.getInstance().getModelBean().putBean(Constants.SELECTED_STATISTIC, "Top Rated Brands:");
+        stageManager.showWindow(FxmlView.STATISTISCS);
     }
 
     public void onTopPhonesByRating(ActionEvent actionEvent) {
+        App.getInstance().getModelBean().putBean(Constants.SELECTED_STATISTIC, "Top Phones By Rating:");
+        stageManager.showWindow(FxmlView.STATISTISCS);
     }
 }

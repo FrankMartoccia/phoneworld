@@ -96,7 +96,7 @@ public class ControllerViewDetailsPhone implements Initializable {
         this.counterPages = 0;
         this.buttonPrevious.setDisable(true);
         this.setListReviews(phone.getReviews());
-        if (remainingElem < 10) this.buttonNext.setDisable(true);
+        if (remainingElem == 0) this.buttonNext.setDisable(true);
     }
 
     private void setListReviews(List<Review> reviews) {
@@ -169,7 +169,7 @@ public class ControllerViewDetailsPhone implements Initializable {
         if (counterPages==0) this.buttonPrevious.setDisable(false);
         this.counterPages++;
         this.setListReviews(phone.getReviews());
-        if (remainingElem < 10) this.buttonNext.setDisable(true);
+        if (remainingElem == 0) this.buttonNext.setDisable(true);
     }
 
     @FXML

@@ -6,6 +6,7 @@ import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.ReviewMongo;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.beans.binding.Bindings;
@@ -61,11 +62,15 @@ public class ControllerViewDetailsUser implements Initializable {
 
     private final StageManager stageManager;
     private User user;
+    private Phone phone;
+    private List<Review> reviews;
     private List<Record> watchlist;
 
     @Autowired
     private PhoneMongo phoneMongo;
 
+    @Autowired
+    private ReviewMongo reviewMongo;
 
     @Autowired @Lazy
     public ControllerViewDetailsUser(StageManager stageManager) {
@@ -108,23 +113,8 @@ public class ControllerViewDetailsUser implements Initializable {
         this.counterPages = 0;
         this.buttonPrevious.setDisable(true);
         this.setListReviews(user.getReviews());
-        if (remainingElem == 0) this.buttonNext.setDisable(true);
-    }
-
-    private void setListReviews(List<Review> reviews) {
-        if (reviews.isEmpty()) {
-            remainingElem = 0;
-            return;
-        }
-        this.listReviews.clear();
-        for (int i = 0;i < 10;i++) {
-            this.listReviews.add(reviews.get(i + (counterPages*10)).toStringTable(false));
-            if (i+1 == reviews.size()){
-                break;
-            }
-        }
-        tableReviews.setItems(listReviews);
-        remainingElem = reviews.size()-(counterPages+1)*10;
+        if (this.tableReviews.getItems().size() != 10) {
+            this.buttonNext.setDisable(true);}
     }
 
     private void setListPhones(List<Record> watchlist) {
@@ -151,10 +141,25 @@ public class ControllerViewDetailsUser implements Initializable {
 
     @FXML
     void onClickNext(ActionEvent event) {
+        phone = (Phone) App.getInstance().getModelBean().getBean(Constants.SELECTED_PHONE);
         if (counterPages==0) this.buttonPrevious.setDisable(false);
         this.counterPages++;
-        this.setListReviews(user.getReviews());
-        if (remainingElem == 0) this.buttonNext.setDisable(true);
+        if (counterPages <= 4 ) {
+            this.setListReviews(phone.getReviews());
+        }
+        if (counterPages == 4) {
+            String phoneName = phone.getName();
+            reviews = reviewMongo.findOldReviews(phoneName, true);
+            if (reviews.isEmpty()) {
+                this.buttonNext.setDisable(true);
+            }
+        }
+        if (counterPages > 4) {
+            this.setListReviews(reviews);
+        }
+        if (this.tableReviews.getItems().size() != 10) {
+            this.buttonNext.setDisable(true);
+        }
     }
 
     @FXML
@@ -162,7 +167,34 @@ public class ControllerViewDetailsUser implements Initializable {
         this.buttonNext.setDisable(false);
         this.counterPages--;
         if (counterPages == 0) this.buttonPrevious.setDisable(true);
-        this.setListReviews(user.getReviews());
+        if (counterPages > 4) {
+            this.setListReviews(reviews);
+        } else {
+            this.setListReviews(phone.getReviews());
+        }
+    }
+
+    private void setListReviews(List<Review> reviews) {
+        if (reviews.isEmpty()) {
+            return;
+        }
+        this.listReviews.clear();
+        if (counterPages > 4) {
+            for (int i = 0;i < 10;i++) {
+                this.listReviews.add(reviews.get(i + (counterPages*10)-50).toStringTable(false));
+                if (i+1 == reviews.size()-(counterPages*10-50)){
+                    break;
+                }
+            }
+        } else {
+            for (int i = 0;i < 10;i++) {
+                this.listReviews.add(reviews.get(i + (counterPages*10)).toStringTable(false));
+                if (i+1 == reviews.size()-counterPages*10){
+                    break;
+                }
+            }
+        }
+        tableReviews.setItems(listReviews);
     }
 
     public void onClickDetails(ActionEvent actionEvent) {

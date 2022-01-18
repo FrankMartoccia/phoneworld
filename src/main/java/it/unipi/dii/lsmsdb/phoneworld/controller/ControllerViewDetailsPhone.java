@@ -61,7 +61,6 @@ public class ControllerViewDetailsPhone implements Initializable {
 
     private final StageManager stageManager;
     private int counterPages = 0;
-    private int remainingElem;
     private Phone phone;
     private User user;
     private List<Review> reviews;

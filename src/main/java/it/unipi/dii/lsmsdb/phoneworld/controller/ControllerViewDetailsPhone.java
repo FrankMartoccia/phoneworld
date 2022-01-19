@@ -2,6 +2,7 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
+import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
@@ -103,6 +104,11 @@ public class ControllerViewDetailsPhone implements Initializable {
         this.setListReviews(phone.getReviews());
         if (this.tableReviews.getItems().size() != 10) {
             this.buttonNext.setDisable(true);
+        }
+        GenericUser user = (GenericUser) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        if (user.get_class().equals("admin")) {
+            this.buttonAddPhone.setVisible(false);
+            this.buttonAddReview.setText("DELETE REVIEW");
         }
     }
 

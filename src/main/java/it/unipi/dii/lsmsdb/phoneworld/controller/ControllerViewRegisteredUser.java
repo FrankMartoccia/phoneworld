@@ -38,6 +38,8 @@ public class ControllerViewRegisteredUser implements Initializable {
     @FXML private Button buttonUsers;
     @FXML private Button buttonPrevious;
     @FXML private Button buttonNext;
+    @FXML private Button buttonAddAdmin;
+    @FXML private Button buttonReviews;
     @FXML private Label label1;
     @FXML private Label label2;
     @FXML private Label label3;
@@ -117,27 +119,23 @@ public class ControllerViewRegisteredUser implements Initializable {
                 label10, label11, label12, label13, label14, label15, label16, label17, label18);
         this.buttonPhones.setDisable(true);
         this.buttonUsers.setDisable(false);
+        this.buttonReviews.setVisible(false);
+        this.buttonAddAdmin.setVisible(false);
         this.buttonPrevious.setDisable(true);
         this.buttonNext.setDisable(true);
         this.initComboBox();
         this.isSearch = false;
         this.counterPages = 0;
         user = (GenericUser) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        this.buttonLogin.setText("Hi, " + user.getUsername());
         if (user.get_class().equals("admin")) {
-            Admin admin = (Admin) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
-            this.buttonLogin.setText("Hi, " + admin.getUsername());
-            stageManager.setNullList(imageViews, labels);
-            this.labelDescription1.setText("");
-            this.labelDescription2.setText("");
-            this.labelDescription3.setText("");
-            this.labelDescription4.setText("");
-            this.separator.setVisible(false);
-            this.menuItemSuggestedUsers.setVisible(false);
-            this.menuItemSuggestedPhones.setVisible(false);
+            user = (Admin) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+            this.buttonReviews.setVisible(true);
+            this.buttonAddAdmin.setVisible(true);
+            this.initScene(null, null, false);
             return;
         }
         user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
-        this.buttonLogin.setText("Hi, " + user.getUsername());
         phonesByFriends = App.getInstance().getPhoneNeo4j().findSuggestedPhonesByFriends(user.getId());
         phonesByBrand = App.getInstance().getPhoneNeo4j().findSuggestedPhonesByBrand(user.getId());
         usersByFollows = App.getInstance().getUserNeo4j().findSuggestedUsersByFriends(user.getId());
@@ -147,6 +145,16 @@ public class ControllerViewRegisteredUser implements Initializable {
 
     private void initScene(List<Record> listFriends, List<Record> listBrand, boolean isUser) {
         this.stageManager.setNullList(this.imageViews, this.labels);
+        if (this.user.get_class().equals("admin")) {
+            this.labelDescription1.setText("");
+            this.labelDescription2.setText("");
+            this.labelDescription3.setText("");
+            this.labelDescription4.setText("");
+            this.separator.setVisible(false);
+            this.menuItemSuggestedUsers.setVisible(false);
+            this.menuItemSuggestedPhones.setVisible(false);
+            return;
+        }
         this.separator.setVisible(true);
         if (isUser) {
             this.labelDescription1.setText("USERS FOLLOWED BY");
@@ -373,7 +381,8 @@ public class ControllerViewRegisteredUser implements Initializable {
 
     public void onClickElem(MouseEvent event) {
         int imageIndex = stageManager.getElemIndex(event);
-        if (this.imageViews.get(imageIndex-1).getImage() == null) {
+        imageIndex--;
+        if (null == this.imageViews.get(imageIndex).getImage()) {
             return;
         }
         if (this.buttonPhones.isDisabled()) {
@@ -388,9 +397,9 @@ public class ControllerViewRegisteredUser implements Initializable {
         String userId = null;
         if (isSearch == false) {
             if (imageIndex < 9) {
-                userId = this.usersByFollows.get(imageIndex-1).get("id").asString();
+                userId = this.usersByFollows.get(imageIndex).get("id").asString();
             } else {
-                userId = this.usersByBrand.get((imageIndex-1)-9).get("id").asString();
+                userId = this.usersByBrand.get((imageIndex)-9).get("id").asString();
             }
             if (userMongo.findUserById(userId).isPresent()) {
                 user = (User) userMongo.findUserById(userId).get();
@@ -399,7 +408,9 @@ public class ControllerViewRegisteredUser implements Initializable {
                 return;
             }
         } else {
-            user = (User) this.users.get((18*counterPages) + imageIndex-1);
+            user = (User) this.users.get((18*counterPages) + imageIndex);
+            App.getInstance().getModelBean().putBean(Constants.SELECTED_USER, user);
+            stageManager.showWindow(FxmlView.DETAILS_USER);
         }
         App.getInstance().getModelBean().putBean(Constants.SELECTED_USER, user);
         stageManager.showWindow(FxmlView.DETAILS_USER);
@@ -410,9 +421,9 @@ public class ControllerViewRegisteredUser implements Initializable {
         String phoneId = null;
         if (isSearch == false) {
             if (imageIndex < 9) {
-                phoneId = this.phonesByFriends.get(imageIndex - 1).get("newPhone").get("id").asString();
+                phoneId = this.phonesByFriends.get(imageIndex).get("newPhone").get("id").asString();
             } else {
-                phoneId = this.phonesByBrand.get((imageIndex-1)-9).get("newPhone").get("id").asString();
+                phoneId = this.phonesByBrand.get((imageIndex)-9).get("newPhone").get("id").asString();
             }
             if (phoneMongo.findPhoneById(phoneId).isPresent()) {
                 phone = phoneMongo.findPhoneById(phoneId).get();
@@ -421,7 +432,9 @@ public class ControllerViewRegisteredUser implements Initializable {
                 return;
             }
         } else {
-            phone = this.phones.get((18*counterPages)+imageIndex-1);
+            phone = this.phones.get((18*counterPages)+imageIndex);
+            App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, phone);
+            stageManager.showWindow(FxmlView.DETAILS_PHONES);
         }
         App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, phone);
         stageManager.showWindow(FxmlView.DETAILS_PHONES);
@@ -435,5 +448,13 @@ public class ControllerViewRegisteredUser implements Initializable {
     public void onTopPhonesByRating(ActionEvent actionEvent) {
         App.getInstance().getModelBean().putBean(Constants.SELECTED_STATISTIC, "Top Phones By Rating:");
         stageManager.showWindow(FxmlView.STATISTISCS);
+    }
+
+    public void actionClickOnReviews(ActionEvent actionEvent) {
+        stageManager.showWindow(FxmlView.FIND_REVIEWS);
+    }
+
+    public void actionAddAdmin(ActionEvent actionEvent) {
+        stageManager.showWindow(FxmlView.ADD_ADMIN);
     }
 }

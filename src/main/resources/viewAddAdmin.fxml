@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.dii.lsmsdb.phoneworld.controller.ControllerViewAddAdmin">
+   <center>
+      <SplitPane>
+         <items>
+            <VBox maxHeight="638.0" maxWidth="540.0" minHeight="540.0" minWidth="540.0" prefHeight="638.0" prefWidth="540.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets bottom="50.0" left="175.0" right="200.0" top="50.0" />
+                     </VBox.margin>
+                     <image>
+                        <Image url="@/logo-1.png" />
+                     </image>
+                  </ImageView>
+                  <Label prefHeight="49.0" prefWidth="400.0" text="Insert the following field for the admin: ">
+                     <VBox.margin>
+                        <Insets left="70.0" right="70.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="textFieldUsername" onKeyPressed="#onClickEnter" prefHeight="52.0" prefWidth="195.0" promptText="username">
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="70.0" right="70.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <PasswordField fx:id="textFieldPassword" onKeyPressed="#onClickEnter" prefHeight="52.0" prefWidth="195.0" promptText="password">
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="70.0" right="70.0" />
+                     </VBox.margin>
+                  </PasswordField>
+                  <PasswordField fx:id="textFieldRepeatedPassword" layoutX="80.0" layoutY="381.0" onKeyPressed="#onClickEnter" prefHeight="52.0" prefWidth="195.0" promptText="repeatedPassword">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="70.0" right="70.0" />
+                     </VBox.margin>
+                  </PasswordField>
+                  <Separator prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </Separator>
+                  <HBox prefHeight="76.0" prefWidth="540.0">
+                     <children>
+                        <Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="52.0" prefWidth="180.0" text="CANCEL">
+                           <HBox.margin>
+                              <Insets left="70.0" right="40.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="buttonAddAdmin" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickAddAdmin" prefHeight="52.0" prefWidth="180.0" text="ADD ADMIN" />
+                     </children>
+                     <VBox.margin>
+                        <Insets top="25.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+         </items>
+      </SplitPane>
+   </center>
+</BorderPane>

@@ -2,9 +2,7 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
-import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
-import it.unipi.dii.lsmsdb.phoneworld.model.Review;
-import it.unipi.dii.lsmsdb.phoneworld.model.User;
+import it.unipi.dii.lsmsdb.phoneworld.model.*;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.ReviewMongo;
 import it.unipi.dii.lsmsdb.phoneworld.services.ServiceReview;
@@ -61,7 +59,8 @@ public class ControllerViewDetailsUser implements Initializable {
     private final ObservableList<String> listReviews = FXCollections.observableArrayList();
 
     private final StageManager stageManager;
-    private User user;
+    private GenericUser user;
+    private Phone phone;
     private List<Review> reviews;
     private List<Record> watchlist;
 
@@ -85,11 +84,11 @@ public class ControllerViewDetailsUser implements Initializable {
         this.buttonUpdateReview.setVisible(false);
         this.buttonDeleteReview.setVisible(false);
         User selectedUser = (User) App.getInstance().getModelBean().getBean(Constants.SELECTED_USER);
-        User currentUser = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        user = (GenericUser) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
         if(selectedUser == null) {
-            user = currentUser;
-        } else if (selectedUser.getId().equals(currentUser.getId())) {
-            user = currentUser;
+            user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        } else if (selectedUser.getId().equals(user.getId())) {
+            user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);;
             this.buttonRemovePhone.setVisible(true);
             this.buttonUpdateReview.setVisible(true);
             this.buttonDeleteReview.setVisible(true);
@@ -100,8 +99,9 @@ public class ControllerViewDetailsUser implements Initializable {
         }
         imageViewPhoto.setImage(new Image("user.png"));
         this.labelUsername.setText("Username: " + user.getUsername());
-        this.labelFirstName.setText("First Name: " + user.getFirstName());
-        this.labelLastName.setText("Last Name: " + user.getLastName());
+        this.labelFirstName.setText("First Name: " + selectedUser.getFirstName());
+        this.labelLastName.setText("Last Name: " + selectedUser.getLastName());
+
         this.columnWatchList.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
         this.columnReviews.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
         IntStream.range(0, 10).mapToObj(Integer::toString).forEach(tableWatchList.getItems()::add);
@@ -114,9 +114,17 @@ public class ControllerViewDetailsUser implements Initializable {
         this.setListPhones(watchlist);
         this.counterPages = 0;
         this.buttonPrevious.setDisable(true);
-        this.setListReviews(user.getReviews());
+        this.setListReviews(selectedUser.getReviews());
         if (this.tableReviews.getItems().size() != 10) {
-            this.buttonNext.setDisable(true);}
+            this.buttonNext.setDisable(true);
+        }
+        GenericUser currentUser = (GenericUser) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        if (currentUser.get_class().equals("admin")) {
+            this.buttonRemovePhone.setVisible(false);
+            this.buttonDeleteReview.setVisible(true);
+            this.buttonUnfollow.setVisible(false);
+            this.buttonFollow.setVisible(false);
+        }
     }
 
     private void setListPhones(List<Record> watchlist) {

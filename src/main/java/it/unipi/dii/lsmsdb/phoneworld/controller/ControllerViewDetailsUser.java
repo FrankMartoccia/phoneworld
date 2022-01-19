@@ -160,6 +160,10 @@ public class ControllerViewDetailsUser implements Initializable {
     void onClickUpdateReview(ActionEvent event) {
         User user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
         int tableIndex = this.tableReviews.getSelectionModel().getSelectedIndex();
+        if (tableIndex == -1) {
+            stageManager.showInfoMessage("ERROR", "You have to select a review.");
+            return;
+        }
         Review selectedReview = serviceReview.getSelectedReview(counterPages, tableIndex, user,
                 null, reviews);
         App.getInstance().getModelBean().putBean(Constants.IS_UPDATE_REVIEW, true);
@@ -169,7 +173,7 @@ public class ControllerViewDetailsUser implements Initializable {
 
     @FXML
     void onClickNext(ActionEvent event) {
-        user = (User) App.getInstance().getModelBean().getBean(Constants.SELECTED_USER);
+        User user = (User) App.getInstance().getModelBean().getBean(Constants.SELECTED_USER);
         if (counterPages==0) this.buttonPrevious.setDisable(false);
         this.counterPages++;
         if (counterPages <= 4 ) {
@@ -192,6 +196,7 @@ public class ControllerViewDetailsUser implements Initializable {
 
     @FXML
     void onClickPrevious(ActionEvent event) {
+        User user = (User) App.getInstance().getModelBean().getBean(Constants.SELECTED_USER);
         this.buttonNext.setDisable(false);
         this.counterPages--;
         if (counterPages == 0) this.buttonPrevious.setDisable(true);

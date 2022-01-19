@@ -7,6 +7,7 @@ import it.unipi.dii.lsmsdb.phoneworld.model.Review;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.ReviewMongo;
+import it.unipi.dii.lsmsdb.phoneworld.services.ServiceReview;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.beans.binding.Bindings;
@@ -55,14 +56,12 @@ public class ControllerViewDetailsUser implements Initializable {
     @FXML private Button buttonUnfollow;
 
     private int counterPages = 0;
-    private int remainingElem;
 
     private final ObservableList<String> listPhones = FXCollections.observableArrayList();
     private final ObservableList<String> listReviews = FXCollections.observableArrayList();
 
     private final StageManager stageManager;
     private User user;
-    private Phone phone;
     private List<Review> reviews;
     private List<Record> watchlist;
 
@@ -71,6 +70,9 @@ public class ControllerViewDetailsUser implements Initializable {
 
     @Autowired
     private ReviewMongo reviewMongo;
+
+    @Autowired
+    private ServiceReview serviceReview;
 
     @Autowired @Lazy
     public ControllerViewDetailsUser(StageManager stageManager) {
@@ -131,25 +133,43 @@ public class ControllerViewDetailsUser implements Initializable {
 
     @FXML
     void onClickDeleteReview(ActionEvent event) {
-
+        User user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        int tableIndex = this.tableReviews.getSelectionModel().getSelectedIndex();
+        if (tableIndex == -1) {
+            stageManager.showInfoMessage("ERROR", "You have to select a review.");
+            return;
+        }
+        Review selectedReview = serviceReview.getSelectedReview(counterPages, tableIndex, user,
+                null, reviews);
+        if (!serviceReview.deleteReview(selectedReview, null, user)) {
+            stageManager.showInfoMessage("ERROR", "Error in updating the review for this phone!");
+            return;
+        }
+        stageManager.showInfoMessage("INFO", "Review deleted correctly.");
     }
 
     @FXML
-    void onClikUpdateReview(ActionEvent event) {
-
+    void onClickUpdateReview(ActionEvent event) {
+        User user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        int tableIndex = this.tableReviews.getSelectionModel().getSelectedIndex();
+        Review selectedReview = serviceReview.getSelectedReview(counterPages, tableIndex, user,
+                null, reviews);
+        App.getInstance().getModelBean().putBean(Constants.IS_UPDATE_REVIEW, true);
+        App.getInstance().getModelBean().putBean(Constants.SELECTED_REVIEW, selectedReview);
+        stageManager.showWindow(FxmlView.REVIEW);
     }
 
     @FXML
     void onClickNext(ActionEvent event) {
-        phone = (Phone) App.getInstance().getModelBean().getBean(Constants.SELECTED_PHONE);
+        user = (User) App.getInstance().getModelBean().getBean(Constants.SELECTED_USER);
         if (counterPages==0) this.buttonPrevious.setDisable(false);
         this.counterPages++;
         if (counterPages <= 4 ) {
-            this.setListReviews(phone.getReviews());
+            this.setListReviews(user.getReviews());
         }
         if (counterPages == 4) {
-            String phoneName = phone.getName();
-            reviews = reviewMongo.findOldReviews(phoneName, true);
+            String username = user.getUsername();
+            reviews = reviewMongo.findOldReviews(username, false);
             if (reviews.isEmpty()) {
                 this.buttonNext.setDisable(true);
             }
@@ -170,7 +190,7 @@ public class ControllerViewDetailsUser implements Initializable {
         if (counterPages > 4) {
             this.setListReviews(reviews);
         } else {
-            this.setListReviews(phone.getReviews());
+            this.setListReviews(user.getReviews());
         }
     }
 
@@ -229,13 +249,13 @@ public class ControllerViewDetailsUser implements Initializable {
     }
 
     public void onClickFollow(ActionEvent actionEvent) {
-        User curentUser = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        User currentUser = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
         User selectedUser = (User) App.getInstance().getModelBean().getBean(Constants.SELECTED_USER);
-        if (curentUser == null || selectedUser == null) {
+        if (currentUser == null || selectedUser == null) {
             stageManager.showInfoMessage("ERROR", "Error in adding the follow relationship!");
             return;
         }
-        String idCurrentUser = curentUser.getId();
+        String idCurrentUser = currentUser.getId();
         String idSelectedUser = selectedUser.getId();
         if (!App.getInstance().getUserNeo4j().getFollowRelationship(idCurrentUser, idSelectedUser).isEmpty()) {
             stageManager.showInfoMessage("INFO", "You already follow this user");
@@ -249,14 +269,14 @@ public class ControllerViewDetailsUser implements Initializable {
     }
 
     public void onClickUnfollow(ActionEvent actionEvent) {
-        User curentUser = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        User currentUser = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
         User selectedUser = (User) App.getInstance().getModelBean().getBean(Constants.SELECTED_USER);
-        System.out.println(curentUser.get_class());
-        if (curentUser == null || selectedUser == null) {
+        System.out.println(currentUser.get_class());
+        if (currentUser == null || selectedUser == null) {
             stageManager.showInfoMessage("ERROR", "Error in unfollowing relationship!");
             return;
         }
-        String idCurrentUser = curentUser.getId();
+        String idCurrentUser = currentUser.getId();
         String idSelectedUser = selectedUser.getId();
         if (App.getInstance().getUserNeo4j().getFollowRelationship(idCurrentUser, idSelectedUser).isEmpty()) {
             stageManager.showInfoMessage("INFO", "You are not following this user");

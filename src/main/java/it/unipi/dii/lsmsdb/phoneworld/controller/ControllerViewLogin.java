@@ -94,7 +94,7 @@ public class ControllerViewLogin {
                 user = (User) genericUser.get();
                 App.getInstance().getModelBean().putBean(Constants.CURRENT_USER, user);
             }
-            Admin prova = (Admin) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+//            Admin prova = (Admin) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
             stageManager.closeStage(this.buttonLogin);
             stageManager.switchScene(FxmlView.USER);
         } catch (Exception e) {

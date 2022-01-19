@@ -2,6 +2,7 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
+import it.unipi.dii.lsmsdb.phoneworld.model.Admin;
 import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
@@ -79,6 +80,8 @@ public class ControllerViewRegisteredUser implements Initializable {
     @FXML private ImageView image18;
     @FXML private TextField textFieldSearch;
     @FXML private Separator separator;
+    @FXML private MenuItem menuItemSuggestedPhones;
+    @FXML private MenuItem menuItemSuggestedUsers;
     @FXML private ComboBox<String> comboBoxFilter;
 
     private List<ImageView> imageViews = new ArrayList<>();
@@ -89,7 +92,7 @@ public class ControllerViewRegisteredUser implements Initializable {
     private List<Record> usersByFollows = new ArrayList<>();
     private List<Record> phonesByBrand = new ArrayList<>();
     private List<Record> usersByBrand = new ArrayList<>();
-    private User user;
+    private GenericUser user;
     private int counterPages = 0;
     private int remainingElem;
     private boolean isSearch = false;
@@ -112,8 +115,6 @@ public class ControllerViewRegisteredUser implements Initializable {
                 image9, image10, image11, image12, image13, image14, image15, image16, image17, image18);
         stageManager.createLabelList(this.labels, label1, label2, label3, label4, label5, label6, label7, label8, label9,
                 label10, label11, label12, label13, label14, label15, label16, label17, label18);
-        user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
-        this.buttonLogin.setText("Hi, " + user.getUsername());
         this.buttonPhones.setDisable(true);
         this.buttonUsers.setDisable(false);
         this.buttonPrevious.setDisable(true);
@@ -121,6 +122,22 @@ public class ControllerViewRegisteredUser implements Initializable {
         this.initComboBox();
         this.isSearch = false;
         this.counterPages = 0;
+        user = (GenericUser) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        if (user.get_class().equals("admin")) {
+            Admin admin = (Admin) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+            this.buttonLogin.setText("Hi, " + admin.getUsername());
+            stageManager.setNullList(imageViews, labels);
+            this.labelDescription1.setText("");
+            this.labelDescription2.setText("");
+            this.labelDescription3.setText("");
+            this.labelDescription4.setText("");
+            this.separator.setVisible(false);
+            this.menuItemSuggestedUsers.setVisible(false);
+            this.menuItemSuggestedPhones.setVisible(false);
+            return;
+        }
+        user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        this.buttonLogin.setText("Hi, " + user.getUsername());
         phonesByFriends = App.getInstance().getPhoneNeo4j().findSuggestedPhonesByFriends(user.getId());
         phonesByBrand = App.getInstance().getPhoneNeo4j().findSuggestedPhonesByBrand(user.getId());
         usersByFollows = App.getInstance().getUserNeo4j().findSuggestedUsersByFriends(user.getId());

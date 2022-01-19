@@ -2,8 +2,12 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
+import it.unipi.dii.lsmsdb.phoneworld.model.Admin;
+import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.UserMongo;
+import it.unipi.dii.lsmsdb.phoneworld.services.ServiceUser;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.application.Platform;
@@ -86,6 +90,12 @@ public class ControllerViewUnUser implements Initializable {
 
     private final StageManager stageManager;
 
+    @Autowired
+    ServiceUser serviceUser;
+
+    @Autowired
+    UserMongo userMongo;
+
     private List<ImageView> imageViews = new ArrayList<>();
     private List<Label> labels = new ArrayList<>();
     private List<Phone> phones = new ArrayList<>();
@@ -143,6 +153,10 @@ public class ControllerViewUnUser implements Initializable {
 //        App.getInstance().getUserNeo4j().followRelationship("61de1530538b5a365a79ab5b", "3");
 //        App.getInstance().getUserNeo4j().addRelationship("3", "phoneid2");
 //        App.getInstance().getUserNeo4j().addRelationship("3", "phoneid3");
+//        String salt = serviceUser.getSalt();
+//        String hashedPassword = serviceUser.getHashedPassword("admin", salt);
+//        GenericUser admin = new Admin("martocciaAdmin",salt,hashedPassword, "admin");
+//        userMongo.addUser(admin);
         this.counterPages = 0;
         this.buttonPrevious.setDisable(true);
         this.buttonPhones.setDisable(true);

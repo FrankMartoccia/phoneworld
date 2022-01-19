@@ -2,6 +2,7 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
+import it.unipi.dii.lsmsdb.phoneworld.model.Admin;
 import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.UserMongo;
@@ -83,9 +84,17 @@ public class ControllerViewLogin {
                 this.clearFields();
                 return;
             }
-            GenericUser user = new User();
-            user = genericUser.get();
-            App.getInstance().getModelBean().putBean(Constants.CURRENT_USER, user);
+            User user = null;
+            Admin admin = null;
+            System.out.println(genericUser.get().get_class());
+            if (genericUser.get().get_class().equals("admin")) {
+                admin = (Admin) genericUser.get();
+                App.getInstance().getModelBean().putBean(Constants.CURRENT_USER, admin);
+            } else {
+                user = (User) genericUser.get();
+                App.getInstance().getModelBean().putBean(Constants.CURRENT_USER, user);
+            }
+            Admin prova = (Admin) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
             stageManager.closeStage(this.buttonLogin);
             stageManager.switchScene(FxmlView.USER);
         } catch (Exception e) {

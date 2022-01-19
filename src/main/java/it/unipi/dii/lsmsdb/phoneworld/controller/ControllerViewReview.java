@@ -2,7 +2,6 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
-import it.unipi.dii.lsmsdb.phoneworld.model.GraphPhone;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
@@ -14,15 +13,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import org.yaml.snakeyaml.scanner.Constant;
 
 import java.net.URL;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.ResourceBundle;
 
 @Component
@@ -57,10 +53,6 @@ public class ControllerViewReview implements Initializable {
         boolean isUpdate = (boolean) App.getInstance().getModelBean().getBean(Constants.IS_UPDATE_REVIEW);
         User user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
         Phone phone = (Phone) App.getInstance().getModelBean().getBean(Constants.SELECTED_PHONE);
-        if (user == null || phone == null) {
-            stageManager.showInfoMessage("ERROR", "Error in adding review!");
-            return;
-        }
         String title = this.textFieldTitle.getText();
         int rating = this.spinnerRating.getValue();
         String body = this.textAreabody.getText();
@@ -77,10 +69,10 @@ public class ControllerViewReview implements Initializable {
             return;
         }
         Date dateOfReview = new Date();
-        Review review = new Review.ReviewBuilder(rating, dateOfReview, title, body).username(user.getUsername()).
-                phoneName(phone.getName()).build();
         if (!isUpdate) {
-            if (!serviceReview.insertReview(review,phone, user)) {
+            Review newReview = new Review.ReviewBuilder(rating, dateOfReview, title, body).username(user.getUsername()).
+                    phoneName(phone.getName()).build();
+            if (!serviceReview.insertReview(newReview,phone, user)) {
                 stageManager.showInfoMessage("ERROR", "Error in adding the review for this phone!");
                 return;
             }
@@ -88,7 +80,14 @@ public class ControllerViewReview implements Initializable {
             stageManager.showWindow(FxmlView.DETAILS_PHONES);
             stageManager.showInfoMessage("INFO", "You added a review to this phone");
         } else {
-
+            Review selectedReview = (Review) App.getInstance().getModelBean().getBean(Constants.SELECTED_REVIEW);
+            if (!serviceReview.updateReview(selectedReview, user, rating, dateOfReview, title, body)) {
+                stageManager.showInfoMessage("ERROR", "Error in updating the review for this phone!");
+                return;
+            }
+            stageManager.closeStage(this.buttonServiceReview);
+            stageManager.showWindow(FxmlView.DETAILS_USER);
+            stageManager.showInfoMessage("INFO", "You updated your review of this phone");
         }
     }
 

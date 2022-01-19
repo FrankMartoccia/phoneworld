@@ -2,8 +2,6 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
-import it.unipi.dii.lsmsdb.phoneworld.model.Admin;
-import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.UserMongo;

@@ -187,10 +187,16 @@ public class Phone {
         this.reviews.add(0, review);
     }
 
-    public void deleteReview(String id) {
+    public boolean deleteReview(String id) {
         if (!this.reviews.isEmpty()) {
-            reviews.removeIf(review -> review.getId().equals(id));
+            for (Review review : reviews) {
+                if (review.getId().equals(id)) {
+                    reviews.remove(review);
+                    return true;
+                }
+            }
         }
+        return false;
     }
 
     @Override

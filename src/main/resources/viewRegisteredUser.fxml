@@ -14,6 +14,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -48,7 +49,7 @@
                <children>
                   <Button fx:id="buttonPhones" mnemonicParsing="false" onAction="#onClickPhones" prefHeight="41.0" prefWidth="160.0" text="PHONES">
                      <VBox.margin>
-                        <Insets top="20.0" />
+                        <Insets top="10.0" />
                      </VBox.margin>
                   </Button>
                   <Button fx:id="buttonUsers" layoutX="10.0" layoutY="30.0" mnemonicParsing="false" onAction="#actionClickOnUsers" prefHeight="41.0" prefWidth="178.0" text="USERS">
@@ -56,9 +57,14 @@
                         <Insets top="15.0" />
                      </VBox.margin>
                   </Button>
+                  <Button fx:id="buttonReviews" layoutX="10.0" layoutY="86.0" mnemonicParsing="false" onAction="#actionClickOnReviews" prefHeight="41.0" prefWidth="178.0" text="REVIEWS">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                  </Button>
                   <Button fx:id="buttonPrevious" layoutX="10.0" layoutY="86.0" mnemonicParsing="false" onAction="#actionClickOnPrevious" prefHeight="61.0" prefWidth="61.0" text="&lt;">
                      <VBox.margin>
-                        <Insets top="70.0" />
+                        <Insets top="30.0" />
                      </VBox.margin>
                      <font>
                         <Font size="24.0" />
@@ -74,24 +80,33 @@
             </VBox>
          </left>
          <right>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="250.0" prefWidth="160.0" BorderPane.alignment="TOP_LEFT">
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="275.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT">
                <BorderPane.margin>
                   <Insets right="20.0" />
                </BorderPane.margin>
                <children>
                   <Button fx:id="buttonLogin" mnemonicParsing="false" onAction="#actionProfile" prefHeight="41.0" prefWidth="160.0" text="LOG IN">
                      <VBox.margin>
-                        <Insets top="50.0" />
+                        <Insets left="40.0" top="50.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="buttonLogOut" layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onAction="#actionLogOut" prefHeight="41.0" prefWidth="82.0" text="LOG OUT">
-                     <VBox.margin>
-                        <Insets left="80.0" top="19.0" />
-                     </VBox.margin>
-                  </Button>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="buttonAddAdmin" mnemonicParsing="false" onAction="#actionAddAdmin" prefHeight="41.0" prefWidth="82.0" text="ADD">
+                           <HBox.margin>
+                              <Insets top="30.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="buttonLogOut" layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onAction="#actionLogOut" prefHeight="41.0" prefWidth="82.0" text="LOG OUT">
+                           <HBox.margin>
+                              <Insets left="40.0" top="30.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
                   <Button fx:id="buttonNext" mnemonicParsing="false" onAction="#actionClickOnNext" prefHeight="61.0" prefWidth="61.0" text="&gt;">
                      <VBox.margin>
-                        <Insets left="100.0" top="39.0" />
+                        <Insets left="140.0" />
                      </VBox.margin>
                      <font>
                         <Font size="24.0" />

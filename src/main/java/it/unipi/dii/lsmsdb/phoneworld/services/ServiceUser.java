@@ -1,6 +1,7 @@
 package it.unipi.dii.lsmsdb.phoneworld.services;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
+import it.unipi.dii.lsmsdb.phoneworld.model.Admin;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.UserMongo;
 import org.slf4j.Logger;
@@ -50,6 +51,12 @@ public class ServiceUser {
         return Base64.getEncoder().encodeToString(salt);
     }
 
+    public Admin createAdmin(String username, String password){
+        String salt = this.getSalt();
+        String hashedPassword = this.getHashedPassword(password, salt);
+        return new Admin(username, salt, hashedPassword, "admin");
+    }
+
     public User createUser(String firstName, String lastName, String gender, String country, String city,
                            String streetName, int streetNumber, String email, String username, String password,
                            int year, int month, int day) {
@@ -61,6 +68,15 @@ public class ServiceUser {
         String hashedPassword = this.getHashedPassword(password, salt);
         return new User(username,salt,hashedPassword,"user",gender,firstName,lastName,streetNumber,streetName,
                 city,country, email,dateOfBirth,age);
+    }
+
+    public boolean insertAdmin(Admin admin) {
+        boolean result = true;
+        if (!userMongo.addUser(admin)) {
+            logger.error("Error in adding the admin to MongoDB");
+            return false;
+        }
+        return result;
     }
 
     public boolean insertUser(User user) {

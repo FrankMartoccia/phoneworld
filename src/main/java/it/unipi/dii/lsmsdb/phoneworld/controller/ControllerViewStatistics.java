@@ -34,7 +34,9 @@ public class ControllerViewStatistics implements Initializable {
 
     @FXML private Button buttonCancel;
     @FXML private Button buttonDetails;
-    @FXML private TableColumn<String, String> columnStatistics;
+    @FXML private TableColumn <String, String> columnName;
+    @FXML private TableColumn <String, String> columnParameter1;
+    @FXML private TableColumn <String, String> columnParameter2;
     @FXML private Label labelStatistics;
     @FXML private Spinner<Integer> spinnerFilter;
     @FXML private TableView<String> tableViewStatistics;
@@ -63,7 +65,9 @@ public class ControllerViewStatistics implements Initializable {
         SpinnerValueFactory<Integer> valueFactoryFilter = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10);
         this.spinnerFilter.setValueFactory(valueFactoryFilter);
         this.spinnerFilter.getValueFactory().setValue(10);
-        this.columnStatistics.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
+        this.columnName.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
+        this.columnParameter1.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
+        this.columnParameter2.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
         IntStream.range(0, this.spinnerFilter.getValue()).mapToObj(Integer::toString).forEach(tableViewStatistics.getItems()::add);
         tableViewStatistics.setFixedCellSize(25);
         tableViewStatistics.prefHeightProperty().bind(tableViewStatistics.fixedCellSizeProperty().
@@ -77,7 +81,9 @@ public class ControllerViewStatistics implements Initializable {
         List<Document> statistics = new ArrayList<>();
         if (statisticName.equalsIgnoreCase("Top Rated Brands:")) {
             this.buttonDetails.setVisible(false);
-            this.columnStatistics.setText("BRANDS");
+            this.columnName.setText("BRANDS");
+            this.columnParameter1.setText("# REVIEWS");
+            this.columnParameter2.setText("RATING");
             Document result = phoneMongo.findTopRatedBrands(20, this.spinnerFilter.getValue());
             System.out.println(spinnerFilter.getValue());
             if (result.isEmpty()) {
@@ -88,7 +94,9 @@ public class ControllerViewStatistics implements Initializable {
             this.setTable(statistics, "brand");
         }
         if (statisticName.equalsIgnoreCase("Top Phones By Rating:")) {
-            this.columnStatistics.setText("PHONES");
+            this.columnName.setText("PHONES");
+            this.columnParameter1.setText("# REVIEWS");
+            this.columnParameter2.setText("RATING");
             Document result = reviewMongo.findTopPhonesByRating(20, this.spinnerFilter.getValue());
             if (result.isEmpty()) {
                 stageManager.showInfoMessage("ERROR", "Statistic not found!");

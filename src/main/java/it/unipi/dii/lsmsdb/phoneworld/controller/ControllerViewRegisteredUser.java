@@ -38,6 +38,8 @@ public class ControllerViewRegisteredUser implements Initializable {
     @FXML private Button buttonUsers;
     @FXML private Button buttonPrevious;
     @FXML private Button buttonNext;
+    @FXML private Button buttonAddAdmin;
+    @FXML private Button buttonReviews;
     @FXML private Label label1;
     @FXML private Label label2;
     @FXML private Label label3;
@@ -117,6 +119,8 @@ public class ControllerViewRegisteredUser implements Initializable {
                 label10, label11, label12, label13, label14, label15, label16, label17, label18);
         this.buttonPhones.setDisable(true);
         this.buttonUsers.setDisable(false);
+        this.buttonReviews.setVisible(false);
+        this.buttonAddAdmin.setVisible(false);
         this.buttonPrevious.setDisable(true);
         this.buttonNext.setDisable(true);
         this.initComboBox();
@@ -126,6 +130,8 @@ public class ControllerViewRegisteredUser implements Initializable {
         this.buttonLogin.setText("Hi, " + user.getUsername());
         if (user.get_class().equals("admin")) {
             user = (Admin) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+            this.buttonReviews.setVisible(true);
+            this.buttonAddAdmin.setVisible(true);
             this.initScene(null, null, false);
             return;
         }
@@ -442,5 +448,13 @@ public class ControllerViewRegisteredUser implements Initializable {
     public void onTopPhonesByRating(ActionEvent actionEvent) {
         App.getInstance().getModelBean().putBean(Constants.SELECTED_STATISTIC, "Top Phones By Rating:");
         stageManager.showWindow(FxmlView.STATISTISCS);
+    }
+
+    public void actionClickOnReviews(ActionEvent actionEvent) {
+        stageManager.showWindow(FxmlView.FIND_REVIEWS);
+    }
+
+    public void actionAddAdmin(ActionEvent actionEvent) {
+        stageManager.showWindow(FxmlView.ADD_ADMIN);
     }
 }

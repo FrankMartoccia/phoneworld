@@ -106,9 +106,11 @@ public class ControllerViewDetailsPhone implements Initializable {
             this.buttonNext.setDisable(true);
         }
         GenericUser user = (GenericUser) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
-        if (user.get_class().equals("admin")) {
-            this.buttonAddPhone.setVisible(false);
-            this.buttonAddReview.setText("DELETE REVIEW");
+        if (user != null) {
+            if (user.get_class().equals("admin")) {
+                this.buttonAddPhone.setVisible(false);
+                this.buttonAddReview.setText("DELETE REVIEW");
+            }
         }
     }
 

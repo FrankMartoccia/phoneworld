@@ -213,7 +213,8 @@ public class ControllerViewUnUser implements Initializable {
 
     public void onClickImage(MouseEvent event) {
         int imageIndex = stageManager.getElemIndex(event);
-        Phone phone = this.phones.get((18*counterPages)+imageIndex-1);
+        imageIndex--;
+        Phone phone = this.phones.get((18*counterPages)+imageIndex);
         App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, phone);
         stageManager.showWindow(FxmlView.DETAILS_PHONES);
     }

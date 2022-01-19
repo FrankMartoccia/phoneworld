@@ -141,4 +141,3 @@ public class ControllerViewStatistics implements Initializable {
         this.showStatistics(this.statisticName);
     }
 }
-

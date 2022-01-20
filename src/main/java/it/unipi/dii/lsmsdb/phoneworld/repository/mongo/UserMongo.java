@@ -41,7 +41,7 @@ public class UserMongo {
         try {
             userMongo.save(user);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -52,7 +52,7 @@ public class UserMongo {
         try {
             users.addAll(userMongo.findByUsernameRegexAnd_class(username, classType));
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return users;
     }
@@ -62,7 +62,7 @@ public class UserMongo {
         try {
             user = userMongo.findByUsername(username);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return user;
     }
@@ -72,7 +72,7 @@ public class UserMongo {
         try {
             user = userMongo.findById(id);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return user;
     }
@@ -109,7 +109,7 @@ public class UserMongo {
                 } 
             } 
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -120,7 +120,7 @@ public class UserMongo {
         try {
             userMongo.deleteById(id);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -131,7 +131,7 @@ public class UserMongo {
         try {
             userMongo.delete(user);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -166,8 +166,6 @@ public class UserMongo {
                 .aggregate(aggregation, "users", User.class);
         return result.getRawResults();
     }
-
-
 
 }
 

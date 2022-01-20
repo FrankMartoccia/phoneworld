@@ -60,7 +60,6 @@ public class ControllerViewDetailsUser implements Initializable {
 
     private final StageManager stageManager;
     private GenericUser user;
-    private Phone phone;
     private List<Review> reviews;
     private List<Record> watchlist;
 
@@ -88,7 +87,7 @@ public class ControllerViewDetailsUser implements Initializable {
         if(selectedUser == null) {
             user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
         } else if (selectedUser.getId().equals(user.getId())) {
-            user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);;
+            user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
             this.buttonRemovePhone.setVisible(true);
             this.buttonUpdateReview.setVisible(true);
             this.buttonDeleteReview.setVisible(true);
@@ -141,7 +140,7 @@ public class ControllerViewDetailsUser implements Initializable {
 
     @FXML
     void onClickDeleteReview(ActionEvent event) {
-        User user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        User user = (User) App.getInstance().getModelBean().getBean(Constants.SELECTED_USER);
         int tableIndex = this.tableReviews.getSelectionModel().getSelectedIndex();
         if (tableIndex == -1) {
             stageManager.showInfoMessage("ERROR", "You have to select a review.");

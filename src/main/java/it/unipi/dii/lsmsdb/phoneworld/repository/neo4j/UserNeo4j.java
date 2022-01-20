@@ -28,16 +28,21 @@ public class UserNeo4j {
             graphNeo4j.write("MERGE (u:User {id: $id, username: $username})",
                     parameters( "id", id, "username", username));
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
     }
 
     public List<Record> findUserById(String id) {
-        return graphNeo4j.read("MATCH (u:User {id: $id}) " +
-                                     "RETURN u.id AS id, u.username AS username",
-                parameters("id", id));
+        try {
+            return graphNeo4j.read("MATCH (u:User {id: $id}) " +
+                            "RETURN u.id AS id, u.username AS username",
+                    parameters("id", id));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public boolean updateUser(String id, String username) {
@@ -47,7 +52,7 @@ public class UserNeo4j {
                                    "RETURN u.id AS id, u.username AS username",
                     parameters("id", id, "username", username));
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -59,7 +64,19 @@ public class UserNeo4j {
             graphNeo4j.write(("MATCH (u:User {id: $id}) DETACH DELETE u"),
                     parameters( "id", id));
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
+            result = false;
+        }
+        return result;
+    }
+
+    public boolean deleteUserOnly(String id) {
+        boolean result = true;
+        try {
+            graphNeo4j.write(("MATCH (u:User {id: $id}) DELETE u"),
+                    parameters( "id", id));
+        } catch (Exception e) {
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -73,7 +90,7 @@ public class UserNeo4j {
                             "CREATE (u1)-[:FOLLOWS]->(u2)",
                     parameters("id1", id1, "id2", id2));
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -85,7 +102,7 @@ public class UserNeo4j {
             graphNeo4j.write("MATCH (u1:User {id: $id1})-[r:FOLLOWS]->(u2:User {id: $id2}) DELETE r",
                     parameters("id1", id1, "id2", id2));
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -99,7 +116,7 @@ public class UserNeo4j {
                             "CREATE (u)-[:ADDS]->(p)",
                     parameters("userId", userId, "phoneId", phoneId));
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -111,7 +128,7 @@ public class UserNeo4j {
             graphNeo4j.write("MATCH (u:User {id: $userId})-[r:ADDS]->(p:Phone {id: $phoneId}) DELETE r",
                     parameters("userId", userId, "phoneId", phoneId));
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -124,7 +141,7 @@ public class UserNeo4j {
                             "RETURN r",
                     parameters("userId", userId, "phoneId", phoneId));
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -136,7 +153,33 @@ public class UserNeo4j {
                             "RETURN r",
                     parameters("userId1", userId1, "userId2", userId2));
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public boolean deleteUserAddsRelationships(String id) {
+        boolean result = true;
+        try {
+            graphNeo4j.write("MATCH (u:User {id: $id})-[r:ADDS]->() " +
+                                   "DELETE r",
+                    parameters("id", id));
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = false;
+        }
+        return result;
+    }
+
+    public boolean deleteUserFollowsRelationships(String id) {
+        boolean result = true;
+        try {
+            graphNeo4j.write("MATCH (u:User {id: $id})-[r:FOLLOWS]->() " +
+                                   "DELETE r",
+                    parameters("id", id));
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = false;
         }
         return result;
     }
@@ -148,7 +191,7 @@ public class UserNeo4j {
                     "RETURN DISTINCT p " +
                     "LIMIT 10", parameters("id", id));
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -161,7 +204,7 @@ public class UserNeo4j {
                     "ORDER BY followers DESC " +
                     "LIMIT 10");
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -177,7 +220,7 @@ public class UserNeo4j {
                             "RETURN DISTINCT u3.id AS id, u3.username AS username " +
                             "LIMIT 9", parameters("id",id));
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -195,7 +238,7 @@ public class UserNeo4j {
                     "ORDER BY phones DESC " +
                     "LIMIT 9", parameters("id",id));
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return result;
     }

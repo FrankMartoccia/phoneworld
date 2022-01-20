@@ -8,5 +8,4 @@ public class Constants {
     public static final String IS_UPDATE_REVIEW = "isUpdateReview";
     public static final String SELECTED_REVIEW = "selectedReview";
     public static final String IS_EMBEDDED = "isEmbedded";
-    public static final String SELECTED_INDEX = "selectedIndex";
 }

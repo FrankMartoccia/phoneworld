@@ -156,4 +156,12 @@ public class TestPhoneMongo {
         assertEquals("Samsung",results.get(0).get("brand"));
     }
 
+    @Test
+    public void testUpdateReviewsOldUser() {
+        phoneMongo.updatePhoneReviewsOldUser("user1");
+        phoneMongo.getPhoneMongo().findAll().forEach(System.out::println);
+//        System.out.println(phones);
+        assertEquals(1, 1);
+    }
+
 }

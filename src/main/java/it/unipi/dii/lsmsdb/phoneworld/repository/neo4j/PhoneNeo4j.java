@@ -31,30 +31,35 @@ public class PhoneNeo4j{
                     parameters("id", id, "brand", brand, "name", name,
                             "picture", picture, "releaseYear", releaseYear));
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
     }
 
     public List<Record> findPhoneById(String id) {
-        return graphNeo4j.read("MATCH (p:Phone {id: $id})" +
-                                     "RETURN p.id AS id, p.brand AS brand, p.name AS name, p.picture " +
-                        "AS picture, p.releaseYear AS releaseYear",
-                parameters("id", id));
+        try {
+            return graphNeo4j.read("MATCH (p:Phone {id: $id})" +
+                            "RETURN p.id AS id, p.brand AS brand, p.name AS name, p.picture " +
+                            "AS picture, p.releaseYear AS releaseYear",
+                    parameters("id", id));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public boolean updatePhone(String id, String brand, String name, String picture, int releaseYear) {
+    public boolean updatePhone(String id, String brand, String picture, int releaseYear) {
         boolean result = true;
         try {
             graphNeo4j.write("MATCH (p:Phone {id: $id}) " +
-                            "SET p.brand = $brand, p.name = $name, p.picture = $picture, p.releaseYear = $releaseYear " +
+                            "SET p.brand = $brand, p.picture = $picture, p.releaseYear = $releaseYear " +
                             "RETURN p.id AS id, p.brand AS brand, p.name AS name, p.picture AS picture, " +
                             "p.releaseYear AS releaseYear",
-                    parameters("id", id, "brand", brand, "name", name, "picture", picture,
+                    parameters("id", id, "brand", brand, "picture", picture,
                             "releaseYear", releaseYear));
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -66,7 +71,31 @@ public class PhoneNeo4j{
             graphNeo4j.write("MATCH (p:Phone {id: $id}) DETACH DELETE p",
                     parameters("id", id));
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
+            result = false;
+        }
+        return result;
+    }
+
+    public boolean deletePhoneOnly(String id) {
+        boolean result = true;
+        try {
+            graphNeo4j.write("MATCH (p:Phone {id: $id}) DELETE p",
+                    parameters("id", id));
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = false;
+        }
+        return result;
+    }
+
+    public boolean deletePhoneRelationships(String id) {
+        boolean result = true;
+        try {
+            graphNeo4j.write("MATCH (p:Phone {id: $id})<-[r:ADDS]-() delete r",
+                    parameters("id", id));
+        } catch (Exception e) {
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -80,7 +109,7 @@ public class PhoneNeo4j{
                     "ORDER BY numPhones DESC " +
                     "LIMIT 10");
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -95,7 +124,7 @@ public class PhoneNeo4j{
                     "RETURN DISTINCT newPhone " +
                     "LIMIT 9", parameters("id",id));
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -114,7 +143,7 @@ public class PhoneNeo4j{
                     "RETURN DISTINCT newPhone " +
                     "LIMIT 9", parameters("id",id));
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return result;
     }

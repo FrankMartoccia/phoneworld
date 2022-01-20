@@ -116,8 +116,8 @@ public class TestReviewMongo {
     }
 
     @Test
-    public void testDeleteReviewsByUsername() {
-        reviewMongo.deleteReviewsByUsername("user1");
+    public void testDeleteReviewByUsername() {
+        reviewMongo.deleteReviewByUsername("user1");
         List<Review> reviews = reviewMongo.getReviewMongo().findAll();
         assertEquals(2, reviews.size());
     }

@@ -3,6 +3,8 @@ package it.unipi.dii.lsmsdb.phoneworld.services;
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.model.Admin;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.ReviewMongo;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.UserMongo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,10 @@ public class ServiceUser {
 
     @Autowired
     private UserMongo userMongo;
+    @Autowired
+    private ReviewMongo reviewMongo;
+    @Autowired
+    private PhoneMongo phoneMongo;
 
     private final static Logger logger = LoggerFactory.getLogger(ServiceUser.class);
 
@@ -93,6 +99,39 @@ public class ServiceUser {
             return false;
         }
         return result;
+    }
+
+    public boolean deleteUser(User user) {
+        String username = user.getUsername();
+        String userId = user.getId();
+        try {
+            if (!userMongo.deleteUser(user)) {
+                logger.error("Error in deleting the user from the user collection");
+                return false;
+            }
+            if (!App.getInstance().getUserNeo4j().deleteUserAddsRelationships(userId)) {
+                logger.error("Error in deleting the user's add relationships");
+                return false;
+            }
+            if (!App.getInstance().getUserNeo4j().deleteUserFollowsRelationships(userId)) {
+                logger.error("Error in deleting the user's follow relationships");
+                return false;
+            }
+            if (!App.getInstance().getUserNeo4j().deleteUserOnly(userId)) {
+                logger.error("Error in deleting the user from neo4j");
+                return false;
+            }
+            if (!reviewMongo.updateReviewsOldUser(username)) {
+                logger.error("Error in removing the username from the reviews collection");
+                return false;
+            }
+            if (!phoneMongo.updatePhoneReviewsOldUser(username)) {
+                logger.error("Error in removing the username from the reviews in phones");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
 }

@@ -153,6 +153,8 @@ public class ControllerViewDetailsUser implements Initializable {
             stageManager.showInfoMessage("ERROR", "Error in updating the review for this phone!");
             return;
         }
+        stageManager.closeStage(this.buttonDeleteReview);
+        stageManager.showWindow(FxmlView.DETAILS_USER);
         stageManager.showInfoMessage("INFO", "Review deleted correctly.");
     }
 
@@ -169,6 +171,7 @@ public class ControllerViewDetailsUser implements Initializable {
         App.getInstance().getModelBean().putBean(Constants.IS_UPDATE_REVIEW, true);
         App.getInstance().getModelBean().putBean(Constants.SELECTED_REVIEW, selectedReview);
         stageManager.showWindow(FxmlView.REVIEW);
+        stageManager.closeStage(this.buttonUpdateReview);
     }
 
     @FXML

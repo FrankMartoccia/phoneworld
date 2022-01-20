@@ -46,6 +46,7 @@ public class ControllerViewReview implements Initializable {
     @FXML
     void onClickCancel(ActionEvent event) {
         stageManager.closeStage(this.buttonCancel);
+        stageManager.showWindow(FxmlView.DETAILS_PHONES);
     }
 
     @FXML

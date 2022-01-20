@@ -409,8 +409,6 @@ public class ControllerViewRegisteredUser implements Initializable {
             }
         } else {
             user = (User) this.users.get((18*counterPages) + imageIndex);
-            App.getInstance().getModelBean().putBean(Constants.SELECTED_USER, user);
-            stageManager.showWindow(FxmlView.DETAILS_USER);
         }
         App.getInstance().getModelBean().putBean(Constants.SELECTED_USER, user);
         stageManager.showWindow(FxmlView.DETAILS_USER);
@@ -433,8 +431,6 @@ public class ControllerViewRegisteredUser implements Initializable {
             }
         } else {
             phone = this.phones.get((18*counterPages)+imageIndex);
-            App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, phone);
-            stageManager.showWindow(FxmlView.DETAILS_PHONES);
         }
         App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, phone);
         stageManager.showWindow(FxmlView.DETAILS_PHONES);

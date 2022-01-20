@@ -36,9 +36,30 @@ public class ServiceReview {
             return false;
         }
         String reviewId = this.getReviewId(review);
-        review.setId(reviewId);
-        phone.addReview(review);
-        user.addReview(review);
+        int rating = review.getRating();
+        String title = review.getTitle();
+        String body = review.getBody();
+        String phoneName = review.getPhoneName();
+        String username = review.getUsername();
+        if (!addReviewToUser(rating, title, body, phoneName, reviewId, user, review)) {
+            logger.error("Error in adding the review to the collection of users");
+            return false;
+        }
+        if (!addReviewToPhone(rating, title, body, username, reviewId, phone, review)) {
+            logger.error("Error in adding the review to the collection of phones");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean addReviewToUser(int rating, String title, String body, String phoneName, String reviewId,
+                                    User user, Review review) {
+        Review reviewUser = new Review.ReviewBuilder(rating, new Date(), title, body).
+                phoneName(phoneName).id(reviewId).build();
+        if (user.getReviews().size() == 50) {
+            user.getReviews().remove(user.getReviews().size() - 1);
+        }
+        user.addReview(reviewUser);
         if (!userMongo.updateUser(user.getId(), user, "user")) {
             logger.error("Error in adding the review to the collection of users");
             if (!reviewMongo.deleteReview(review)) {
@@ -46,6 +67,17 @@ public class ServiceReview {
             }
             return false;
         }
+        return true;
+    }
+
+    public boolean addReviewToPhone(int rating, String title, String body, String username, String reviewId,
+                                    Phone phone, Review review) {
+        Review reviewPhone = new Review.ReviewBuilder(rating, new Date(), title, body).
+                username(username).id(reviewId).build();
+        if (phone.getReviews().size() == 50) {
+            phone.getReviews().remove(phone.getReviews().size() - 1);
+        }
+        phone.addReview(reviewPhone);
         if (!phoneMongo.updatePhone(phone.getId(), phone))  {
             logger.error("Error in adding the review to the collection of phones");
             if (!reviewMongo.deleteReview(review)) {
@@ -89,42 +121,28 @@ public class ServiceReview {
             return null;
        }
         App.getInstance().getModelBean().putBean(Constants.IS_EMBEDDED, isEmbedded);
-        App.getInstance().getModelBean().putBean(Constants.SELECTED_INDEX, index);
         return review;
     }
 
     public boolean updateReview(Review selectedReview, User user, int rating, Date dateOfReview,
                                 String title, String body) {
         try {
-            if ((boolean) App.getInstance().getModelBean().getBean(Constants.IS_EMBEDDED)) {
-                int index = (int) App.getInstance().getModelBean().getBean(Constants.SELECTED_INDEX);
-                user.getReviews().get(index).setRating(rating);
-                user.getReviews().get(index).setDateOfReview(dateOfReview);
-                user.getReviews().get(index).setBody(body);
-                user.getReviews().get(index).setTitle(title);
-                if (!userMongo.updateUser(user.getId(), user, "user")) {
-                    return false;
-                }
-            }
+            String reviewId = selectedReview.getId();
+            String username = user.getUsername();
+            String phoneName = selectedReview.getPhoneName();
             Review newReview = new Review.ReviewBuilder(rating, dateOfReview, title, body).
-                    username(selectedReview.getUsername()).phoneName(selectedReview.getPhoneName()).build();
-            if (!reviewMongo.updateReview(selectedReview.getId(), newReview)) {
+                    username(username).phoneName(phoneName).build();
+            if (!reviewMongo.updateReview(reviewId, newReview)) {
+                logger.error("Error in updating the review in the collection of reviews");
                 return false;
             }
-            Optional<Phone> phoneResult = phoneMongo.findPhoneByName(selectedReview.getPhoneName());
-            if (phoneResult.isPresent()) {
-                Phone phone = phoneResult.get();
-                for (Review review : phone.getReviews()) {
-                    if (review.getId().equals(selectedReview.getId())) {
-                        review.setTitle(title);
-                        review.setDateOfReview(dateOfReview);
-                        review.setBody(body);
-                        review.setRating(rating);
-                        if (!phoneMongo.updatePhone(phone.getId(), phone)) {
-                            return false;
-                        }
-                    }
-                }
+            if (!updateReviewInUser(rating, title, body, phoneName, reviewId, user)) {
+                logger.error("Error in updating the review in the collection of users");
+                return false;
+            }
+            if (!updateReviewInPhone(rating, title, body, username, reviewId, phoneName)) {
+                logger.error("Error in updating the review in the collection of phones");
+                return false;
             }
         } catch (Exception e) {
             logger.error("Exception occurred: " + e.getLocalizedMessage());
@@ -133,42 +151,45 @@ public class ServiceReview {
         return true;
     }
 
+    private boolean updateReviewInPhone(int rating, String title ,String body, String username,
+                                        String reviewId, String phoneName) {
+        Optional<Phone> phoneResult = phoneMongo.findPhoneByName(phoneName);
+        if (phoneResult.isPresent()) {
+            Review newReview = new Review.ReviewBuilder(rating, new Date(), title, body).
+                    username(username).id(reviewId).build();
+            Phone phone = phoneResult.get();
+            if (phone.deleteReview(reviewId)) {
+                phone.addReview(newReview);
+            }
+            return phoneMongo.updatePhone(phone.getId(), phone);
+        }
+        return true;
+    }
+
+    public boolean updateReviewInUser(int rating, String title ,String body, String phoneName,
+                                      String reviewId, User user) {
+        if ((boolean) App.getInstance().getModelBean().getBean(Constants.IS_EMBEDDED)) {
+            Review newReview = new Review.ReviewBuilder(rating, new Date(), title, body).
+                    phoneName(phoneName).id(reviewId).build();
+            if (user.deleteReview(reviewId)) {
+                user.addReview(newReview);
+            }
+            return userMongo.updateUser(user.getId(), user, "user");
+        }
+        return true;
+    }
+
     public boolean deleteReview(Review selectedReview, Phone phone, User user) {
         try {
             boolean isEmbedded = (boolean) App.getInstance().getModelBean().getBean(Constants.IS_EMBEDDED);
             String reviewId = selectedReview.getId();
-            if (phone == null) {
-                Optional<Phone> phoneResult = phoneMongo.findPhoneByName(selectedReview.getPhoneName());
-                if (phoneResult.isPresent()) {
-                    Phone newPhone = phoneResult.get();
-                    if (newPhone.deleteReview(reviewId)) {
-                        if (!phoneMongo.updatePhone(newPhone.getId(), newPhone)) {
-                            return false;
-                        }
-                    }
-                }
-            } else if (isEmbedded) {
-                if (phone.deleteReview(reviewId)) {
-                    if (!phoneMongo.updatePhone(phone.getId(), phone)) {
-                        return false;
-                    }
-                }
+            if (!deleteReviewInPhone(phone, selectedReview, reviewId, isEmbedded)) {
+                logger.error("Error in deleting the review from the collection of phones");
+                return false;
             }
-            if (user == null) {
-                Optional<GenericUser> userResult = userMongo.findByUsername(selectedReview.getUsername());
-                if (userResult.isPresent()) {
-                    User newUser = (User) userResult.get();
-                    newUser.deleteReview(selectedReview.getId());
-                    if (!userMongo.updateUser(newUser.getId(), newUser, "user")) {
-                        return false;
-                    }
-                }
-            } else if (isEmbedded) {
-                if (user.deleteReview(reviewId)) {
-                    if (!userMongo.updateUser(user.getId(), user, "user")) {
-                        return false;
-                    }
-                }
+            if (!deleteReviewInUser(user, selectedReview, reviewId, isEmbedded)) {
+                logger.error("Error in deleting the review from the collection of users");
+                return false;
             }
             if (!reviewMongo.deleteReview(selectedReview)) {
                 return false;
@@ -179,4 +200,38 @@ public class ServiceReview {
         }
         return true;
     }
+
+    private boolean deleteReviewInUser(User user, Review selectedReview, String reviewId, boolean isEmbedded) {
+        if (user == null) {
+            Optional<GenericUser> userResult = userMongo.findByUsername(selectedReview.getUsername());
+            if (userResult.isPresent()) {
+                User newUser = (User) userResult.get();
+                newUser.deleteReview(selectedReview.getId());
+                return userMongo.updateUser(newUser.getId(), newUser, "user");
+            }
+        } else if (isEmbedded) {
+            if (user.deleteReview(reviewId)) {
+                return userMongo.updateUser(user.getId(), user, "user");
+            }
+        }
+        return true;
+    }
+
+    public boolean deleteReviewInPhone(Phone phone, Review selectedReview, String reviewId, boolean isEmbedded) {
+        if (phone == null) {
+            Optional<Phone> phoneResult = phoneMongo.findPhoneByName(selectedReview.getPhoneName());
+            if (phoneResult.isPresent()) {
+                Phone newPhone = phoneResult.get();
+                if (newPhone.deleteReview(reviewId)) {
+                    return phoneMongo.updatePhone(newPhone.getId(), newPhone);
+                }
+            }
+        } else if (isEmbedded) {
+            if (phone.deleteReview(reviewId)) {
+                return phoneMongo.updatePhone(phone.getId(), phone);
+            }
+        }
+        return true;
+    }
+
 }

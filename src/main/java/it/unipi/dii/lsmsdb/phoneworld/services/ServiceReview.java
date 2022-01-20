@@ -196,6 +196,7 @@ public class ServiceReview {
                 return false;
             }
             if (!reviewMongo.deleteReview(selectedReview)) {
+                logger.error("Error in deleting the review from the collection of reviews");
                 return false;
             }
         } catch (Exception e) {

@@ -13,11 +13,10 @@ public interface IReviewMongo extends MongoRepository<Review, String> {
     Optional<Review> findByUsernameAndPhoneName(String username, String phoneName);
     List<Review> findByUsername(String id);
     List<Review> findByPhoneName(String id);
-    List<Review> findByTitleContainingOrBodyContaining(String word, String word1);
+    List<Review> findByTitleContainingOrBodyContainingOrderByDateOfReviewDesc(String word, String word1);
+    void deleteReviewsByUsername(String id);
     void deleteReviewByPhoneName(String id);
     void deleteReviewByUsername(String id);
-
-//    void deleteReviewByUsernameAndPhoneName(String username, String phoneName);
 
 
 }

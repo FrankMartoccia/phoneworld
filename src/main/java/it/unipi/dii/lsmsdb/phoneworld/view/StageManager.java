@@ -187,10 +187,10 @@ public class StageManager {
         return stringBuilder.toString();
     }
 
-    public String generateStringBuilderError(String firstName, String lastName, String gender, String country,
-                                              String city, String streetName, int streetNumber, int month,
-                                              int day, String email, String username, String password,
-                                              String repeatedPassword, boolean update) {
+    public String generateStringBuilderErrorUser(String firstName, String lastName, String gender, String country,
+                                                 String city, String streetName, int streetNumber, int month,
+                                                 int day, String email, String username, String password,
+                                                 String repeatedPassword, boolean update) {
         StringBuilder sbError = new StringBuilder();
         if (firstName.isEmpty()) sbError.append("First_Name ");
         if (lastName.isEmpty()) sbError.append("Last_Name ");
@@ -210,6 +210,29 @@ public class StageManager {
         return sbError.toString();
     }
 
+    public String generateStringBuilderErrorPhone(String name, String brand, String picture, String body, String os,
+                                                 String storage, String displaySize, String displayResolution,
+                                                  String cameraPixels, String videoPixels, String ram, String chipset,
+                                                  String batterySize, String batteryType, boolean isUpdate) {
+        StringBuilder sbError = new StringBuilder();
+        if (brand.isEmpty()) sbError.append("Brand ");
+        if (picture.isEmpty()) sbError.append("Picture ");
+        if (body.isEmpty()) sbError.append("Body ");
+        if (os.isEmpty()) sbError.append("OS ");
+        if (storage.isEmpty()) sbError.append("Storage ");
+        if (displaySize.isEmpty()) sbError.append("Display_Size ");
+        if (displayResolution.isEmpty()) sbError.append("Display_Resolution ");
+        if (cameraPixels.isEmpty()) sbError.append("Camera_Pixels ");
+        if (videoPixels.isEmpty()) sbError.append("Video_Pixels ");
+        if (ram.isEmpty()) sbError.append("RAM ");
+        if (chipset.isEmpty()) sbError.append("Chipset ");
+        if (batterySize.isEmpty()) sbError.append("Battery_Size ");
+        if (batteryType.isEmpty()) sbError.append("Battery_Type ");
+        if (!isUpdate) {
+            if (name.isEmpty()) sbError.append("Name ");
+        }
+        return sbError.toString();
+    }
 
 
 }

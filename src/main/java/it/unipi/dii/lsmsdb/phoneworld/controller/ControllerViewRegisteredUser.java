@@ -84,6 +84,10 @@ public class ControllerViewRegisteredUser implements Initializable {
     @FXML private Separator separator;
     @FXML private MenuItem menuItemSuggestedPhones;
     @FXML private MenuItem menuItemSuggestedUsers;
+    @FXML private MenuItem menuItemMostFollowedUsers;
+    @FXML private MenuItem menuItemMostActiveUsers;
+    @FXML private MenuItem menuItemYoungerCountriesByUsers;
+    @FXML private MenuItem menuItemTopCountriesByUsers;
     @FXML private ComboBox<String> comboBoxFilter;
 
     private List<ImageView> imageViews = new ArrayList<>();
@@ -155,6 +159,9 @@ public class ControllerViewRegisteredUser implements Initializable {
             this.menuItemSuggestedPhones.setVisible(false);
             return;
         }
+        this.menuItemMostActiveUsers.setVisible(false);
+        this.menuItemTopCountriesByUsers.setVisible(false);
+        this.menuItemYoungerCountriesByUsers.setVisible(false);
         this.separator.setVisible(true);
         if (isUser) {
             this.labelDescription1.setText("USERS FOLLOWED BY");
@@ -452,5 +459,25 @@ public class ControllerViewRegisteredUser implements Initializable {
 
     public void actionAddAdmin(ActionEvent actionEvent) {
         stageManager.showWindow(FxmlView.ADD_ADMIN);
+    }
+
+    public void onMostFollowedUsers(ActionEvent actionEvent) {
+        App.getInstance().getModelBean().putBean(Constants.SELECTED_STATISTIC, "Most Followed Users:");
+        stageManager.showWindow(FxmlView.STATISTISCS);
+    }
+
+    public void onMostActiveUsers(ActionEvent actionEvent) {
+        App.getInstance().getModelBean().putBean(Constants.SELECTED_STATISTIC, "Most Active Users:");
+        stageManager.showWindow(FxmlView.STATISTISCS);
+    }
+
+    public void onYoungerCountriesByUsers(ActionEvent actionEvent) {
+        App.getInstance().getModelBean().putBean(Constants.SELECTED_STATISTIC, "Younger Countries By Users:");
+        stageManager.showWindow(FxmlView.STATISTISCS);
+    }
+
+    public void onTopCountriesByUsers(ActionEvent actionEvent) {
+        App.getInstance().getModelBean().putBean(Constants.SELECTED_STATISTIC, "Top Countries By Users:");
+        stageManager.showWindow(FxmlView.STATISTISCS);
     }
 }

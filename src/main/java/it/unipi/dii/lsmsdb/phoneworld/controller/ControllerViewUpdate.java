@@ -77,7 +77,7 @@ public class ControllerViewUpdate implements Initializable {
         String email = this.textFieldEmail.getText();
         String password = this.textFieldPassword.getText();
         String repeatedPassword = this.textFieldRepeatPassword.getText();
-        String errors = stageManager.generateStringBuilderError(firstName, lastName, gender, country, city,
+        String errors = stageManager.generateStringBuilderErrorUser(firstName, lastName, gender, country, city,
                 streetName, streetNumber, month, day, email, "", password, repeatedPassword, true);
         if (!errors.isEmpty()) {
             stageManager.showInfoMessage("ERROR", "You have to insert the following fields: "

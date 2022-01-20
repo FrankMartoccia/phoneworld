@@ -105,18 +105,37 @@ public class Review {
         } else {
             sb.append("Phone: ").append(this.phoneName).append("\n");
         }
-        sb.append("Title: ").append(this.title).append("\n");
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(this.dateOfReview);
-        sb.append("Date: ").append(calendar.get(Calendar.YEAR)).append("-").append((calendar.get(Calendar.MONTH))+1).
-                append("-").append(calendar.get(Calendar.DAY_OF_MONTH)).append("\n");
-        sb.append("Vote: ").append(this.rating).append("\n");
+        this.setFields(sb);
         StringBuilder sBody = new StringBuilder(this.body);
         int i = 0;
         while ((i = sBody.indexOf(" ", i + 125)) != -1) {
             sBody.replace(i, i+1, "\n");
         }
         sb.append("Body: ").append(sBody);
+        return sb.toString();
+    }
+
+    public String toStringFind() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Username: ").append(this.username).append("\n");
+        sb.append("Phone: ").append(this.phoneName).append("\n");
+        this.setFields(sb);
+        StringBuilder sBody = new StringBuilder(this.body);
+        int i = 0;
+        while ((i = sBody.indexOf(" ", i + 80)) != -1) {
+            sBody.replace(i, i+1, "\n");
+        }
+        sb.append("Body: ").append(sBody);
+        return sb.toString();
+    }
+
+    private String setFields(StringBuilder sb) {
+        sb.append("Title: ").append(this.title).append("\n");
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(this.dateOfReview);
+        sb.append("Date: ").append(calendar.get(Calendar.YEAR)).append("-").append((calendar.get(Calendar.MONTH))+1).
+                append("-").append(calendar.get(Calendar.DAY_OF_MONTH)).append("\n");
+        sb.append("Vote: ").append(this.rating).append("\n");
         return sb.toString();
     }
 

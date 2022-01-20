@@ -148,9 +148,9 @@ public class ReviewMongo {
         List<Review> reviews = new ArrayList<>();
         try {
             if (word.isEmpty()) {
-                reviews.addAll(reviewMongo.findAll());
+                reviews.addAll(reviewMongo.findAll(Sort.by(Sort.Direction.DESC, "dateOfReview")));
             } else {
-                reviews.addAll(reviewMongo.findByTitleContainingOrBodyContaining(word, word));
+                reviews.addAll(reviewMongo.findByTitleContainingOrBodyContainingOrderByDateOfReviewDesc(word, word));
             }
         } catch (Exception e) {
             e.printStackTrace();

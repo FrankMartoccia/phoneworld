@@ -40,15 +40,20 @@
                         <Insets bottom="10.0" left="30.0" right="30.0" />
                      </VBox.margin>
                      <children>
-                        <TextField fx:id="textFieldTitle" prefHeight="52.0" prefWidth="190.0" promptText="Word">
+                        <TextField fx:id="textFieldWord" onKeyPressed="#onClickEnter" prefHeight="52.0" prefWidth="190.0" promptText="Word">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin></TextField>
+                        <Button fx:id="buttonFind" mnemonicParsing="false" onAction="#onClickFind" prefHeight="52.0" prefWidth="180.0" text="FIND">
+                           <HBox.margin>
+                              <Insets left="270.0" />
+                           </HBox.margin>
+                        </Button>
                      </children>
                   </HBox>
-                  <TableView prefHeight="365.0" prefWidth="700.0">
+                  <TableView fx:id="tableViewReviews" prefHeight="365.0" prefWidth="700.0">
                     <columns>
-                      <TableColumn prefWidth="639.0" text="REVIEWS" />
+                      <TableColumn fx:id="tableColumnReviews" prefWidth="639.0" text="REVIEWS" />
                     </columns>
                      <VBox.margin>
                         <Insets bottom="20.0" left="30.0" right="30.0" />

@@ -30,6 +30,10 @@
                         <MenuItem fx:id="menuItemSuggestedPhones" mnemonicParsing="false" onAction="#onSuggestedPhones" text="Show suggested phones" />
                         <MenuItem fx:id="menuItemTopRatedBrands" mnemonicParsing="false" onAction="#onTopRatedBrands" text="Find Top Rated Brands" />
                         <MenuItem fx:id="menuItemTopPhonesByRating" mnemonicParsing="false" onAction="#onTopPhonesByRating" text="Find Top Phones By Rating" />
+                        <MenuItem fx:id="menuItemMostFollowedUsers" mnemonicParsing="false" onAction="#onMostFollowedUsers" text="Find Most Followed Users" />
+                        <MenuItem fx:id="menuItemMostActiveUsers" mnemonicParsing="false" onAction="#onMostActiveUsers" text="Find Most Active Users" />
+                        <MenuItem fx:id="menuItemYoungerCountriesByUsers" mnemonicParsing="false" onAction="#onYoungerCountriesByUsers" text="Find Younger Countries By Users" />
+                        <MenuItem fx:id="menuItemTopCountriesByUsers" mnemonicParsing="false" onAction="#onTopCountriesByUsers" text="Find Top Countries By Users" />
                         <MenuItem fx:id="menuItemClose" mnemonicParsing="false" onAction="#onCloseApp" text="Close" />
                   </items>
                 </Menu>

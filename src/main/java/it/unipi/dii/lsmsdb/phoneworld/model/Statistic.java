@@ -7,36 +7,36 @@ import javafx.beans.property.SimpleStringProperty;
 public class Statistic {
 
     private SimpleStringProperty name;
-    private SimpleIntegerProperty reviews;
-    private SimpleDoubleProperty rating;
+    private SimpleIntegerProperty param2;
+    private SimpleDoubleProperty param3;
 
-    public Statistic(String name, int reviews, double rating) {
+    public Statistic(String name, int param2, Double param3) {
         this.name = new SimpleStringProperty(name);
-        this.reviews = new SimpleIntegerProperty(reviews);
-        this.rating = new SimpleDoubleProperty(rating);
+        this.param2 = new SimpleIntegerProperty(param2);
+        this.param3 = new SimpleDoubleProperty(param3);
     }
 
     public String getName() {
         return name.get();
     }
 
-    public int getReviews() {
-        return reviews.get();
+    public int getParam2() {
+        return param2.get();
     }
 
-    public double getRating() {
-        return rating.get();
+    public double getParam3() {
+        return param3.get();
     }
 
     public void setName(String name) {
         this.name = new SimpleStringProperty(name);
     }
 
-    public void setReviews(int reviews) {
-        this.reviews = new SimpleIntegerProperty(reviews);
+    public void setParam2(int param2) {
+        this.param2 = new SimpleIntegerProperty(param2);
     }
 
-    public void setRating(double rating) {
-        this.rating = new SimpleDoubleProperty(rating);
+    public void setParam3(double param3) {
+        this.param3 = new SimpleDoubleProperty(param3);
     }
 }

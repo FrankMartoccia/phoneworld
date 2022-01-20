@@ -2,13 +2,14 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
+import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.Statistic;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.ReviewMongo;
+import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.UserMongo;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,12 +18,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.bson.Document;
+import org.neo4j.driver.Record;
+import org.neo4j.driver.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import java.awt.event.ItemEvent;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +50,9 @@ public class ControllerViewStatistics implements Initializable {
     @Autowired
     private ReviewMongo reviewMongo;
 
+    @Autowired
+    private UserMongo userMongo;
+
     private final ObservableList<Statistic> listStatistics = FXCollections.observableArrayList();
 
     private final StageManager stageManager;
@@ -66,21 +72,17 @@ public class ControllerViewStatistics implements Initializable {
         this.spinnerFilter.setValueFactory(valueFactoryFilter);
         this.spinnerFilter.getValueFactory().setValue(10);
         this.columnName.setCellValueFactory(new PropertyValueFactory<>("Name"));
-        this.columnParameter2.setCellValueFactory(new PropertyValueFactory<>("Reviews"));
-        this.columnParameter3.setCellValueFactory(new PropertyValueFactory<>("Rating"));
-//        tableViewStatistics.setFixedCellSize(25);
-//        tableViewStatistics.prefHeightProperty().bind(tableViewStatistics.fixedCellSizeProperty().
-//                multiply(Bindings.size(tableViewStatistics.getItems()).add(1.10)));
-//        tableViewStatistics.minHeightProperty().bind(tableViewStatistics.prefHeightProperty());
-//        tableViewStatistics.maxHeightProperty().bind(tableViewStatistics.prefHeightProperty());
+        this.columnParameter2.setCellValueFactory(new PropertyValueFactory<>("Param2"));
+        this.columnParameter3.setCellValueFactory(new PropertyValueFactory<>("Param3"));
         this.showStatistics(statisticName);
     }
 
     private void showStatistics(String statisticName) {
-        List<Document> statistics = new ArrayList<>();
-        if (statisticName.equalsIgnoreCase("Top Rated Brands:")) {
+        if (statisticName.equalsIgnoreCase("Top Rated Brands:") ||
+                statisticName.equalsIgnoreCase("Younger Countries By Users:")) {
+            List<Document> statistics = new ArrayList<>();
             this.buttonDetails.setVisible(false);
-            this.columnName.setText("BRANDS");
+            this.columnName.setText("BRAND");
             this.columnParameter2.setText("# REVIEWS");
             this.columnParameter3.setText("RATING");
             Document result = phoneMongo.findTopRatedBrands(20, this.spinnerFilter.getValue());
@@ -90,10 +92,11 @@ public class ControllerViewStatistics implements Initializable {
                 return;
             }
             statistics = (List<Document>) result.get("results");
-            this.setTable(statistics, "brand", "reviews", "rating");
+            this.setTableRating(statistics, "brand", "reviews", "rating");
         }
         if (statisticName.equalsIgnoreCase("Top Phones By Rating:")) {
-            this.columnName.setText("PHONES");
+            List<Document> statistics = new ArrayList<>();
+            this.columnName.setText("PHONE");
             this.columnParameter2.setText("# REVIEWS");
             this.columnParameter3.setText("RATING");
             Document result = reviewMongo.findTopPhonesByRating(20, this.spinnerFilter.getValue());
@@ -102,20 +105,90 @@ public class ControllerViewStatistics implements Initializable {
                 return;
             }
             statistics = (List<Document>) result.get("results");
-            this.setTable(statistics, "phoneName", "reviews", "rating");
+            this.setTableRating(statistics, "phoneName", "reviews", "rating");
+        }
+        if (statisticName.equalsIgnoreCase("Most Followed Users:")) {
+            this.columnName.setText("USERNAME");
+            this.columnParameter2.setText("# FOLLOWERS");
+            List<Record> result = App.getInstance().getUserNeo4j().findMostFollowedUsers();
+            if (result.isEmpty()) {
+                stageManager.showInfoMessage("ERROR", "Statistic not found!");
+                return;
+            }
+            setTableFollowers(result, "username", "followers");
+        }
+        if (statisticName.equalsIgnoreCase("Most Active Users:")) {
+            List<Document> statistics = new ArrayList<>();
+            this.columnName.setText("USERNAME");
+            this.columnParameter2.setText("# FOLLOWERS");
+            this.columnParameter3.setText("RATING");
+            Document result = reviewMongo.findMostActiveUsers(this.spinnerFilter.getValue());
+            if (result.isEmpty()) {
+                stageManager.showInfoMessage("ERROR", "Statistic not found!");
+                return;
+            }
+            statistics = (List<Document>) result.get("results");
+            this.setTableRating(statistics, "username", "reviews", "rating");
+        }
+        if (statisticName.equalsIgnoreCase("Younger Countries By Users:")) {
+            this.buttonDetails.setVisible(false);
+            List<Document> statistics = new ArrayList<>();
+            this.columnName.setText("COUNTRY");
+            this.columnParameter3.setText("AGE");
+            this.tableViewStatistics.getColumns().get(1).setVisible(false);
+            Document result = userMongo.findYoungerCountriesByUsers(this.spinnerFilter.getValue());
+            if (result.isEmpty()) {
+                stageManager.showInfoMessage("ERROR", "Statistic not found!");
+                return;
+            }
+            statistics = (List<Document>) result.get("results");
+            this.setTableRating(statistics, "country", "", "age");
+        }
+        if (statisticName.equalsIgnoreCase("Top Countries By Users:")) {
+            this.buttonDetails.setVisible(false);
+            List<Document> statistics = new ArrayList<>();
+            this.columnName.setText("COUNTRY");
+            this.columnParameter2.setText("# USERS");
+            this.tableViewStatistics.getColumns().get(2).setVisible(false);
+            Document result = userMongo.findTopCountriesByUsers(this.spinnerFilter.getValue());
+            if (result.isEmpty()) {
+                stageManager.showInfoMessage("ERROR", "Statistic not found!");
+                return;
+            }
+            statistics = (List<Document>) result.get("results");
+            this.setTableRating(statistics, "country", "users", "");
         }
     }
 
-    private void setTable(List<Document> statistics, String parameter1, String parameter2, String parameter3) {
+    private void setTableFollowers(List<Record> statistics, String parameter1, String parameter2) {
+        this.tableViewStatistics.getColumns().get(2).setVisible(false);
         this.listStatistics.clear();
-        for (int i = 0;i < statistics.size();i++) {
-            String name = (String) statistics.get(i).get(parameter1);
-            int reviews = (int) statistics.get(i).get(parameter2);
-            double rating = (double) statistics.get(i).get(parameter3);
-            System.out.println(statistics.get(i).get("reviews"));
-            System.out.println(statistics.get(i).get("rating"));
-            double roundRating = Math.round(rating * 10.0) / 10.0;
-            this.listStatistics.add(new Statistic(name, reviews, roundRating));
+        for (Record statistic : statistics) {
+            String username = statistic.get(parameter1).asString();
+            int followers = statistic.get(parameter2).asInt();
+            System.out.println(username);
+            System.out.println(followers);
+            this.listStatistics.add(new Statistic(username, followers, (double) 0));
+        }
+        this.tableViewStatistics.setItems(this.listStatistics);
+    }
+
+    private void setTableRating(List<Document> statistics, String parameter1, String parameter2, String parameter3) {
+        this.listStatistics.clear();
+        for (Document statistic : statistics) {
+            String name = (String) statistic.get(parameter1);
+            int param2 = 0;
+            if (!parameter2.equalsIgnoreCase("")) {
+                param2 = (int) statistic.get(parameter2);
+            }
+            double param3 = 0;
+            if (!parameter3.equalsIgnoreCase("")) {
+                param3 = (double) statistic.get(parameter3);
+            }
+            double roundPar3 = Math.round(param3 * 10.0) / 10.0;
+            System.out.println(statistic.get("reviews"));
+            System.out.println(statistic.get("rating"));
+            this.listStatistics.add(new Statistic(name, param2, roundPar3));
         }
         this.tableViewStatistics.setItems(this.listStatistics);
     }
@@ -126,13 +199,28 @@ public class ControllerViewStatistics implements Initializable {
 
     @FXML
     void onClickDetails(ActionEvent event) {
-        String phoneNameComplete = String.valueOf(this.tableViewStatistics.getSelectionModel().getSelectedItems());
-        String phoneName = phoneNameComplete.substring(1, phoneNameComplete.length()-1);
-        if (phoneName.isEmpty()) {
-            stageManager.showInfoMessage("INFO", "You must select a phone");
+        TablePosition pos = tableViewStatistics.getSelectionModel().getSelectedCells().get(0);
+        int row = pos.getRow();
+        Statistic item = tableViewStatistics.getItems().get(row);
+        TableColumn col = pos.getTableColumn();
+        String name = (String) col.getCellObservableValue(item).getValue();
+        System.out.println(name);
+        if (name.isEmpty()) {
+            stageManager.showInfoMessage("INFO", "You must select a item");
             return;
         }
-        Optional<Phone> phone = phoneMongo.findPhoneByName(phoneName);
+        String statistic = (String) App.getInstance().getModelBean().getBean(Constants.SELECTED_STATISTIC);
+        if (statistic.equals("Most Followed Users:") || statistic.equals("Most Active Users:")) {
+            Optional<GenericUser> user = userMongo.findByUsername(name);
+            if (user.isEmpty()) {
+                stageManager.showInfoMessage("ERROR", "User not found!");
+                return;
+            }
+            App.getInstance().getModelBean().putBean(Constants.SELECTED_USER, user.get());
+            stageManager.showWindow(FxmlView.DETAILS_USER);
+            return;
+        }
+        Optional<Phone> phone = phoneMongo.findPhoneByName(name);
         if (phone.isEmpty()) {
             stageManager.showInfoMessage("ERROR", "Phone not found!");
             return;

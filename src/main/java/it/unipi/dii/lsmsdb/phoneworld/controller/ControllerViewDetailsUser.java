@@ -141,7 +141,7 @@ public class ControllerViewDetailsUser implements Initializable {
 
     @FXML
     void onClickDeleteReview(ActionEvent event) {
-        User user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        User user = (User) App.getInstance().getModelBean().getBean(Constants.SELECTED_USER);
         int tableIndex = this.tableReviews.getSelectionModel().getSelectedIndex();
         if (tableIndex == -1) {
             stageManager.showInfoMessage("ERROR", "You have to select a review.");
@@ -150,7 +150,7 @@ public class ControllerViewDetailsUser implements Initializable {
         Review selectedReview = serviceReview.getSelectedReview(counterPages, tableIndex, user,
                 null, reviews);
         if (!serviceReview.deleteReview(selectedReview, null, user)) {
-            stageManager.showInfoMessage("ERROR", "Error in updating the review for this phone!");
+            stageManager.showInfoMessage("ERROR", "Error in deleting the review for this phone!");
             return;
         }
         stageManager.closeStage(this.buttonDeleteReview);

@@ -28,7 +28,7 @@ public class ServiceReview {
     @Autowired
     private UserMongo userMongo;
 
-    private final static Logger logger = LoggerFactory.getLogger(ServiceUser.class);
+    private final static Logger logger = LoggerFactory.getLogger(ServiceReview.class);
 
     public boolean insertReview(Review review, Phone phone, User user) {
         if (!reviewMongo.addReview(review)) {
@@ -192,10 +192,12 @@ public class ServiceReview {
                 return false;
             }
             if (!reviewMongo.deleteReview(selectedReview)) {
+                logger.error("Error in deleting the review from the collection of reviews");
                 return false;
             }
         } catch (Exception ex) {
             logger.error("Exception occurred: " + ex.getLocalizedMessage());
+            ex.printStackTrace();
             return false;
         }
         return true;

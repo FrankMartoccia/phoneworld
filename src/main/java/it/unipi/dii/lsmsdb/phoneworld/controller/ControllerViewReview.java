@@ -51,7 +51,7 @@ public class ControllerViewReview implements Initializable {
 
     @FXML
     void onClickService(ActionEvent event) {
-        boolean isUpdate = (boolean) App.getInstance().getModelBean().getBean(Constants.IS_UPDATE_REVIEW);
+        boolean isUpdate = (boolean) App.getInstance().getModelBean().getBean(Constants.IS_UPDATE);
         User user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
         Phone phone = (Phone) App.getInstance().getModelBean().getBean(Constants.SELECTED_PHONE);
         String title = this.textFieldTitle.getText();
@@ -94,7 +94,7 @@ public class ControllerViewReview implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        boolean isUpdate = (boolean) App.getInstance().getModelBean().getBean(Constants.IS_UPDATE_REVIEW);
+        boolean isUpdate = (boolean) App.getInstance().getModelBean().getBean(Constants.IS_UPDATE);
         SpinnerValueFactory<Integer> valueFactoryRating = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,5);
         this.spinnerRating.setValueFactory(valueFactoryRating);
         if (!isUpdate) {

@@ -168,7 +168,7 @@ public class ControllerViewDetailsUser implements Initializable {
         }
         Review selectedReview = serviceReview.getSelectedReview(counterPages, tableIndex, user,
                 null, reviews);
-        App.getInstance().getModelBean().putBean(Constants.IS_UPDATE_REVIEW, true);
+        App.getInstance().getModelBean().putBean(Constants.IS_UPDATE, true);
         App.getInstance().getModelBean().putBean(Constants.SELECTED_REVIEW, selectedReview);
         stageManager.showWindow(FxmlView.REVIEW);
         stageManager.closeStage(this.buttonUpdateReview);

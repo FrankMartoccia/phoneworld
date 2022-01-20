@@ -78,7 +78,7 @@ public class ControllerViewSignUp implements Initializable {
         String username = this.textFieldUsername.getText();
         String password = this.textFieldPassword.getText();
         String repeatedPassword = this.textFieldRepeatPassword.getText();
-        String sbError = stageManager.generateStringBuilderError(firstName,lastName,gender,country,city,
+        String sbError = stageManager.generateStringBuilderErrorUser(firstName,lastName,gender,country,city,
                 streetName, streetNumber, month, day, email,username,password,repeatedPassword, false);
         if (!sbError.isEmpty()) {
             stageManager.showInfoMessage("ERROR", "You have to insert the following fields: "

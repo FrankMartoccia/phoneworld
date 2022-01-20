@@ -125,7 +125,7 @@ public class ControllerViewDetailsPhone implements Initializable {
             stageManager.showInfoMessage("INFO", "You already reviewed this phone");
             return;
         }
-        App.getInstance().getModelBean().putBean(Constants.IS_UPDATE_REVIEW, false);
+        App.getInstance().getModelBean().putBean(Constants.IS_UPDATE, false);
         stageManager.closeStage(this.buttonAddReview);
         stageManager.showWindow(FxmlView.REVIEW);
     }

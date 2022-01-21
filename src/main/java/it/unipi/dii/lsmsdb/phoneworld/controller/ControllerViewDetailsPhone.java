@@ -2,12 +2,10 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
-import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
-import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
-import it.unipi.dii.lsmsdb.phoneworld.model.Review;
-import it.unipi.dii.lsmsdb.phoneworld.model.User;
+import it.unipi.dii.lsmsdb.phoneworld.model.*;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.ReviewMongo;
 import it.unipi.dii.lsmsdb.phoneworld.services.ServicePhone;
+import it.unipi.dii.lsmsdb.phoneworld.services.ServiceReview;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -72,6 +70,8 @@ public class ControllerViewDetailsPhone implements Initializable {
     private ReviewMongo reviewMongo;
     @Autowired
     private ServicePhone servicePhone;
+    @Autowired
+    private ServiceReview serviceReview;
 
     @Autowired @Lazy
     public ControllerViewDetailsPhone(StageManager stageManager) {
@@ -121,8 +121,28 @@ public class ControllerViewDetailsPhone implements Initializable {
     }
 
     public void onClickAddReview(ActionEvent actionEvent) {
-        if (App.getInstance().getModelBean().getBean(Constants.CURRENT_USER) == null) {
+        user = (GenericUser) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        if (user== null) {
             stageManager.showWindow(FxmlView.LOGIN);
+            return;
+        }
+        if (user.get_class().equals("admin")) {
+            phone = (Phone) App.getInstance().getModelBean().getBean(Constants.SELECTED_PHONE);
+            user = (Admin) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+            int tableIndex = this.tableReviews.getSelectionModel().getSelectedIndex();
+            if (tableIndex == -1) {
+                stageManager.showInfoMessage("ERROR", "You have to select a review.");
+                return;
+            }
+            Review selectedReview = serviceReview.getSelectedReview(counterPages, tableIndex, null,
+                    phone, reviews);
+            if (!serviceReview.deleteReview(selectedReview, phone, null)) {
+                stageManager.showInfoMessage("ERROR", "Error in deleting the review for this phone!");
+                return;
+            }
+            stageManager.closeStage(this.buttonAddReview);
+            stageManager.showWindow(FxmlView.DETAILS_PHONES);
+            stageManager.showInfoMessage("INFO", "Review deleted correctly.");
             return;
         }
         user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);

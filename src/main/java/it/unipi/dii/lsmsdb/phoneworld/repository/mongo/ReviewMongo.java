@@ -2,14 +2,13 @@ package it.unipi.dii.lsmsdb.phoneworld.repository.mongo;
 
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
 import org.bson.Document;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -23,8 +22,6 @@ public class ReviewMongo {
 
     public ReviewMongo() {
     }
-
-    private final static Logger logger = LoggerFactory.getLogger(PhoneMongo.class);
 
     @Autowired
     private IReviewMongo reviewMongo;
@@ -40,7 +37,7 @@ public class ReviewMongo {
         try {
             reviewMongo.save(review);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -51,7 +48,7 @@ public class ReviewMongo {
         try {
             review = reviewMongo.findById(id);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return review;
     }
@@ -61,7 +58,7 @@ public class ReviewMongo {
         try {
             review = reviewMongo.findByUsernameAndPhoneName(username, phoneName);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return review;
     }
@@ -71,7 +68,7 @@ public class ReviewMongo {
         try {
             reviews = reviewMongo.findByUsername(username);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return reviews;
     }
@@ -81,7 +78,7 @@ public class ReviewMongo {
         try {
             reviews = reviewMongo.findByPhoneName(phoneName);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return reviews;
     }
@@ -97,7 +94,7 @@ public class ReviewMongo {
                 this.addReview(builder.build());
             }
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -108,7 +105,7 @@ public class ReviewMongo {
         try {
             reviewMongo.deleteById(id);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -119,18 +116,18 @@ public class ReviewMongo {
         try {
             reviewMongo.delete(review);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
     }
 
-    public boolean deleteReviewsByUsername(String id) {
+    public boolean deleteReviewByUsername(String id) {
         boolean result = true;
         try {
-            reviewMongo.deleteReviewsByUsername(id);
+            reviewMongo.deleteReviewByUsername(id);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -141,7 +138,7 @@ public class ReviewMongo {
         try {
             reviewMongo.deleteReviewByPhoneName(id);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -156,7 +153,7 @@ public class ReviewMongo {
                 reviews.addAll(reviewMongo.findByTitleContainingOrBodyContainingOrderByDateOfReviewDesc(word, word));
             }
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return reviews;
     }
@@ -174,30 +171,23 @@ public class ReviewMongo {
             query.skip(50);
             reviews = mongoOperations.find(query, Review.class);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return reviews;
     }
 
-//    public List<Review> findByWord(String word) {
-//        List<Review> reviews = new ArrayList<>();
-//        try {
-//            Query query = new Query();
-//            if (word.isEmpty()) {
-//                query.with(Sort.by(Sort.Direction.DESC, "dateOfReview"));
-//                query.limit(20);
-//                reviews = mongoOperations.find(query, Review.class);
-//            } else {
-//                query.addCriteria(new Criteria(""));
-//                query.with(Sort.by(Sort.Direction.DESC, "dateOfReview"));
-//                query.limit(20);
-//                reviews = mongoOperations.find(query, Review.class);
-//            }
-//        } catch (Exception e) {
-//            logger.error("Exception occurred: " + e.getLocalizedMessage());
-//        }
-//        return reviews;
-//    }
+    public boolean updateReviewsOldUser(String username) {
+        try {
+            Query query = Query.query(
+                    Criteria.where("username").is(username));
+            Update update = new Update().set("username", "Deleted User");
+            mongoOperations.updateMulti(query, update, Review.class, "reviews");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 
     public Document findTopPhonesByRating(int minReviews, int results) {
         GroupOperation groupOperation = group("$phoneName").avg("$rating")

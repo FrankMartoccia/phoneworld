@@ -7,6 +7,7 @@ import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
 import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.ReviewMongo;
+import it.unipi.dii.lsmsdb.phoneworld.services.ServicePhone;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -64,11 +65,13 @@ public class ControllerViewDetailsPhone implements Initializable {
     private final StageManager stageManager;
     private int counterPages = 0;
     private Phone phone;
-    private User user;
+    private GenericUser user;
     private List<Review> reviews;
 
     @Autowired
     private ReviewMongo reviewMongo;
+    @Autowired
+    private ServicePhone servicePhone;
 
     @Autowired @Lazy
     public ControllerViewDetailsPhone(StageManager stageManager) {
@@ -105,7 +108,7 @@ public class ControllerViewDetailsPhone implements Initializable {
         if (this.tableReviews.getItems().size() != 10) {
             this.buttonNext.setDisable(true);
         }
-        GenericUser user = (GenericUser) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        user = (GenericUser) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
         if (user != null) {
             if (user.get_class().equals("admin")) {
                 this.buttonAddPhone.setVisible(false);
@@ -135,24 +138,29 @@ public class ControllerViewDetailsPhone implements Initializable {
             stageManager.showWindow(FxmlView.LOGIN);
             return;
         }
-        user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
-        String userId = user.getId();
-        String phoneId = phone.getId();
-        try {
-            if (App.getInstance().getUserNeo4j().getWatchlist(userId).size() == 10) {
-                stageManager.showInfoMessage("INFO", "You have already 10 phones in your watchlist!");
-                return;
+        if (user.get_class().equals("user")) {
+            user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+            String userId = user.getId();
+            String phoneId = phone.getId();
+            try {
+                if (App.getInstance().getUserNeo4j().getWatchlist(userId).size() == 10) {
+                    stageManager.showInfoMessage("INFO", "You have already 10 phones in your watchlist!");
+                    return;
+                }
+                if (!App.getInstance().getUserNeo4j().getAddRelationship(userId, phoneId).isEmpty()) {
+                    stageManager.showInfoMessage("ERROR", "You have already added this phone to your " +
+                            "watchlist!");
+                    return;
+                }
+                App.getInstance().getUserNeo4j().addRelationship(userId, phoneId);
+                stageManager.showInfoMessage("INFO", "You have added this phone to your watchlist");
+            } catch (Exception e) {
+                logger.error("Error in adding the phone to the watchlist: " + e.getLocalizedMessage());
+                e.printStackTrace();
             }
-            if (!App.getInstance().getUserNeo4j().getAddRelationship(userId, phoneId).isEmpty()) {
-                stageManager.showInfoMessage("ERROR", "You have already added this phone to your " +
-                        "watchlist!");
-                return;
-            }
-            App.getInstance().getUserNeo4j().addRelationship(userId, phoneId);
-            stageManager.showInfoMessage("INFO", "You have added this phone to your watchlist");
-        } catch (Exception e) {
-            logger.error("Error in adding the phone to the watchlist: " + e.getLocalizedMessage());
-            e.printStackTrace();
+        } else {
+            // TODO update phone
+            System.out.println("Update phone");
         }
     }
 
@@ -161,18 +169,24 @@ public class ControllerViewDetailsPhone implements Initializable {
             stageManager.showWindow(FxmlView.LOGIN);
             return;
         }
-        user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
-        String userId = user.getId();
-        String phoneId = phone.getId();
-        try {
-            if (App.getInstance().getUserNeo4j().getAddRelationship(userId, phoneId).isEmpty()) {
-                stageManager.showInfoMessage("ERROR", "This phone is not in your watchlist!");
-                return;
+        if (user.get_class().equals("user")) {
+            user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+            String userId = user.getId();
+            String phoneId = phone.getId();
+            try {
+                if (App.getInstance().getUserNeo4j().getAddRelationship(userId, phoneId).isEmpty()) {
+                    stageManager.showInfoMessage("ERROR", "This phone is not in your watchlist!");
+                    return;
+                }
+                App.getInstance().getUserNeo4j().removeRelationship(userId, phoneId);
+                stageManager.showInfoMessage("INFO", "You have removed this phone from your watchlist");
+            } catch (Exception e) {
+                logger.error("Error in adding the phone to the watchlist: " + e.getLocalizedMessage());
             }
-            App.getInstance().getUserNeo4j().removeRelationship(userId, phoneId);
-            stageManager.showInfoMessage("INFO", "You have removed this phone from your watchlist");
-        } catch (Exception e) {
-            logger.error("Error in adding the phone to the watchlist: " + e.getLocalizedMessage());
+        } else {
+            if (!servicePhone.deletePhone(phone)) {
+                stageManager.showInfoMessage("ERROR", "Error in deleting the phone, try again.");
+            }
         }
     }
 

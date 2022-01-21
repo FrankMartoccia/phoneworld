@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class PhoneMongo {
         try {
             phoneMongo.save(phone);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -73,7 +74,7 @@ public class PhoneMongo {
                 phones.addAll(phoneMongo.findByReleaseYear(Integer.parseInt(name)));
             }
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return phones;
     }
@@ -83,7 +84,7 @@ public class PhoneMongo {
         try {
             phone = phoneMongo.findById(id);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return phone;
     }
@@ -93,7 +94,7 @@ public class PhoneMongo {
         try {
             phone = phoneMongo.findByName(name);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return phone;
     }
@@ -122,7 +123,7 @@ public class PhoneMongo {
                 phoneMongo.save(phone.get());
             }
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -133,7 +134,7 @@ public class PhoneMongo {
         try {
             phoneMongo.deleteById(id);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -144,7 +145,7 @@ public class PhoneMongo {
         try {
             phoneMongo.delete(phone);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             result = false;
         }
         return result;
@@ -157,9 +158,22 @@ public class PhoneMongo {
             query.with(Sort.by(Sort.Direction.DESC, "releaseYear"));
             phones = mongoOperations.find(query, Phone.class);
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return phones;
+    }
+
+    public boolean updatePhoneReviewsOldUser(String username) {
+        try {
+            Query query = Query.query(
+                    Criteria.where("reviews.username").is(username));
+            Update update = new Update().set("reviews.$.username", "Deleted User");
+            mongoOperations.updateMulti(query, update, Phone.class, "phones");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public Document findTopRatedBrands(int minReviews, int results) {

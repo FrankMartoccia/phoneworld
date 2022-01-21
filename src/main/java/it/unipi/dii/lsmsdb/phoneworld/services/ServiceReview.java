@@ -31,23 +31,27 @@ public class ServiceReview {
     private final static Logger logger = LoggerFactory.getLogger(ServiceReview.class);
 
     public boolean insertReview(Review review, Phone phone, User user) {
-        if (!reviewMongo.addReview(review)) {
-            logger.error("Error in adding the review to the collection of reviews");
-            return false;
-        }
-        String reviewId = this.getReviewId(review);
-        int rating = review.getRating();
-        String title = review.getTitle();
-        String body = review.getBody();
-        String phoneName = review.getPhoneName();
-        String username = review.getUsername();
-        if (!addReviewToUser(rating, title, body, phoneName, reviewId, user, review)) {
-            logger.error("Error in adding the review to the collection of users");
-            return false;
-        }
-        if (!addReviewToPhone(rating, title, body, username, reviewId, phone, review)) {
-            logger.error("Error in adding the review to the collection of phones");
-            return false;
+        try {
+            if (!reviewMongo.addReview(review)) {
+                logger.error("Error in adding the review to the collection of reviews");
+                return false;
+            }
+            String reviewId = this.getReviewId(review);
+            int rating = review.getRating();
+            String title = review.getTitle();
+            String body = review.getBody();
+            String phoneName = review.getPhoneName();
+            String username = review.getUsername();
+            if (!addReviewToUser(rating, title, body, phoneName, reviewId, user, review)) {
+                logger.error("Error in adding the review to the collection of users");
+                return false;
+            }
+            if (!addReviewToPhone(rating, title, body, username, reviewId, phone, review)) {
+                logger.error("Error in adding the review to the collection of phones");
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return true;
     }
@@ -145,7 +149,7 @@ public class ServiceReview {
                 return false;
             }
         } catch (Exception e) {
-            logger.error("Exception occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -195,9 +199,8 @@ public class ServiceReview {
                 logger.error("Error in deleting the review from the collection of reviews");
                 return false;
             }
-        } catch (Exception ex) {
-            logger.error("Exception occurred: " + ex.getLocalizedMessage());
-            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
         return true;

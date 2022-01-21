@@ -76,11 +76,10 @@ public class TestPhoneNeo4j {
 
     @Test
     public void testUpdatePhone() {
-        phoneNeo4j.updatePhone("id1", "Nokia", "Nokia Lumia 700",
-                "https://fdn2.gsmarena.com/vv/bigpic/nokia-800-ofic.jpg", 2013);
+        phoneNeo4j.updatePhone("id1", "Apple","https://fdn2.gsmarena.com/vv/bigpic/nokia-800-ofic.jpg", 2013);
         List<Record> records = phoneNeo4j.findPhoneById("id1");
-        String name = records.get(0).get("name").asString();
-        Assertions.assertEquals("Nokia Lumia 700", name);
+        String brand = records.get(0).get("brand").asString();
+        Assertions.assertEquals("Apple", brand);
     }
 
     @Test

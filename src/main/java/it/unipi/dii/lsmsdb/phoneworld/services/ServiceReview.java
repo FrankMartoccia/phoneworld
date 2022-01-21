@@ -60,9 +60,7 @@ public class ServiceReview {
                                     User user, Review review) {
         Review reviewUser = new Review.ReviewBuilder(rating, new Date(), title, body).
                 phoneName(phoneName).id(reviewId).build();
-        if (user.getReviews().size() == 50) {
-            user.getReviews().remove(user.getReviews().size() - 1);
-        }
+        checkLastReviewUser(user, false);
         user.addReview(reviewUser);
         if (!userMongo.updateUser(user.getId(), user, "user")) {
             logger.error("Error in adding the review to the collection of users");
@@ -78,9 +76,7 @@ public class ServiceReview {
                                     Phone phone, Review review) {
         Review reviewPhone = new Review.ReviewBuilder(rating, new Date(), title, body).
                 username(username).id(reviewId).build();
-        if (phone.getReviews().size() == 50) {
-            phone.getReviews().remove(phone.getReviews().size() - 1);
-        }
+        checkLastReviewPhone(phone, false);
         phone.addReview(reviewPhone);
         if (!phoneMongo.updatePhone(phone.getId(), phone))  {
             logger.error("Error in adding the review to the collection of phones");
@@ -167,7 +163,7 @@ public class ServiceReview {
             }
             return phoneMongo.updatePhone(phone.getId(), phone);
         }
-        return true;
+        return false;
     }
 
     public boolean updateReviewInUser(int rating, String title ,String body, String phoneName,
@@ -180,7 +176,7 @@ public class ServiceReview {
             }
             return userMongo.updateUser(user.getId(), user, "user");
         }
-        return true;
+        return false;
     }
 
     public boolean deleteReview(Review selectedReview, Phone phone, User user) {
@@ -210,38 +206,69 @@ public class ServiceReview {
         if (user == null) {
             String username = selectedReview.getUsername();
             Optional<GenericUser> userResult = userMongo.findByUsername(username);
-            if (userResult.isPresent()) {
-                User newUser = (User) userResult.get();
-                newUser.deleteReview(selectedReview.getId());
-                if (newUser.getReviews().size() == 49) {
-                    List<Review> reviews = reviewMongo.findOldReviews(username, false);
-                    if (!reviews.isEmpty()) {
-//                        newUser.getReviews().add();
-                    }
-                }
-                return userMongo.updateUser(newUser.getId(), newUser, "user");
+            if (userResult.isEmpty()) {
+                return false;
             }
+            User newUser = (User) userResult.get();
+            return deleteUserReview(newUser, reviewId);
         } else if (isEmbedded) {
-            if (user.deleteReview(reviewId)) {
-                return userMongo.updateUser(user.getId(), user, "user");
-            }
+            return deleteUserReview(user, reviewId);
         }
         return true;
+    }
+
+    public boolean deleteUserReview(User user, String reviewId) {
+        if (user.getReviewInUser(reviewId) != null) {
+            checkLastReviewUser(user, true);
+            user.deleteReview(reviewId);
+            return userMongo.updateUser(user.getId(), user, "user");
+        }
+        return true;
+    }
+
+    public boolean deletePhoneReview(Phone phone, String reviewId) {
+        if (phone.getReviewInPhone(reviewId) != null) {
+            checkLastReviewPhone(phone, true);
+            phone.deleteReview(reviewId);
+            return phoneMongo.updatePhone(phone.getId(), phone);
+        }
+        return true;
+    }
+
+    private void checkLastReviewPhone(Phone phone, boolean isDelete) {
+        int numReviews = phone.getReviews().size();
+        if (numReviews == 50) {
+            if (isDelete) {
+                List<Review> oldReviews = reviewMongo.findOldReviews(phone.getName(), true);
+                phone.getReviews().add(numReviews, oldReviews.get(0));
+            } else {
+                phone.getReviews().remove(numReviews - 1);
+            }
+        }
+    }
+
+    private void checkLastReviewUser(User newUser, boolean isDelete) {
+        int numReviews = newUser.getReviews().size();
+        if (numReviews == 50) {
+            if (isDelete) {
+                List<Review> oldReviews = reviewMongo.findOldReviews(newUser.getUsername(), false);
+                newUser.getReviews().add(numReviews, oldReviews.get(0));
+            } else {
+                newUser.getReviews().remove(numReviews - 1);
+            }
+        }
     }
 
     public boolean deleteReviewInPhone(Phone phone, Review selectedReview, String reviewId, boolean isEmbedded) {
         if (phone == null) {
             Optional<Phone> phoneResult = phoneMongo.findPhoneByName(selectedReview.getPhoneName());
-            if (phoneResult.isPresent()) {
-                Phone newPhone = phoneResult.get();
-                if (newPhone.deleteReview(reviewId)) {
-                    return phoneMongo.updatePhone(newPhone.getId(), newPhone);
-                }
+            if (phoneResult.isEmpty()) {
+                return false;
             }
+            Phone newPhone = phoneResult.get();
+            return deletePhoneReview(newPhone ,reviewId);
         } else if (isEmbedded) {
-            if (phone.deleteReview(reviewId)) {
-                return phoneMongo.updatePhone(phone.getId(), phone);
-            }
+            return deletePhoneReview(phone, reviewId);
         }
         return true;
     }

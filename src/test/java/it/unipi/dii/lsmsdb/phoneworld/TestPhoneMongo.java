@@ -162,8 +162,15 @@ public class TestPhoneMongo {
         phoneMongo.getPhoneMongo().findAll().forEach(System.out::println);
 //        System.out.println(phones);
         List<String> strings = new ArrayList<>();
+        strings.add("1");
+        strings.add("2");
+        strings.add("3");
+        strings.add("4");
+        strings.add("5");
         System.out.println(strings);
-        strings.add(strings.size(), "");
+        strings.add(strings.size(), "6");
+        System.out.println(strings);
+        strings.remove(strings.size()-1);
         System.out.println(strings);
         assertEquals(1, 1);
     }

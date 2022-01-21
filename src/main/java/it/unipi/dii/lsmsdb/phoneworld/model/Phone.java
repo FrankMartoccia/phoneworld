@@ -119,6 +119,10 @@ public class Phone {
         return reviews;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public void setBrand(String brand) {
         this.brand = brand;
     }

@@ -2,12 +2,10 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
-import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
-import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
-import it.unipi.dii.lsmsdb.phoneworld.model.Review;
-import it.unipi.dii.lsmsdb.phoneworld.model.User;
+import it.unipi.dii.lsmsdb.phoneworld.model.*;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.ReviewMongo;
 import it.unipi.dii.lsmsdb.phoneworld.services.ServicePhone;
+import it.unipi.dii.lsmsdb.phoneworld.services.ServiceReview;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -35,7 +33,7 @@ import java.util.ResourceBundle;
 @Component
 public class ControllerViewDetailsPhone implements Initializable {
 
-    @FXML private Button buttonAddPhone;
+    @FXML private Button buttonServicePhone;
     @FXML private Button buttonRemovePhone;
     @FXML private TableColumn<String, String> columnReviews;
     @FXML private Label labelBatterySize;
@@ -72,6 +70,8 @@ public class ControllerViewDetailsPhone implements Initializable {
     private ReviewMongo reviewMongo;
     @Autowired
     private ServicePhone servicePhone;
+    @Autowired
+    private ServiceReview serviceReview;
 
     @Autowired @Lazy
     public ControllerViewDetailsPhone(StageManager stageManager) {
@@ -84,6 +84,10 @@ public class ControllerViewDetailsPhone implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        GenericUser user = (GenericUser) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        if (user != null && user.get_class().equalsIgnoreCase("admin")) {
+            this.buttonServicePhone.setText("UPDATE");
+        }
         phone = (Phone) App.getInstance().getModelBean().getBean(Constants.SELECTED_PHONE);
         System.out.println(phone.getReviews());
         this.imagePhone.setImage(new Image(phone.getPicture()));
@@ -111,15 +115,34 @@ public class ControllerViewDetailsPhone implements Initializable {
         user = (GenericUser) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
         if (user != null) {
             if (user.get_class().equals("admin")) {
-                this.buttonAddPhone.setVisible(false);
                 this.buttonAddReview.setText("DELETE REVIEW");
             }
         }
     }
 
     public void onClickAddReview(ActionEvent actionEvent) {
-        if (App.getInstance().getModelBean().getBean(Constants.CURRENT_USER) == null) {
+        user = (GenericUser) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        if (user== null) {
             stageManager.showWindow(FxmlView.LOGIN);
+            return;
+        }
+        if (user.get_class().equals("admin")) {
+            phone = (Phone) App.getInstance().getModelBean().getBean(Constants.SELECTED_PHONE);
+            user = (Admin) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+            int tableIndex = this.tableReviews.getSelectionModel().getSelectedIndex();
+            if (tableIndex == -1) {
+                stageManager.showInfoMessage("ERROR", "You have to select a review.");
+                return;
+            }
+            Review selectedReview = serviceReview.getSelectedReview(counterPages, tableIndex, null,
+                    phone, reviews);
+            if (!serviceReview.deleteReview(selectedReview, phone, null)) {
+                stageManager.showInfoMessage("ERROR", "Error in deleting the review for this phone!");
+                return;
+            }
+            stageManager.closeStage(this.buttonAddReview);
+            stageManager.showWindow(FxmlView.DETAILS_PHONES);
+            stageManager.showInfoMessage("INFO", "Review deleted correctly.");
             return;
         }
         user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
@@ -133,8 +156,9 @@ public class ControllerViewDetailsPhone implements Initializable {
         stageManager.showWindow(FxmlView.REVIEW);
     }
 
-    public void onClickAddPhone(ActionEvent actionEvent) {
-        if (App.getInstance().getModelBean().getBean(Constants.CURRENT_USER) == null) {
+    public void onClickServicePhone(ActionEvent actionEvent) {
+        user = (GenericUser) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        if (user == null) {
             stageManager.showWindow(FxmlView.LOGIN);
             return;
         }
@@ -159,13 +183,15 @@ public class ControllerViewDetailsPhone implements Initializable {
                 e.printStackTrace();
             }
         } else {
-            // TODO update phone
-            System.out.println("Update phone");
+            App.getInstance().getModelBean().putBean(Constants.IS_UPDATE, true);
+            stageManager.closeStage(this.buttonServicePhone);
+            stageManager.showWindow(FxmlView.MANAGEMENT_PHONE);
         }
     }
 
     public void onClickRemovePhone(ActionEvent actionEvent) {
-        if (App.getInstance().getModelBean().getBean(Constants.CURRENT_USER) == null) {
+        user = (GenericUser) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        if (user == null) {
             stageManager.showWindow(FxmlView.LOGIN);
             return;
         }
@@ -186,7 +212,10 @@ public class ControllerViewDetailsPhone implements Initializable {
         } else {
             if (!servicePhone.deletePhone(phone)) {
                 stageManager.showInfoMessage("ERROR", "Error in deleting the phone, try again.");
+                return;
             }
+            stageManager.closeStage(this.buttonRemovePhone);
+            stageManager.showInfoMessage("INFO", "Phone deleted correctly");
         }
     }
 

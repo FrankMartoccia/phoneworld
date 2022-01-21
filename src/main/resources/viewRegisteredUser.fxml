@@ -96,14 +96,9 @@
                   </Button>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="buttonAddAdmin" mnemonicParsing="false" onAction="#actionAddAdmin" prefHeight="41.0" prefWidth="82.0" text="ADD">
-                           <HBox.margin>
-                              <Insets top="30.0" />
-                           </HBox.margin>
-                        </Button>
                         <Button fx:id="buttonLogOut" layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onAction="#actionLogOut" prefHeight="41.0" prefWidth="82.0" text="LOG OUT">
                            <HBox.margin>
-                              <Insets left="40.0" top="30.0" />
+                              <Insets left="120.0" top="30.0" />
                            </HBox.margin>
                         </Button>
                      </children>
@@ -120,16 +115,36 @@
             </VBox>
          </right>
          <center>
-            <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="337.0" prefWidth="642.0" BorderPane.alignment="TOP_CENTER">
+            <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="307.0" prefWidth="917.0" BorderPane.alignment="TOP_CENTER">
                <children>
-                  <ImageView fitHeight="177.0" fitWidth="466.0" pickOnBounds="true" preserveRatio="true">
+                  <HBox>
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
-                     <image>
-                        <Image url="@logo-3.png" />
-                     </image>
-                  </ImageView>
+                     <children>
+                        <ImageView fitHeight="177.0" fitWidth="466.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@logo-3.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="210.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <VBox>
+                           <HBox.margin>
+                              <Insets left="50.0" top="40.0" />
+                           </HBox.margin>
+                           <children>
+                              <Button fx:id="buttonAddAdmin" mnemonicParsing="false" onAction="#actionAddAdmin" prefHeight="41.0" prefWidth="160.0" text="ADD ADMIN" />
+                              <Button fx:id="buttonAddPhone" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#actionAddPhone" prefHeight="41.0" prefWidth="160.0" text="ADD PHONE">
+                                 <VBox.margin>
+                                    <Insets top="30.0" />
+                                 </VBox.margin>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
                   <FlowPane alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="61.0" prefWidth="642.0">
                      <children>
                         <ComboBox fx:id="comboBoxFilter" prefHeight="41.0" prefWidth="160.0">

@@ -33,6 +33,7 @@ import java.util.ResourceBundle;
 @Component
 public class ControllerViewRegisteredUser implements Initializable {
 
+    @FXML private Button buttonAddPhone;
     @FXML private Button buttonPhones;
     @FXML private Button buttonLogin;
     @FXML private Button buttonUsers;
@@ -125,6 +126,7 @@ public class ControllerViewRegisteredUser implements Initializable {
         this.buttonUsers.setDisable(false);
         this.buttonReviews.setVisible(false);
         this.buttonAddAdmin.setVisible(false);
+        this.buttonAddPhone.setVisible(false);
         this.buttonPrevious.setDisable(true);
         this.buttonNext.setDisable(true);
         this.initComboBox();
@@ -136,6 +138,7 @@ public class ControllerViewRegisteredUser implements Initializable {
             user = (Admin) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
             this.buttonReviews.setVisible(true);
             this.buttonAddAdmin.setVisible(true);
+            this.buttonAddPhone.setVisible(true);
             this.initScene(null, null, false);
             return;
         }
@@ -259,6 +262,8 @@ public class ControllerViewRegisteredUser implements Initializable {
         }
         phones = phoneMongo.findPhones(text, this.comboBoxFilter.getValue());
         if (phones.isEmpty()) {
+            this.textFieldSearch.clear();
+            stageManager.setNullList(this.imageViews, this.labels);
             stageManager.showInfoMessage("INFO", "There aren't phones with the parameter searched");
             return;
         }
@@ -278,6 +283,7 @@ public class ControllerViewRegisteredUser implements Initializable {
         users = userMongo.findUsers(text, "user");
         if (users.isEmpty()) {
             this.textFieldSearch.clear();
+            stageManager.setNullList(this.imageViews, this.labels);
             stageManager.showInfoMessage("INFO", "There aren't users with the username searched");
             return;
         }
@@ -479,5 +485,10 @@ public class ControllerViewRegisteredUser implements Initializable {
     public void onTopCountriesByUsers(ActionEvent actionEvent) {
         App.getInstance().getModelBean().putBean(Constants.SELECTED_STATISTIC, "Top Countries By Users:");
         stageManager.showWindow(FxmlView.STATISTISCS);
+    }
+
+    public void actionAddPhone(ActionEvent actionEvent) {
+        App.getInstance().getModelBean().putBean(Constants.IS_UPDATE, false);
+        stageManager.showWindow(FxmlView.MANAGEMENT_PHONE);
     }
 }

@@ -3,6 +3,8 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
+import it.unipi.dii.lsmsdb.phoneworld.services.ServicePhone;
+import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,6 +44,9 @@ public class ControllerViewManagementPhone implements Initializable {
 
     private final StageManager stageManager;
 
+    @Autowired
+    private ServicePhone servicePhone;
+
     @Autowired @Lazy
     public ControllerViewManagementPhone(StageManager stageManager) {
         this.stageManager = stageManager;
@@ -68,7 +73,7 @@ public class ControllerViewManagementPhone implements Initializable {
         String picture = this.textFieldPicture.getText();
         String ram = this.textFieldRam.getText();
         String storage = this.textFieldStorage.getText();
-        int year = this.spinnerReleaseYear.getValue();
+        int releaseYear = this.spinnerReleaseYear.getValue();
         boolean isUpdate = (boolean) App.getInstance().getModelBean().getBean(Constants.IS_UPDATE);
         String sbError = stageManager.generateStringBuilderErrorPhone(name,brand,picture,body,os,storage,displaySize,
                 displayResolution,cameraPixels,videoPixels,ram,chipset,batterySize,batteryType,isUpdate);
@@ -77,9 +82,28 @@ public class ControllerViewManagementPhone implements Initializable {
                     + stageManager.getErrors(sbError));
             return;
         }
+        Phone newPhone = new Phone(brand,name,picture,body,os,storage,displaySize,displayResolution,cameraPixels,
+                videoPixels,ram,chipset,batterySize,batteryType,releaseYear);
         if (isUpdate == true) {
+            Phone phone = (Phone) App.getInstance().getModelBean().getBean(Constants.SELECTED_PHONE);
+            newPhone.setId(phone.getId());
+            if (!servicePhone.updatePhone(newPhone)) {
+                stageManager.showInfoMessage("ERROR", "Error in updating the phone!");
+                return;
+            }
+            stageManager.closeStage(this.buttonServicePhone);
+            App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, newPhone);
+            stageManager.showWindow(FxmlView.DETAILS_PHONES);
             return;
         }
+        if (!servicePhone.insertPhone(newPhone, brand, name, picture, releaseYear)) {
+            stageManager.showInfoMessage("ERROR", "Error in adding the phone!");
+            return;
+        }
+        stageManager.closeStage(this.buttonServicePhone);
+        App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, newPhone);
+        stageManager.showWindow(FxmlView.DETAILS_PHONES);
+        stageManager.showInfoMessage("INFO", "Phone added correctly");
     }
 
     @Override

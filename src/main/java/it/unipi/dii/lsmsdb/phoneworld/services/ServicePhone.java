@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class ServicePhone {
 
@@ -35,7 +37,7 @@ public class ServicePhone {
                 logger.error("Error in deleting the phone from Neo4j");
                 return false;
             }
-            if (reviewMongo.deleteReviewByPhoneName(phoneName)) {
+            if (!reviewMongo.deleteReviewByPhoneName(phoneName)) {
                 logger.error("Error in deleting the reviews of the phone from the reviews collection");
                 return false;
             }
@@ -66,13 +68,19 @@ public class ServicePhone {
         return true;
     }
 
-    public boolean insertPhone(Phone phone, String id, String brand, String name, String picture,
+    public boolean insertPhone(Phone phone, String brand, String name, String picture,
                                int releaseYear) {
         boolean result = true;
         if (!phoneMongo.addPhone(phone)) {
             logger.error("Error in adding the phone to MongoDB");
             return false;
         }
+        Optional<Phone> phoneResult = phoneMongo.findPhoneByName(name);
+        if (phoneResult.isEmpty()) {
+            logger.error("Error in retriving the phone to MongoDB");
+            return false;
+        }
+        String id = phoneResult.get().getId();
         if (!App.getInstance().getPhoneNeo4j().addPhone(id, brand, name, picture, releaseYear)) {
             logger.error("Error in adding the phone to Neo4j");
             if (!phoneMongo.deletePhone(phone)) {

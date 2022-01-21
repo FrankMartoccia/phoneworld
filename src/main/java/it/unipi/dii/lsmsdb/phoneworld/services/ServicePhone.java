@@ -66,4 +66,21 @@ public class ServicePhone {
         return true;
     }
 
+    public boolean insertPhone(Phone phone, String id, String brand, String name, String picture,
+                               int releaseYear) {
+        boolean result = true;
+        if (!phoneMongo.addPhone(phone)) {
+            logger.error("Error in adding the phone to MongoDB");
+            return false;
+        }
+        if (!App.getInstance().getPhoneNeo4j().addPhone(id, brand, name, picture, releaseYear)) {
+            logger.error("Error in adding the phone to Neo4j");
+            if (!phoneMongo.deletePhone(phone)) {
+                logger.error("Error in deleting the phone from MongoDB");
+            }
+            return false;
+        }
+        return result;
+    }
+
 }

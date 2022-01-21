@@ -208,10 +208,17 @@ public class ServiceReview {
 
     private boolean deleteReviewInUser(User user, Review selectedReview, String reviewId, boolean isEmbedded) {
         if (user == null) {
-            Optional<GenericUser> userResult = userMongo.findByUsername(selectedReview.getUsername());
+            String username = selectedReview.getUsername();
+            Optional<GenericUser> userResult = userMongo.findByUsername(username);
             if (userResult.isPresent()) {
                 User newUser = (User) userResult.get();
                 newUser.deleteReview(selectedReview.getId());
+                if (newUser.getReviews().size() == 49) {
+                    List<Review> reviews = reviewMongo.findOldReviews(username, false);
+                    if (!reviews.isEmpty()) {
+//                        newUser.getReviews().add();
+                    }
+                }
                 return userMongo.updateUser(newUser.getId(), newUser, "user");
             }
         } else if (isEmbedded) {

@@ -161,6 +161,10 @@ public class TestPhoneMongo {
         phoneMongo.updatePhoneReviewsOldUser("user1");
         phoneMongo.getPhoneMongo().findAll().forEach(System.out::println);
 //        System.out.println(phones);
+        List<String> strings = new ArrayList<>();
+        System.out.println(strings);
+        strings.add(strings.size(), "");
+        System.out.println(strings);
         assertEquals(1, 1);
     }
 

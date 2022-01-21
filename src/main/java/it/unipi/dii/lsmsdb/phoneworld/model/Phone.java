@@ -188,15 +188,23 @@ public class Phone {
     }
 
     public boolean deleteReview(String id) {
+        Review review = this.getReviewInPhone(id);
+        if (review != null) {
+            reviews.remove(review);
+            return true;
+        }
+        return false;
+    }
+
+    public Review getReviewInPhone(String id) {
         if (!this.reviews.isEmpty()) {
             for (Review review : reviews) {
                 if (review.getId().equals(id)) {
-                    reviews.remove(review);
-                    return true;
+                    return review;
                 }
             }
         }
-        return false;
+        return null;
     }
 
     @Override

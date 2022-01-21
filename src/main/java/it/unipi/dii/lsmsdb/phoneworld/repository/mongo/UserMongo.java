@@ -116,25 +116,23 @@ public class UserMongo {
     }
 
     public boolean deleteUserById(String id) {
-        boolean result = true;
         try {
             userMongo.deleteById(id);
         } catch (Exception e) {
             e.printStackTrace();
-            result = false;
+            return false;
         }
-        return result;
+        return true;
     }
 
     public boolean deleteUser(GenericUser user) {
-        boolean result = true;
         try {
             userMongo.delete(user);
         } catch (Exception e) {
             e.printStackTrace();
-            result = false;
+            return false;
         }
-        return result;
+        return true;
     }
 
     public Document findYoungerCountriesByUsers(int number) {

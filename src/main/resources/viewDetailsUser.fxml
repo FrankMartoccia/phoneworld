@@ -20,7 +20,7 @@
          <top>
             <HBox prefHeight="432.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
                <children>
-                  <VBox prefHeight="318.0" prefWidth="494.0">
+                  <VBox prefHeight="318.0" prefWidth="300.0">
                      <children>
                         <ImageView fx:id="imageViewPhoto" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                            <VBox.margin>
@@ -53,14 +53,14 @@
                         </Label>
                         <HBox>
                            <children>
-                              <Button fx:id="buttonUnfollow" mnemonicParsing="false" onAction="#onClickUnfollow" prefHeight="52.0" prefWidth="180.0" text="UNFOLLOW">
+                              <Button fx:id="buttonUnfollowDelete" mnemonicParsing="false" onAction="#onClickUnfollowDelete" prefHeight="52.0" prefWidth="100.0" text="UNFOLLOW">
                                  <HBox.margin>
-                                    <Insets left="30.0" right="30.0" top="19.0" />
+                                    <Insets left="30.0" right="10.0" top="19.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button fx:id="buttonFollow" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickFollow" prefHeight="52.0" prefWidth="180.0" text="FOLLOW">
+                              <Button fx:id="buttonFollow" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickFollow" prefHeight="52.0" prefWidth="100.0" text="FOLLOW">
                                  <HBox.margin>
-                                    <Insets left="65.0" top="19.0" />
+                                    <Insets left="60.0" top="19.0" />
                                  </HBox.margin>
                               </Button>
                            </children>
@@ -72,14 +72,14 @@
                         <Insets left="10.0" right="10.0" />
                      </HBox.margin>
                   </Separator>
-                  <VBox layoutX="10.0" layoutY="10.0" prefHeight="370.0" prefWidth="487.0">
+                  <VBox layoutX="10.0" layoutY="10.0" prefHeight="370.0" prefWidth="310.0">
                      <children>
-                        <TableView fx:id="tableWatchList" prefHeight="327.0" prefWidth="454.0">
+                        <TableView fx:id="tableWatchList" prefHeight="327.0" prefWidth="290.0">
                            <VBox.margin>
-                              <Insets right="30.0" top="30.0" />
+                              <Insets top="30.0" />
                            </VBox.margin>
                            <columns>
-                              <TableColumn fx:id="columnWatchList" prefWidth="456.0" text="WATCHLIST" />
+                              <TableColumn fx:id="columnWatchList" prefWidth="309.0" text="WATCHLIST" />
                            </columns>
                         </TableView>
                         <HBox prefHeight="52.0" prefWidth="379.0">
@@ -87,10 +87,40 @@
                               <Insets top="12.0" />
                            </VBox.margin>
                            <children>
-                              <Button fx:id="buttonDetails" mnemonicParsing="false" onAction="#onClickDetails" prefHeight="52.0" prefWidth="180.0" text="PHONE DETAILS" />
-                              <Button fx:id="buttonRemovePhone" mnemonicParsing="false" onAction="#onClickRemovePhone" prefHeight="52.0" prefWidth="180.0" text="REMOVE PHONE">
+                              <Button fx:id="buttonDetailsPhone" mnemonicParsing="false" onAction="#onClickDetailsPhone" prefHeight="52.0" prefWidth="100.0" text="DETAILS" />
+                              <Button fx:id="buttonRemovePhone" mnemonicParsing="false" onAction="#onClickRemovePhone" prefHeight="52.0" prefWidth="100.0" text="REMOVE">
                                  <HBox.margin>
-                                    <Insets left="95.0" />
+                                    <Insets left="110.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <Separator layoutX="311.0" layoutY="10.0" orientation="VERTICAL" prefHeight="200.0">
+                     <HBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </HBox.margin>
+                  </Separator>
+                  <VBox layoutX="336.0" layoutY="10.0" prefHeight="370.0" prefWidth="310.0">
+                     <children>
+                        <TableView fx:id="tableFollowed" prefHeight="327.0" prefWidth="290.0">
+                           <VBox.margin>
+                              <Insets top="30.0" />
+                           </VBox.margin>
+                           <columns>
+                              <TableColumn fx:id="columnFollowed" prefWidth="311.0" text="FOLLOWED" />
+                           </columns>
+                        </TableView>
+                        <HBox prefHeight="52.0" prefWidth="379.0">
+                           <VBox.margin>
+                              <Insets top="12.0" />
+                           </VBox.margin>
+                           <children>
+                              <Button fx:id="buttonDetailsFollowed" mnemonicParsing="false" onAction="#onClickDetailsFollowed" prefHeight="52.0" prefWidth="100.0" text="DETAILS" />
+                              <Button fx:id="buttonRemoveUser" mnemonicParsing="false" onAction="#onClickRemoveUser" prefHeight="52.0" prefWidth="100.0" text="REMOVE">
+                                 <HBox.margin>
+                                    <Insets left="110.0" />
                                  </HBox.margin>
                               </Button>
                            </children>

@@ -135,7 +135,7 @@ public class TestUserNeo4j {
 
     @Test
     public void testMostFollowedUsers() {
-        List<Record> records = userNeo4j.findMostFollowedUsers();
+        List<Record> records = userNeo4j.findMostFollowedUsers(10);
         System.out.println(records);
 //        String username = records.get(0).get("username").asString();
         Assertions.assertEquals(10, records.size());

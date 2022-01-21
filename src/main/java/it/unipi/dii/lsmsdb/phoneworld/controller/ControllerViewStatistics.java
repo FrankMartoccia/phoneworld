@@ -70,7 +70,7 @@ public class ControllerViewStatistics implements Initializable {
         this.labelStatistics.setText(statisticName);
         SpinnerValueFactory<Integer> valueFactoryFilter = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10);
         this.spinnerFilter.setValueFactory(valueFactoryFilter);
-        this.spinnerFilter.getValueFactory().setValue(10);
+        this.spinnerFilter.getValueFactory().setValue(5);
         this.columnName.setCellValueFactory(new PropertyValueFactory<>("Name"));
         this.columnParameter2.setCellValueFactory(new PropertyValueFactory<>("Param2"));
         this.columnParameter3.setCellValueFactory(new PropertyValueFactory<>("Param3"));
@@ -110,7 +110,7 @@ public class ControllerViewStatistics implements Initializable {
         if (statisticName.equalsIgnoreCase("Most Followed Users:")) {
             this.columnName.setText("USERNAME");
             this.columnParameter2.setText("# FOLLOWERS");
-            List<Record> result = App.getInstance().getUserNeo4j().findMostFollowedUsers();
+            List<Record> result = App.getInstance().getUserNeo4j().findMostFollowedUsers(this.spinnerFilter.getValue());
             if (result.isEmpty()) {
                 stageManager.showInfoMessage("ERROR", "Statistic not found!");
                 return;

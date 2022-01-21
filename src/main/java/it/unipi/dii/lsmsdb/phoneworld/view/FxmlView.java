@@ -87,7 +87,7 @@ public enum FxmlView {
     }, DETAILS_PHONES {
         @Override
         public String getTitle() {
-            return "PHONES DETAILS";
+            return "PHONE DETAILS";
         }
 
         @Override

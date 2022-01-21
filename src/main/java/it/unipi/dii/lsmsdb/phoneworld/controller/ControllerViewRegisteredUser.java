@@ -263,6 +263,7 @@ public class ControllerViewRegisteredUser implements Initializable {
         phones = phoneMongo.findPhones(text, this.comboBoxFilter.getValue());
         if (phones.isEmpty()) {
             this.textFieldSearch.clear();
+            this.labelDescription2.setText("");
             stageManager.setNullList(this.imageViews, this.labels);
             stageManager.showInfoMessage("INFO", "There aren't phones with the parameter searched");
             return;
@@ -283,6 +284,7 @@ public class ControllerViewRegisteredUser implements Initializable {
         users = userMongo.findUsers(text, "user");
         if (users.isEmpty()) {
             this.textFieldSearch.clear();
+            this.labelDescription2.setText("");
             stageManager.setNullList(this.imageViews, this.labels);
             stageManager.showInfoMessage("INFO", "There aren't users with the username searched");
             return;

@@ -11,7 +11,7 @@ import static org.neo4j.driver.Values.parameters;
 
 public class UserNeo4j {
 
-    private final static Logger logger = LoggerFactory.getLogger(PhoneNeo4j.class);
+    private final static Logger logger = LoggerFactory.getLogger(UserNeo4j.class);
     private final GraphNeo4j graphNeo4j;
 
     public GraphNeo4j getGraphNeo4j() {
@@ -158,6 +158,18 @@ public class UserNeo4j {
         return result;
     }
 
+    public List<Record> getFollowed(String userId) {
+        List<Record> result = new ArrayList<>();
+        try {
+            return graphNeo4j.read("MATCH (u1:User {id: $userId})-[:FOLLOWS]->(u2:User) " +
+                            "RETURN DISTINCT u2",
+                    parameters("userId", userId));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public boolean deleteUserAddsRelationships(String id) {
         boolean result = true;
         try {
@@ -176,6 +188,9 @@ public class UserNeo4j {
         try {
             graphNeo4j.write("MATCH (u:User {id: $id})-[r:FOLLOWS]->() " +
                                    "DELETE r",
+                    parameters("id", id));
+            graphNeo4j.write("MATCH (u:User {id: $id})<-[r:FOLLOWS]-() " +
+                                    "DELETE r",
                     parameters("id", id));
         } catch (Exception e) {
             e.printStackTrace();
@@ -196,13 +211,13 @@ public class UserNeo4j {
         return result;
     }
 
-    public List<Record> findMostFollowedUsers() {
+    public List<Record> findMostFollowedUsers(int results) {
         List<Record> result = new ArrayList<>();
         try {
             return graphNeo4j.read("MATCH (u1:User)<-[r:FOLLOWS]-(u2:User) " +
                     "RETURN u1.username AS username, u1.id AS id, COUNT(r) AS followers " +
                     "ORDER BY followers DESC " +
-                    "LIMIT 10");
+                    "LIMIT $results", parameters("results", results));
         } catch (Exception e) {
             e.printStackTrace();
         }

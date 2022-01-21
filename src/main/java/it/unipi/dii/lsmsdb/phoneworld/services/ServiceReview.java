@@ -205,6 +205,9 @@ public class ServiceReview {
     private boolean deleteReviewInUser(User user, Review selectedReview, String reviewId, boolean isEmbedded) {
         if (user == null) {
             String username = selectedReview.getUsername();
+            if (username.equals("Deleted User")) {
+                return true;
+            }
             Optional<GenericUser> userResult = userMongo.findByUsername(username);
             if (userResult.isEmpty()) {
                 return false;

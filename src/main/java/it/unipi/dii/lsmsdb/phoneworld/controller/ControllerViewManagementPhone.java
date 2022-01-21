@@ -59,7 +59,6 @@ public class ControllerViewManagementPhone implements Initializable {
 
     @FXML
     void onClickService(ActionEvent event) {
-        Phone phone = (Phone) App.getInstance().getModelBean().getBean(Constants.SELECTED_PHONE);
         String name = this.textFieldName.getText();
         String batterySize = this.textFieldBatterySize.getText();
         String batteryType = this.textFieldBatteryType.getText();
@@ -83,18 +82,28 @@ public class ControllerViewManagementPhone implements Initializable {
                     + stageManager.getErrors(sbError));
             return;
         }
+        Phone newPhone = new Phone(brand,name,picture,body,os,storage,displaySize,displayResolution,cameraPixels,
+                videoPixels,ram,chipset,batterySize,batteryType,releaseYear);
         if (isUpdate == true) {
-            Phone updatedPhone = new Phone(brand,name,picture,body,os,storage,displaySize,displayResolution,cameraPixels,
-                    videoPixels,ram,chipset,batterySize,batteryType,releaseYear);
-            updatedPhone.setId(phone.getId());
-            if (!servicePhone.updatePhone(updatedPhone)) {
+            Phone phone = (Phone) App.getInstance().getModelBean().getBean(Constants.SELECTED_PHONE);
+            newPhone.setId(phone.getId());
+            if (!servicePhone.updatePhone(newPhone)) {
                 stageManager.showInfoMessage("ERROR", "Error in updating the phone!");
                 return;
             }
             stageManager.closeStage(this.buttonServicePhone);
-            App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, updatedPhone);
+            App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, newPhone);
             stageManager.showWindow(FxmlView.DETAILS_PHONES);
+            return;
         }
+        if (!servicePhone.insertPhone(newPhone, brand, name, picture, releaseYear)) {
+            stageManager.showInfoMessage("ERROR", "Error in adding the phone!");
+            return;
+        }
+        stageManager.closeStage(this.buttonServicePhone);
+        App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, newPhone);
+        stageManager.showWindow(FxmlView.DETAILS_PHONES);
+        stageManager.showInfoMessage("INFO", "Phone added correctly");
     }
 
     @Override

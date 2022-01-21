@@ -170,7 +170,8 @@ public class ControllerViewDetailsPhone implements Initializable {
     }
 
     public void onClickRemovePhone(ActionEvent actionEvent) {
-        if (App.getInstance().getModelBean().getBean(Constants.CURRENT_USER) == null) {
+        user = (GenericUser) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        if (user == null) {
             stageManager.showWindow(FxmlView.LOGIN);
             return;
         }
@@ -191,7 +192,10 @@ public class ControllerViewDetailsPhone implements Initializable {
         } else {
             if (!servicePhone.deletePhone(phone)) {
                 stageManager.showInfoMessage("ERROR", "Error in deleting the phone, try again.");
+                return;
             }
+            stageManager.closeStage(this.buttonRemovePhone);
+            stageManager.showInfoMessage("INFO", "Phone deleted correctly");
         }
     }
 

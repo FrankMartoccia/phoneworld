@@ -60,9 +60,7 @@ public class ServiceReview {
                                     User user, Review review) {
         Review reviewUser = new Review.ReviewBuilder(rating, new Date(), title, body).
                 phoneName(phoneName).id(reviewId).build();
-        if (user.getReviews().size() == 50) {
-            user.getReviews().remove(user.getReviews().size() - 1);
-        }
+        checkLastReviewUser(user, false);
         user.addReview(reviewUser);
         if (!userMongo.updateUser(user.getId(), user, "user")) {
             logger.error("Error in adding the review to the collection of users");
@@ -78,9 +76,7 @@ public class ServiceReview {
                                     Phone phone, Review review) {
         Review reviewPhone = new Review.ReviewBuilder(rating, new Date(), title, body).
                 username(username).id(reviewId).build();
-        if (phone.getReviews().size() == 50) {
-            phone.getReviews().remove(phone.getReviews().size() - 1);
-        }
+        checkLastReviewPhone(phone, false);
         phone.addReview(reviewPhone);
         if (!phoneMongo.updatePhone(phone.getId(), phone))  {
             logger.error("Error in adding the review to the collection of phones");

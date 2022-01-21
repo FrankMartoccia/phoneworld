@@ -27,7 +27,7 @@
                               <Insets bottom="10.0" left="68.0" top="20.0" />
                            </VBox.margin>
                         </ImageView>
-                        <Button fx:id="buttonAddPhone" mnemonicParsing="false" onAction="#onClickAddPhone" prefHeight="50.0" prefWidth="180.0" text="ADD">
+                        <Button fx:id="buttonServicePhone" mnemonicParsing="false" onAction="#onClickServicePhone" prefHeight="50.0" prefWidth="180.0" text="ADD">
                            <VBox.margin>
                               <Insets left="55.0" top="10.0" />
                            </VBox.margin>

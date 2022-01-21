@@ -3,6 +3,8 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
 import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
+import it.unipi.dii.lsmsdb.phoneworld.services.ServicePhone;
+import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,6 +44,9 @@ public class ControllerViewManagementPhone implements Initializable {
 
     private final StageManager stageManager;
 
+    @Autowired
+    private ServicePhone servicePhone;
+
     @Autowired @Lazy
     public ControllerViewManagementPhone(StageManager stageManager) {
         this.stageManager = stageManager;
@@ -54,6 +59,7 @@ public class ControllerViewManagementPhone implements Initializable {
 
     @FXML
     void onClickService(ActionEvent event) {
+        Phone phone = (Phone) App.getInstance().getModelBean().getBean(Constants.SELECTED_PHONE);
         String name = this.textFieldName.getText();
         String batterySize = this.textFieldBatterySize.getText();
         String batteryType = this.textFieldBatteryType.getText();
@@ -68,7 +74,7 @@ public class ControllerViewManagementPhone implements Initializable {
         String picture = this.textFieldPicture.getText();
         String ram = this.textFieldRam.getText();
         String storage = this.textFieldStorage.getText();
-        int year = this.spinnerReleaseYear.getValue();
+        int releaseYear = this.spinnerReleaseYear.getValue();
         boolean isUpdate = (boolean) App.getInstance().getModelBean().getBean(Constants.IS_UPDATE);
         String sbError = stageManager.generateStringBuilderErrorPhone(name,brand,picture,body,os,storage,displaySize,
                 displayResolution,cameraPixels,videoPixels,ram,chipset,batterySize,batteryType,isUpdate);
@@ -78,7 +84,16 @@ public class ControllerViewManagementPhone implements Initializable {
             return;
         }
         if (isUpdate == true) {
-            return;
+            Phone updatedPhone = new Phone(brand,name,picture,body,os,storage,displaySize,displayResolution,cameraPixels,
+                    videoPixels,ram,chipset,batterySize,batteryType,releaseYear);
+            updatedPhone.setId(phone.getId());
+            if (!servicePhone.updatePhone(updatedPhone)) {
+                stageManager.showInfoMessage("ERROR", "Error in updating the phone!");
+                return;
+            }
+            stageManager.closeStage(this.buttonServicePhone);
+            App.getInstance().getModelBean().putBean(Constants.SELECTED_PHONE, updatedPhone);
+            stageManager.showWindow(FxmlView.DETAILS_PHONES);
         }
     }
 

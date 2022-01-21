@@ -134,6 +134,16 @@ public enum FxmlView {
         public String getFxmlFile() {
             return "/viewAddAdmin.fxml";
         }
+    }, MANAGEMENT_PHONE {
+        @Override
+        public String getTitle() {
+            return "PHONE HANDLER";
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/viewManagementPhone.fxml";
+        }
     };
 
     public abstract String getTitle();

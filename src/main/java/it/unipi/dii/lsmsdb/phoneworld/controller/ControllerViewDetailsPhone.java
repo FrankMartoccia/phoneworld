@@ -35,7 +35,7 @@ import java.util.ResourceBundle;
 @Component
 public class ControllerViewDetailsPhone implements Initializable {
 
-    @FXML private Button buttonAddPhone;
+    @FXML private Button buttonServicePhone;
     @FXML private Button buttonRemovePhone;
     @FXML private TableColumn<String, String> columnReviews;
     @FXML private Label labelBatterySize;
@@ -84,6 +84,10 @@ public class ControllerViewDetailsPhone implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        GenericUser user = (GenericUser) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        if (user != null && user.get_class().equalsIgnoreCase("admin")) {
+            this.buttonServicePhone.setText("UPDATE");
+        }
         phone = (Phone) App.getInstance().getModelBean().getBean(Constants.SELECTED_PHONE);
         System.out.println(phone.getReviews());
         this.imagePhone.setImage(new Image(phone.getPicture()));
@@ -111,7 +115,6 @@ public class ControllerViewDetailsPhone implements Initializable {
         user = (GenericUser) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
         if (user != null) {
             if (user.get_class().equals("admin")) {
-                this.buttonAddPhone.setVisible(false);
                 this.buttonAddReview.setText("DELETE REVIEW");
             }
         }
@@ -133,8 +136,9 @@ public class ControllerViewDetailsPhone implements Initializable {
         stageManager.showWindow(FxmlView.REVIEW);
     }
 
-    public void onClickAddPhone(ActionEvent actionEvent) {
-        if (App.getInstance().getModelBean().getBean(Constants.CURRENT_USER) == null) {
+    public void onClickServicePhone(ActionEvent actionEvent) {
+        user = (GenericUser) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        if (user == null) {
             stageManager.showWindow(FxmlView.LOGIN);
             return;
         }
@@ -159,8 +163,9 @@ public class ControllerViewDetailsPhone implements Initializable {
                 e.printStackTrace();
             }
         } else {
-            // TODO update phone
-            System.out.println("Update phone");
+            App.getInstance().getModelBean().putBean(Constants.IS_UPDATE, true);
+            stageManager.closeStage(this.buttonServicePhone);
+            stageManager.showWindow(FxmlView.MANAGEMENT_PHONE);
         }
     }
 

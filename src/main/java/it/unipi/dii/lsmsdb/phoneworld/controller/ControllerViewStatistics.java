@@ -120,7 +120,7 @@ public class ControllerViewStatistics implements Initializable {
         if (statisticName.equalsIgnoreCase("Most Active Users:")) {
             List<Document> statistics = new ArrayList<>();
             this.columnName.setText("USERNAME");
-            this.columnParameter2.setText("# FOLLOWERS");
+            this.columnParameter2.setText("# REVIEWS");
             this.columnParameter3.setText("RATING");
             Document result = reviewMongo.findMostActiveUsers(this.spinnerFilter.getValue());
             if (result.isEmpty()) {
@@ -186,8 +186,6 @@ public class ControllerViewStatistics implements Initializable {
                 param3 = (double) statistic.get(parameter3);
             }
             double roundPar3 = Math.round(param3 * 10.0) / 10.0;
-            System.out.println(statistic.get("reviews"));
-            System.out.println(statistic.get("rating"));
             this.listStatistics.add(new Statistic(name, param2, roundPar3));
         }
         this.tableViewStatistics.setItems(this.listStatistics);

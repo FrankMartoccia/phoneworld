@@ -334,6 +334,10 @@ public class ControllerViewRegisteredUser implements Initializable {
     }
 
     public void actionProfile(ActionEvent actionEvent) {
+        GenericUser genericUser = (GenericUser) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        if (genericUser.get_class().equals("admin")){
+            return;
+        }
         stageManager.showWindow(FxmlView.PROFILE);
     }
 

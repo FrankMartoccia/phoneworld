@@ -4,29 +4,13 @@ import it.unipi.dii.lsmsdb.phoneworld.model.ModelBean;
 import it.unipi.dii.lsmsdb.phoneworld.repository.neo4j.GraphNeo4j;
 import it.unipi.dii.lsmsdb.phoneworld.repository.neo4j.PhoneNeo4j;
 import it.unipi.dii.lsmsdb.phoneworld.repository.neo4j.UserNeo4j;
-import it.unipi.dii.lsmsdb.phoneworld.services.ServicePhone;
-import it.unipi.dii.lsmsdb.phoneworld.services.ServiceReview;
-import it.unipi.dii.lsmsdb.phoneworld.services.ServiceUser;
 import it.unipi.dii.lsmsdb.phoneworld.view.FxmlView;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.application.Application;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.Base64;
 
 @SpringBootApplication
 public class App extends Application {

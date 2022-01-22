@@ -213,7 +213,7 @@ public class ControllerViewStatistics implements Initializable {
         Object objectName = col.getCellObservableValue(item).getValue();
         System.out.println(objectName);
         if (!objectName.getClass().getSimpleName().equalsIgnoreCase("String")) {
-            stageManager.showInfoMessage("INFO", "You must select a item");
+            stageManager.showInfoMessage("INFO", "You must select an item from the first column");
             return;
         }
         String name = (String) objectName;

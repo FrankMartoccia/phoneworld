@@ -113,7 +113,7 @@ public class TestPhoneNeo4j {
 
     @Test
     public void testFindBestBrands() {
-        List<Record> records = phoneNeo4j.findBestBrands();
+        List<Record> records = phoneNeo4j.findBestBrands(10);
         String name = String.valueOf(records.get(0).get("brand").asString());
         Assertions.assertEquals(10,records.size());
         Assertions.assertEquals("Samsung", name);

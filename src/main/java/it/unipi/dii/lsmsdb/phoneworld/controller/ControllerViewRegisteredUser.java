@@ -87,6 +87,7 @@ public class ControllerViewRegisteredUser implements Initializable {
     @FXML private MenuItem menuItemSuggestedUsers;
     @FXML private MenuItem menuItemMostFollowedUsers;
     @FXML private MenuItem menuItemMostActiveUsers;
+    @FXML private MenuItem menuItemMostAppreciatedBrands;
     @FXML private MenuItem menuItemYoungerCountriesByUsers;
     @FXML private MenuItem menuItemTopCountriesByUsers;
     @FXML private ComboBox<String> comboBoxFilter;
@@ -496,5 +497,10 @@ public class ControllerViewRegisteredUser implements Initializable {
     public void actionAddPhone(ActionEvent actionEvent) {
         App.getInstance().getModelBean().putBean(Constants.IS_UPDATE, false);
         stageManager.showWindow(FxmlView.MANAGEMENT_PHONE);
+    }
+
+    public void onMostAppreciatedBrands(ActionEvent actionEvent) {
+        App.getInstance().getModelBean().putBean(Constants.SELECTED_STATISTIC, "Most appreciated Brands:");
+        stageManager.showWindow(FxmlView.STATISTISCS);
     }
 }

@@ -177,6 +177,9 @@ public class ControllerViewDetailsUser implements Initializable {
     @FXML
     void onClickDeleteReview(ActionEvent event) {
         User user = (User) App.getInstance().getModelBean().getBean(Constants.SELECTED_USER);
+        if(user == null) {
+            user = (User) App.getInstance().getModelBean().getBean(Constants.CURRENT_USER);
+        }
         int tableIndex = this.tableReviews.getSelectionModel().getSelectedIndex();
         if (tableIndex == -1) {
             stageManager.showInfoMessage("ERROR", "You have to select a review.");

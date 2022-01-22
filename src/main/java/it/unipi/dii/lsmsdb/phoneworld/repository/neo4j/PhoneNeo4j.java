@@ -101,13 +101,13 @@ public class PhoneNeo4j{
         return result;
     }
 
-    public List<Record> findBestBrands() {
+    public List<Record> findBestBrands(int results) {
         List<Record> result = new ArrayList<>();
         try {
             return graphNeo4j.read("MATCH (:User)-[:ADDS]->(p:Phone) " +
                     "RETURN p.brand AS brand, COUNT(p.brand) AS numPhones " +
                     "ORDER BY numPhones DESC " +
-                    "LIMIT 10");
+                    "LIMIT $results", parameters("results", results));
         } catch (Exception e) {
             e.printStackTrace();
         }

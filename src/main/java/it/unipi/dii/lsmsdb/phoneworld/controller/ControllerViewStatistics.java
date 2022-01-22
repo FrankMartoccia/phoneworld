@@ -19,12 +19,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.bson.Document;
 import org.neo4j.driver.Record;
-import org.neo4j.driver.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import java.awt.event.ItemEvent;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -115,7 +113,7 @@ public class ControllerViewStatistics implements Initializable {
                 stageManager.showInfoMessage("ERROR", "Statistic not found!");
                 return;
             }
-            setTableFollowers(result, "username", "followers");
+            setTableRecords(result, "username", "followers");
         }
         if (statisticName.equalsIgnoreCase("Most Active Users:")) {
             List<Document> statistics = new ArrayList<>();
@@ -158,9 +156,20 @@ public class ControllerViewStatistics implements Initializable {
             statistics = (List<Document>) result.get("results");
             this.setTableRating(statistics, "country", "users", "");
         }
+        if (statisticName.equalsIgnoreCase("Most appreciated Brands:")) {
+            this.buttonDetails.setVisible(false);
+            this.columnName.setText("BRAND");
+            this.columnParameter2.setText("# PHONES");
+            List<Record> result = App.getInstance().getPhoneNeo4j().findBestBrands(this.spinnerFilter.getValue());
+            if (result.isEmpty()) {
+                stageManager.showInfoMessage("ERROR", "Statistic not found!");
+                return;
+            }
+            setTableRecords(result, "brand", "numPhones");
+        }
     }
 
-    private void setTableFollowers(List<Record> statistics, String parameter1, String parameter2) {
+    private void setTableRecords(List<Record> statistics, String parameter1, String parameter2) {
         this.tableViewStatistics.getColumns().get(2).setVisible(false);
         this.listStatistics.clear();
         for (Record statistic : statistics) {
@@ -201,12 +210,13 @@ public class ControllerViewStatistics implements Initializable {
         int row = pos.getRow();
         Statistic item = tableViewStatistics.getItems().get(row);
         TableColumn col = pos.getTableColumn();
-        String name = (String) col.getCellObservableValue(item).getValue();
-        System.out.println(name);
-        if (name.isEmpty()) {
+        Object objectName = col.getCellObservableValue(item).getValue();
+        System.out.println(objectName);
+        if (!objectName.getClass().getSimpleName().equalsIgnoreCase("String")) {
             stageManager.showInfoMessage("INFO", "You must select a item");
             return;
         }
+        String name = (String) objectName;
         String statistic = (String) App.getInstance().getModelBean().getBean(Constants.SELECTED_STATISTIC);
         if (statistic.equals("Most Followed Users:") || statistic.equals("Most Active Users:")) {
             Optional<GenericUser> user = userMongo.findByUsername(name);

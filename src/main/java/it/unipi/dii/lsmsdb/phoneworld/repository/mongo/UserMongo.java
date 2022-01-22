@@ -142,7 +142,7 @@ public class UserMongo {
         LimitOperation limitOperation = limit(number);
         ProjectionOperation projectionOperation = project()
                 .andExpression("_id").as("country")
-                .andExpression("avgAge").as("age").andExclude("_id");
+                .and(ArithmeticOperators.Round.roundValueOf("avgAge").place(1)).as("age");
         Aggregation aggregation = newAggregation(matchOperation, groupOperation, sortOperation,
                 limitOperation, projectionOperation);
         AggregationResults<User> result = mongoOperations

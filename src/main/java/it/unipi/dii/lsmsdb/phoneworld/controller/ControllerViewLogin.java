@@ -116,7 +116,7 @@ public class ControllerViewLogin {
         stageManager.showWindow(FxmlView.SIGNUP);
     }
 
-    public void onClikEnterUsername(KeyEvent keyEvent) {
+    public void onClickEnterUsername(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.ENTER) this.onClickLogin();
     }
 

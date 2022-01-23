@@ -16,7 +16,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.ResourceBundle;
@@ -57,16 +59,12 @@ public class ControllerViewProfile implements Initializable {
         this.labelStreet.setText(user.getStreetName() + " " + user.getStreetNumber());
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(user.getDateOfBirth());
-        System.out.println(user.getDateOfBirth());
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
         int month = calendar.get(Calendar.MONTH);
-        if (month == 0) {
-            month = 12;
-        }
-        int day = calendar.get(Calendar.DAY_OF_MONTH)-1;
-        if (day == 0) {
-            day = 31;
-        }
-        this.labelBirthday.setText(calendar.get(Calendar.YEAR) + "-"  + month + "-" + day);
+        month++;
+        int year = calendar.get(Calendar.YEAR);
+        day--;
+        this.labelBirthday.setText(year + "-" + month + "-" + day);
         this.labelEmail.setText(user.getEmail());
         this.imageViewProfile.setImage(new Image("user.png"));
 

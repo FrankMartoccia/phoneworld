@@ -46,6 +46,11 @@ public class ControllerViewReview implements Initializable {
     @FXML
     void onClickCancel(ActionEvent event) {
         stageManager.closeStage(this.buttonCancel);
+        boolean isUpdate = (boolean) App.getInstance().getModelBean().getBean(Constants.IS_UPDATE);
+        if (isUpdate) {
+            stageManager.showWindow(FxmlView.DETAILS_USER);
+            return;
+        }
         stageManager.showWindow(FxmlView.DETAILS_PHONES);
     }
 

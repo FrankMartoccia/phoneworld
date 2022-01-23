@@ -27,7 +27,7 @@
                      </image>
                   </ImageView>
                   <Region VBox.vgrow="ALWAYS" />
-                  <TextField fx:id="textFieldUsername" onKeyPressed="#onClikEnterUsername" prefHeight="52.0" prefWidth="195.0" promptText="username">
+                  <TextField fx:id="textFieldUsername" onKeyPressed="#onClickEnterUsername" prefHeight="52.0" prefWidth="195.0" promptText="username">
                      <VBox.margin>
                         <Insets bottom="10.0" left="70.0" right="70.0" />
                      </VBox.margin>

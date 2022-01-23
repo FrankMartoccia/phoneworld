@@ -193,15 +193,14 @@ public class ReviewMongo {
         GroupOperation groupOperation = group("$phoneName").avg("$rating")
                 .as("avgRating").count().as("numReviews");
         MatchOperation matchOperation = match(new Criteria("numReviews").gte(minReviews));
-        SortOperation sortOperation = sort(Sort.by(Sort.Direction.DESC, "avgRating",
-                "numReviews"));
-        LimitOperation limitOperation = limit(results);
         ProjectionOperation projectionOperation = project()
-                .andExpression("_id").as("phoneName")
-                .andExpression("avgRating").as("rating").andExclude("_id")
-                .andExpression("numReviews").as("reviews");
-        Aggregation aggregation = newAggregation(groupOperation, matchOperation,
-                sortOperation, limitOperation, projectionOperation);
+                .andExpression("_id").as("phoneName").andExclude("_id")
+                .andExpression("numReviews").as("reviews")
+                .and(ArithmeticOperators.Round.roundValueOf("avgRating").place(1)).as("rating");
+        SortOperation sortOperation = sort(Sort.by(Sort.Direction.DESC, "rating", "reviews"));
+        LimitOperation limitOperation = limit(results);
+        Aggregation aggregation = newAggregation(groupOperation, matchOperation, projectionOperation,
+                sortOperation, limitOperation);
         AggregationResults<Review> result = mongoOperations
                 .aggregate(aggregation, "reviews", Review.class);
         return result.getRawResults();
@@ -215,7 +214,7 @@ public class ReviewMongo {
         ProjectionOperation projectionOperation = project()
                 .andExpression("_id").as("username")
                 .andExpression("numReviews").as("reviews").andExclude("_id")
-                .andExpression("ratingUser").as("rating");
+                .and(ArithmeticOperators.Round.roundValueOf("ratingUser").place(1)).as("rating");
         Aggregation aggregation = newAggregation(groupOperation, sortOperation, limitOperation,
                 projectionOperation);
         AggregationResults<Review> result = mongoOperations

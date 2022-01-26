@@ -84,7 +84,6 @@ public class ControllerViewStatistics implements Initializable {
             this.columnParameter2.setText("# REVIEWS");
             this.columnParameter3.setText("RATING");
             Document result = phoneMongo.findTopRatedBrands(20, this.spinnerFilter.getValue());
-            System.out.println(spinnerFilter.getValue());
             if (result.isEmpty()) {
                 stageManager.showInfoMessage("ERROR", "Statistic not found!");
                 return;

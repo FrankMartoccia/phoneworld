@@ -66,7 +66,6 @@ public class TestUserMongo {
     @Test
     public void testAddUser() {
         List<GenericUser> users = userMongo.getUserMongo().findAll();
-        users.forEach(System.out::println);
         assertEquals("ndas732neaj", users.get(0).getSalt());
         assertEquals("Nevada", ((User)users.get(1)).getCountry());
         assertEquals(3, users.size());
@@ -77,7 +76,6 @@ public class TestUserMongo {
         List<GenericUser> users = userMongo.findUsers("pinco", "user");
         assertEquals(0, users.size());
         users = userMongo.findUsers("ank", "user");
-        users.forEach(System.out::println);
         assertEquals(1, users.size());
     }
 
@@ -86,9 +84,7 @@ public class TestUserMongo {
         Optional<GenericUser> user = userMongo.findUserById("11111");
         assertEquals(user, Optional.empty());
         user = userMongo.findUserById(id1);
-        System.out.println(user);
         if (user.isPresent()) {
-            System.out.println(user.get());
             assertEquals(user.get().getId(), id1);
         }
     }
@@ -104,11 +100,9 @@ public class TestUserMongo {
                 "street", "Las Vegas", "Nevada", "dnsak@gmail.com",
                 dateOfBirth, 57);
         List<GenericUser> users = userMongo.getUserMongo().findAll();
-        users.forEach(System.out::println);
         userMongo.updateUser(id1, newAdmin, "admin");
         userMongo.updateUser(id2, newUser,"user");
         users = userMongo.getUserMongo().findAll();
-        users.forEach(System.out::println);
         assertEquals(3, users.size());
         assertEquals(users.get(2).getUsername(), "admin1234");
         assertEquals(users.get(0).getUsername(), "Franko");
@@ -117,36 +111,23 @@ public class TestUserMongo {
     @Test
     public void testDeleteUserById() {
         List<GenericUser> users = userMongo.getUserMongo().findAll();
-        users.forEach(System.out::println);
         userMongo.deleteUserById(id1);
         users = userMongo.getUserMongo().findAll();
         assertEquals(2,users.size());
-        users.forEach(System.out::println);
     }
 
     @Test
     public void testDeleteUser() {
         List<GenericUser> users = userMongo.getUserMongo().findAll();
-        users.forEach(System.out::println);
         userMongo.deleteUser(userMongo.getUserMongo().findAll().get(0));
         users = userMongo.getUserMongo().findAll();
         assertEquals(2,users.size());
-        users.forEach(System.out::println);
-    }
-
-    @Test
-    public void testFindYoungerCountriesByUsers() {
-        Document users = userMongo.findYoungerCountriesByUsers(2);
-        List<Document> results = (List<Document>) users.get("results");
-        System.out.println(results);
-        assertEquals(23.0, results.get(0).get("age"));
     }
 
     @Test
     public void testFindTopCountriesByUsers() {
         Document users = userMongo.findTopCountriesByUsers(1);
         List<Document> results = (List<Document>) users.get("results");
-        System.out.println(results);
         assertEquals(1, results.get(0).get("users"));
         assertEquals(1, results.size());
     }

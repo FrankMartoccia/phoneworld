@@ -15,7 +15,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SpringBootApplication
 public class App extends Application {
 
-    private GraphNeo4j graphNeo4j = new GraphNeo4j("bolt://localhost:7687",
+    private GraphNeo4j graphNeo4j = new GraphNeo4j("bolt://172.16.4.105:7687",
                                                                "neo4j", "PhoneWorld");
     private UserNeo4j userNeo4j = new UserNeo4j(graphNeo4j);
     private PhoneNeo4j phoneNeo4j = new PhoneNeo4j(graphNeo4j);

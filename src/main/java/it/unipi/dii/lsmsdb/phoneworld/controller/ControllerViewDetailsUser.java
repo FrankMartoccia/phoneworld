@@ -2,7 +2,10 @@ package it.unipi.dii.lsmsdb.phoneworld.controller;
 
 import it.unipi.dii.lsmsdb.phoneworld.App;
 import it.unipi.dii.lsmsdb.phoneworld.Constants;
-import it.unipi.dii.lsmsdb.phoneworld.model.*;
+import it.unipi.dii.lsmsdb.phoneworld.model.GenericUser;
+import it.unipi.dii.lsmsdb.phoneworld.model.Phone;
+import it.unipi.dii.lsmsdb.phoneworld.model.Review;
+import it.unipi.dii.lsmsdb.phoneworld.model.User;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.PhoneMongo;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.ReviewMongo;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.UserMongo;
@@ -29,7 +32,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -274,7 +276,6 @@ public class ControllerViewDetailsUser implements Initializable {
 
     public void onClickDetailsPhone(ActionEvent actionEvent) {
         String phoneNameComplete = String.valueOf(this.tableWatchList.getSelectionModel().getSelectedItems());
-        System.out.println(phoneNameComplete);
         String phoneName = phoneNameComplete.substring(1, phoneNameComplete.length()-1);
         if (phoneName.isEmpty()) {
             stageManager.showInfoMessage("INFO", "You must select a phone");

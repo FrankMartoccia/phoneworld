@@ -89,7 +89,6 @@ public class ControllerViewDetailsPhone implements Initializable {
             this.buttonServicePhone.setText("UPDATE");
         }
         phone = (Phone) App.getInstance().getModelBean().getBean(Constants.SELECTED_PHONE);
-        System.out.println(phone.getReviews());
         this.imagePhone.setImage(new Image(phone.getPicture()));
         this.labelName.setText("Name: " + phone.getName());
         this.labelBrand.setText("Brand: " + phone.getBrand());

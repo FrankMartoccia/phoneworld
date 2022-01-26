@@ -1,6 +1,5 @@
 package it.unipi.dii.lsmsdb.phoneworld.config;
 
-import it.unipi.dii.lsmsdb.phoneworld.config.SpringFXMLLoader;
 import it.unipi.dii.lsmsdb.phoneworld.view.StageManager;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;

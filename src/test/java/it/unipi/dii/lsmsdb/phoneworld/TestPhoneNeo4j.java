@@ -61,7 +61,6 @@ public class TestPhoneNeo4j {
         for (Record record : records) {
             results.add(record.get("id").asString());
         }
-        System.out.println(results);
         Assertions.assertEquals(1, results.size());
         Assertions.assertEquals( "id1", results.get(0));
     }
@@ -70,7 +69,6 @@ public class TestPhoneNeo4j {
     public void testFindPhoneById() {
         List<Record> records = phoneNeo4j.findPhoneById("id1");
         String name = records.get(0).get("name").asString();
-        System.out.println(name);
         Assertions.assertEquals("Nokia Lumia 900", name);
     }
 
@@ -90,7 +88,6 @@ public class TestPhoneNeo4j {
         for (Record record : records) {
             results.add(record.get("id").asString());
         }
-        System.out.println(records);
         Assertions.assertEquals(0, results.size());
         Assertions.assertTrue(records.isEmpty());
     }
@@ -99,7 +96,6 @@ public class TestPhoneNeo4j {
     public void testSuggestedPhonesByFriends() {
         List<Record> records = phoneNeo4j.findSuggestedPhonesByFriends("userId1");
         String name = String.valueOf(records.get(0).get("newPhone").get("name").asString());
-        System.out.println(records.get(0).get("newPhone"));
         Assertions.assertEquals("Galaxy S20",name);
     }
 
@@ -107,7 +103,6 @@ public class TestPhoneNeo4j {
     public void testSuggestedPhonesByBrand() {
         List<Record> records = phoneNeo4j.findSuggestedPhonesByBrand("userId1");
         String name = String.valueOf(records.get(0).get("newPhone").get("name").asString());
-        System.out.println(name);
         Assertions.assertEquals(9,records.size());
     }
 

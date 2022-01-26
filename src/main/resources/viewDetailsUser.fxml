@@ -109,7 +109,7 @@
                               <Insets top="30.0" />
                            </VBox.margin>
                            <columns>
-                              <TableColumn fx:id="columnFollowed" prefWidth="311.0" text="FOLLOWED" />
+                              <TableColumn fx:id="columnFollowed" prefWidth="311.0" text="FOLLOWING" />
                            </columns>
                         </TableView>
                         <HBox prefHeight="52.0" prefWidth="379.0">

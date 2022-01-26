@@ -2,7 +2,6 @@ package it.unipi.dii.lsmsdb.phoneworld;
 
 import it.unipi.dii.lsmsdb.phoneworld.model.Review;
 import it.unipi.dii.lsmsdb.phoneworld.repository.mongo.ReviewMongo;
-import org.bson.Document;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,7 +55,6 @@ public class TestReviewMongo {
     @Test
     public void testAddReview() {
         List<Review> reviews = reviewMongo.getReviewMongo().findAll();
-        reviews.forEach(System.out::println);
         assertEquals("Nice phone", reviews.get(0).getTitle());
         assertEquals(4, reviews.size());
     }
@@ -66,7 +64,6 @@ public class TestReviewMongo {
         List<Review> reviews = reviewMongo.findByWord("iss");
         assertEquals(0, reviews.size());
         reviews = reviewMongo.findByWord("nice");
-        reviews.forEach(System.out::println);
         assertEquals(4, reviews.size());
     }
 
@@ -76,7 +73,6 @@ public class TestReviewMongo {
         assertEquals(review, Optional.empty());
         review = reviewMongo.findReviewById(id);
         if (review.isPresent()) {
-            System.out.println(review.get());
             assertEquals(review.get().getId(), id);
         }
     }
@@ -87,10 +83,8 @@ public class TestReviewMongo {
         Review review = new Review.ReviewBuilder(1, dateOfReview, "Bad phone",
                 "this phone is very bad").build();
         List<Review> reviews = reviewMongo.getReviewMongo().findAll();
-        reviews.forEach(System.out::println);
         reviewMongo.updateReview(id, review);
         reviews = reviewMongo.getReviewMongo().findAll();
-        reviews.forEach(System.out::println);
         assertEquals(4, reviews.size());
         assertEquals(reviews.get(0).getTitle(), "Bad phone");
     }
@@ -98,21 +92,17 @@ public class TestReviewMongo {
     @Test
     public void testDeleteReviewById() {
         List<Review> reviews = reviewMongo.getReviewMongo().findAll();
-        reviews.forEach(System.out::println);
         reviewMongo.deleteReviewById(id);
         reviews = reviewMongo.getReviewMongo().findAll();
         assertEquals(3,reviews.size());
-        reviews.forEach(System.out::println);
     }
 
     @Test
     public void testDeleteReview() {
         List<Review> reviews = reviewMongo.getReviewMongo().findAll();
-        reviews.forEach(System.out::println);
         reviewMongo.deleteReview(reviewMongo.getReviewMongo().findAll().get(0));
         reviews = reviewMongo.getReviewMongo().findAll();
         assertEquals(3,reviews.size());
-        reviews.forEach(System.out::println);
     }
 
     @Test
@@ -125,27 +115,9 @@ public class TestReviewMongo {
     @Test
     public void testDeleteReviewByPhoneName() {
         List<Review> reviews = reviewMongo.getReviewMongo().findAll();
-        reviews.forEach(System.out::println);
         reviewMongo.deleteReviewByPhoneName("phone2");
         reviews = reviewMongo.getReviewMongo().findAll();
         assertEquals(2, reviews.size());
-    }
-
-    @Test
-    public void testFindMostActiveUsers() {
-        Document users = reviewMongo.findMostActiveUsers(5);
-        List<Document> results = (List<Document>) users.get("results");
-        System.out.println(results);
-        assertEquals(2, results.get(0).get("reviews"));
-    }
-
-    @Test
-    public void testFindTopPhonesByRating() {
-        Document phones = reviewMongo.findTopPhonesByRating(2, 2);
-        List<Document> results = (List<Document>) phones.get("results");
-        System.out.println(results);
-        assertEquals(3.5,results.get(0).get("rating"));
-//        assertEquals(0, results.size());
     }
 
 }

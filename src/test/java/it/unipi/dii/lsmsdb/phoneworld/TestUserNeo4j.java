@@ -61,7 +61,6 @@ public class TestUserNeo4j {
         for (Record record : records) {
             results.add(record.get("username").asString());
         }
-        System.out.println(results);
         Assertions.assertEquals(1, results.size());
         Assertions.assertEquals( "Paolo", results.get(0));
     }
@@ -70,7 +69,6 @@ public class TestUserNeo4j {
     public void testFindUserById() {
         List<Record> records = userNeo4j.findUserById("id1");
         String username = records.get(0).get("username").asString();
-        System.out.println(username);
         Assertions.assertEquals("Paolo", username);
     }
 
@@ -90,7 +88,6 @@ public class TestUserNeo4j {
         for (Record record : records) {
             results.add(record.get("id").asString());
         }
-        System.out.println(results);
         Assertions.assertEquals(0, results.size());
         Assertions.assertTrue(records.isEmpty());
     }
@@ -101,7 +98,6 @@ public class TestUserNeo4j {
                 "MATCH (u1:User {id: 'id1'})-[:FOLLOWS]->(u2:User {id: 'id2'})" +
                         "RETURN u1.username AS username");
         String username = records.get(0).get("username").asString();
-        System.out.println(username);
         Assertions.assertEquals("Paolo", username);
     }
 
@@ -120,7 +116,6 @@ public class TestUserNeo4j {
                 "MATCH (u1:User {id: 'id1'})-[:ADDS]->(p:Phone {id: 'phoneid1'})" +
                         "RETURN u1.username AS username");
         String username = records.get(0).get("username").asString();
-        System.out.println(username);
         Assertions.assertEquals("Paolo", username);
     }
 
@@ -136,15 +131,12 @@ public class TestUserNeo4j {
     @Test
     public void testMostFollowedUsers() {
         List<Record> records = userNeo4j.findMostFollowedUsers(10);
-        System.out.println(records);
-//        String username = records.get(0).get("username").asString();
         Assertions.assertEquals(10, records.size());
     }
 
     @Test
     public void testSuggestedUsersByFriends() {
         List<Record> records = userNeo4j.findSuggestedUsersByFriends("id1");
-        System.out.println(records);
         String username = records.get(0).get("username").asString();
         Assertions.assertEquals("Paoletto", username);
     }
@@ -152,7 +144,6 @@ public class TestUserNeo4j {
     @Test
     public void testSuggestedUsersByBrand() {
         List<Record> records = userNeo4j.findSuggestedUsersByBrand("id1");
-        System.out.println(records);
         int phones = records.get(0).get("phones").asInt();
         Assertions.assertEquals(3, phones);
     }
@@ -160,7 +151,6 @@ public class TestUserNeo4j {
     @Test
     public void testGetWatchlist() {
         List<Record> records = userNeo4j.getWatchlist("id1");
-        System.out.println(records);
         String name = records.get(0).get("p").get("name").asString();
         Assertions.assertEquals("Mi 11", name);
     }
@@ -168,9 +158,7 @@ public class TestUserNeo4j {
     @Test
     public void testGetRelationship() {
         List<Record> recordsAdd = userNeo4j.getAddRelationship("id1", "phoneid1");
-        System.out.println(recordsAdd);
         List<Record> recordsFollow = userNeo4j.getFollowRelationship("id1", "id2");
-        System.out.println(recordsFollow);
         Assertions.assertEquals(1, recordsAdd.size());
         Assertions.assertEquals(1, recordsFollow.size());
     }

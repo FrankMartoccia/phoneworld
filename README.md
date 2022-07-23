@@ -17,17 +17,17 @@ and write a review for them, but also interact with other users, following them
 and view their watchlist.
 
 ## Technologies
-The application is developed in:
+The application is developed with the following **language**:
 * Java
 
-The DBMSs used are:
+The **DBMSs** used are:
 * MongoDB
 * Neo4j
 
-The frameworks used are:
+The **frameworks** used are:
 * Spring Data MongoDB
 * JavaFX (for the GUI)
 * JUnit (for the testing)
 
-In order to work on the initial datasets, scripts have been written in:
+In order to work on the initial datasets, **scripts** have been written in:
 * Python
